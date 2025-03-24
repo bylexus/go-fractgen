@@ -1,0 +1,1066 @@
+{
+  "colorPresets": [
+    {
+      "defaultSteps": 256,
+      "name": "Patchwork",
+      "colors": [
+        {
+          "a": 255,
+          "r": 0,
+          "b": 30,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 253,
+          "b": 6,
+          "g": 204
+        },
+        {
+          "a": 255,
+          "r": 186,
+          "b": 15,
+          "g": 84
+        },
+        {
+          "a": 255,
+          "r": 0,
+          "b": 255,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 180,
+          "b": 30,
+          "g": 180
+        },
+        {
+          "a": 255,
+          "r": 103,
+          "b": 135,
+          "g": 61
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 0,
+          "b": 30,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255
+        },
+        {
+          "a": 255,
+          "r": 230,
+          "b": 230,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 0,
+          "b": 30,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 255
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Shades of Blue",
+      "colors": [
+        {
+          "a": 255,
+          "r": 0,
+          "b": 20,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 128,
+          "b": 255,
+          "g": 128,
+          "steps": 64
+        },
+        {
+          "a": 255,
+          "r": 200,
+          "b": 255,
+          "g": 200
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Red Alert",
+      "colors": [
+        {
+          "a": 255,
+          "r": 30,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 128,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 128
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 255
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Women's Choice",
+      "colors": [
+        {
+          "a": 255,
+          "r": 30,
+          "b": 25,
+          "g": 5
+        },
+        {
+          "a": 255,
+          "r": 128,
+          "b": 89,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 204,
+          "g": 102
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 232,
+          "g": 179
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Shades of Gray",
+      "colors": [
+        {
+          "a": 255,
+          "r": 30,
+          "b": 30,
+          "g": 30
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Pastel Blue",
+      "colors": [
+        {
+          "a": 255,
+          "r": 68,
+          "b": 128,
+          "g": 76,
+          "steps": 256
+        },
+        {
+          "a": 255,
+          "r": 109,
+          "b": 157,
+          "g": 115,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 208,
+          "b": 230,
+          "g": 211,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 102,
+          "b": 191,
+          "g": 114,
+          "steps": 256
+        },
+        {
+          "a": 255,
+          "r": 122,
+          "b": 201,
+          "g": 133,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 231,
+          "b": 255,
+          "g": 234
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Sunny Sky",
+      "colors": [
+        {
+          "a": 255,
+          "r": 109,
+          "b": 175,
+          "g": 174
+        },
+        {
+          "a": 255,
+          "r": 237,
+          "b": 21,
+          "g": 222
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 222,
+          "g": 244
+        },
+        {
+          "a": 255,
+          "r": 142,
+          "b": 208,
+          "g": 207
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 246,
+          "g": 254
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "RGB",
+      "colors": [
+        {
+          "a": 255,
+          "r": 0,
+          "b": 127,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 255
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Baloooons",
+      "colors": [
+        {
+          "a": 255,
+          "r": 44,
+          "b": 112,
+          "g": 60
+        },
+        {
+          "a": 255,
+          "r": 183,
+          "b": 131,
+          "g": 105
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 222,
+          "g": 112
+        },
+        {
+          "a": 255,
+          "r": 98,
+          "b": 115,
+          "g": 73
+        },
+        {
+          "a": 255,
+          "r": 194,
+          "b": 255,
+          "g": 255
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Nature",
+      "colors": [
+        {
+          "a": 255,
+          "r": 41,
+          "b": 18,
+          "g": 18
+        },
+        {
+          "a": 255,
+          "r": 19,
+          "b": 18,
+          "g": 62
+        },
+        {
+          "a": 255,
+          "r": 111,
+          "b": 172,
+          "g": 210
+        },
+        {
+          "a": 255,
+          "r": 22,
+          "b": 73,
+          "g": 25
+        },
+        {
+          "a": 255,
+          "r": 107,
+          "b": 225,
+          "g": 215,
+          "steps": 64
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 255,
+          "g": 255,
+          "steps": 64
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "Wonder Wall",
+      "colors": [
+        {
+          "a": 255,
+          "r": 3,
+          "b": 1,
+          "g": 3,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 220,
+          "b": 193,
+          "g": 152,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 85,
+          "b": 26,
+          "g": 125,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 149,
+          "b": 61,
+          "g": 37,
+          "steps": 128
+        },
+        {
+          "a": 255,
+          "r": 227,
+          "b": 233,
+          "g": 240,
+          "steps": 128
+        }
+      ]
+    },
+    {
+      "defaultSteps": 256,
+      "name": "AI 1",
+      "colors": [
+        {
+          "a": 255,
+          "r": 0,
+          "b": 139,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 75,
+          "b": 130,
+          "g": 0
+        },
+        {
+          "a": 255,
+          "r": 0,
+          "b": 255,
+          "g": 191
+        },
+        {
+          "a": 255,
+          "r": 255,
+          "b": 0,
+          "g": 215
+        },
+        {
+          "a": 255,
+          "r": 139,
+          "b": 0,
+          "g": 0
+        }
+      ]
+    }
+  ],
+  "fractalPresets": [
+    {
+      "picWidth": 960,
+      "maxIterations": 40,
+      "picHeight": 600,
+      "diameterCX": 4,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Total",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0,
+      "centerCX": -0.7,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 100,
+      "picHeight": 600,
+      "diameterCX": 0.53184,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Seahorse Valley",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0.20464,
+      "centerCX": -0.87591,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 400,
+      "picHeight": 600,
+      "diameterCX": 0.01611,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Seahorse Upside Down",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0.126433,
+      "centerCX": -0.74303,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 500,
+      "picHeight": 600,
+      "diameterCX": 0.0022878,
+      "colorPreset": "Women's Choice",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Seahorse Tail",
+      "colorPaletteRepeat": 5,
+      "centerCY": 0.1314023,
+      "centerCX": -0.7435669,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3000,
+      "picHeight": 600,
+      "diameterCX": 6.6208e-7,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Seahorse Valley of the Satellite",
+      "colorPaletteRepeat": 3,
+      "centerCY": 0.13182604688,
+      "centerCX": -0.74364409961,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 400,
+      "picHeight": 600,
+      "diameterCX": 0.02403828125,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Snowstar",
+      "colorPaletteRepeat": 1,
+      "centerCY": -0.56375779101563,
+      "centerCX": 0.20070234179688,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 1.0096719999999999e-7,
+      "colorPreset": "Shades of Gray",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Day of the Tentacles",
+      "colorPaletteRepeat": 4,
+      "centerCY": 0.13182601791399998,
+      "centerCX": -0.7436441534039999,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 1000,
+      "picHeight": 600,
+      "diameterCX": 0.26592,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Fire!",
+      "colorPaletteRepeat": 6,
+      "centerCY": 0.3030864,
+      "centerCX": -0.9949091999999999,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 2500,
+      "picHeight": 600,
+      "diameterCX": 3.6573043007812505e-5,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Lexus' Secret Spot",
+      "colorPaletteRepeat": 8,
+      "centerCY": 0.8451734844686328,
+      "centerCX": -0.2379717670706691,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 1.0320131581138046e-7,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot The lost World",
+      "colorPaletteRepeat": 6,
+      "centerCY": 0.3031882579013221,
+      "centerCX": -1.187778018415184,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 9.171127505090332e-5,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Explosion",
+      "colorPaletteRepeat": 18,
+      "centerCY": 0.589522421362935,
+      "centerCX": 0.27139860544317856,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 25000,
+      "picHeight": 600,
+      "diameterCX": 5.6334929242238016e-11,
+      "colorPreset": "Pastel Blue",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 30000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Lightning of Ice",
+      "colorPaletteRepeat": 7,
+      "centerCY": 1.122203741219549,
+      "centerCX": -0.20666478282666026,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 8.376309798955982e-6,
+      "colorPreset": "Women's Choice",
+      "juliaKi": 0.6,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot A Dream In Pink",
+      "colorPaletteRepeat": 6,
+      "centerCY": 0.11536423928621213,
+      "centerCX": -0.7711961329605335,
+      "juliaKr": -0.6
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 80,
+      "picHeight": 600,
+      "diameterCX": 4,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0.8,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Julia",
+      "name": "Julia Total",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0,
+      "centerCX": 0,
+      "juliaKr": -0.2
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 750,
+      "picHeight": 600,
+      "diameterCX": 6.215899658203127e-4,
+      "colorPreset": "Women's Choice",
+      "juliaKi": 0.2,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Julia",
+      "name": "Julia Rose Ornament",
+      "colorPaletteRepeat": 5,
+      "centerCY": 0.5103007983398435,
+      "centerCX": 0.16448743469238283,
+      "juliaKr": -0.8
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 33655,
+      "picHeight": 600,
+      "diameterCX": 7.448742562344572e-11,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0,
+      "colorPaletteLength": 35000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Brain Cell",
+      "colorPaletteRepeat": 88,
+      "centerCY": 0.3119753799504393,
+      "centerCX": -1.1949610166156122,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 456,
+      "picHeight": 600,
+      "diameterCX": 0.0029454794999999997,
+      "colorPreset": "Pastel Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Ornament",
+      "colorPaletteRepeat": 2,
+      "centerCY": 0.22919028389875,
+      "centerCX": -0.8313813230887498,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3782,
+      "picHeight": 600,
+      "diameterCX": 8.875640775193726e-8,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot meets Julia",
+      "colorPaletteRepeat": 3,
+      "centerCY": 0.48583735034046427,
+      "centerCX": 0.30183791563893553,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3771,
+      "picHeight": 600,
+      "diameterCX": 2.2282162735290527e-7,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Coral Reef",
+      "colorPaletteRepeat": 4,
+      "centerCY": 0.4858385988808209,
+      "centerCX": 0.3018359522999055,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 6.173474248535155e-7,
+      "colorPreset": "Nature",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Underwater World",
+      "colorPaletteRepeat": 6,
+      "centerCY": 0.2587853962809671,
+      "centerCX": -0.9534607432543516,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 14302,
+      "picHeight": 600,
+      "diameterCX": 2.0063791307739252e-8,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 15000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Stardust",
+      "colorPaletteRepeat": 17,
+      "centerCY": 0.2587854229580927,
+      "centerCX": -0.9534607713822437,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 4503,
+      "picHeight": 600,
+      "diameterCX": 6.406733893997191e-8,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Wound",
+      "colorPaletteRepeat": 13,
+      "centerCY": 1.0362133495838854,
+      "centerCX": -0.1665316450376826,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 40,
+      "picHeight": 600,
+      "diameterCX": 4.5,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot Z^3",
+      "name": "Mandelbrot Z^3 Total",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0,
+      "centerCX": 0,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 10000,
+      "picHeight": 600,
+      "diameterCX": 1.5201032775878903e-8,
+      "colorPreset": "Nature",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot Z^3",
+      "name": "Mandelbrot Z^3 Blue Lagoon",
+      "colorPaletteRepeat": 8,
+      "centerCY": -0.955870931708354,
+      "centerCX": 0.2529507755416894,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3950,
+      "picHeight": 600,
+      "diameterCX": 1.3543938995361328e-7,
+      "colorPreset": "Women's Choice",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot Z^4",
+      "name": "Mandelbrot Z^3 Mother with children",
+      "colorPaletteRepeat": 14,
+      "centerCY": -0.003908503961746147,
+      "centerCX": -1.1659069101345705,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 4579,
+      "picHeight": 600,
+      "diameterCX": 1.408093650054932e-7,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot Z^3",
+      "name": "Mandelbrot Z^3 Nightsky",
+      "colorPaletteRepeat": 2,
+      "centerCY": 1.2785310463844937,
+      "centerCX": -0.3278128659870592,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 9115,
+      "picHeight": 600,
+      "diameterCX": 4.914502654174805e-7,
+      "colorPreset": "Nature",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Algae",
+      "colorPaletteRepeat": 18,
+      "centerCY": 0.845177438928908,
+      "centerCX": -0.2379772873143481,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 578,
+      "picHeight": 600,
+      "diameterCX": 0.003949804687500001,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0.65,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Julia",
+      "name": "Julia Flakes",
+      "colorPaletteRepeat": 7,
+      "centerCY": 0.6984640473632813,
+      "centerCX": -1.0704656762695313,
+      "juliaKr": -0.5
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 2.7877705759388686e-5,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Zipper Lagoon",
+      "colorPaletteRepeat": 6,
+      "centerCY": 0.3016552531455419,
+      "centerCX": -0.9359643632475456,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 5000,
+      "picHeight": 600,
+      "diameterCX": 4.688311580400011e-8,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Ring of Fire",
+      "colorPaletteRepeat": 15,
+      "centerCY": 0.3059746056603645,
+      "centerCX": -1.1528405468794645,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 2226,
+      "picHeight": 600,
+      "diameterCX": 9.214391588660157e-7,
+      "colorPreset": "Nature",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Cells",
+      "colorPaletteRepeat": 14,
+      "centerCY": 0.006827586668927056,
+      "centerCX": -1.6205863436707622,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 2345,
+      "picHeight": 600,
+      "diameterCX": 6.969426439847171e-7,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Creatures of the Sea",
+      "colorPaletteRepeat": 17,
+      "centerCY": 0.3016613865465446,
+      "centerCX": -0.9359663204948041,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 1506,
+      "picHeight": 600,
+      "diameterCX": 5.328256758619744e-6,
+      "colorPreset": "Nature",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Spiral",
+      "colorPaletteRepeat": 3,
+      "centerCY": 0.22943043445336692,
+      "centerCX": -1.1089070487028683,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 36345,
+      "picHeight": 600,
+      "diameterCX": 1.2403750557893055e-10,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0,
+      "colorPaletteLength": 40000,
+      "iterFunc": "Mandelbrot",
+      "name": "Exploding Blossoms",
+      "colorPaletteRepeat": 32,
+      "centerCY": -0.014929825618416848,
+      "centerCX": 0.2906100658911524,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 54247,
+      "picHeight": 600,
+      "diameterCX": 2.0683026289597354e-8,
+      "colorPreset": "Women's Choice",
+      "juliaKi": 0,
+      "colorPaletteLength": 60000,
+      "iterFunc": "Mandelbrot",
+      "name": "Seahorses",
+      "colorPaletteRepeat": 5,
+      "centerCY": 0.539214583870247,
+      "centerCX": -0.47181866703233416,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 43855,
+      "picHeight": 600,
+      "diameterCX": 2.821459423993879e-8,
+      "colorPreset": "Shades of Blue",
+      "juliaKi": 0,
+      "colorPaletteLength": 50000,
+      "iterFunc": "Mandelbrot",
+      "name": "Galaxy Spiral",
+      "colorPaletteRepeat": 4,
+      "centerCY": 0.539187590656596,
+      "centerCX": -0.4717583213042769,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 16662,
+      "picHeight": 600,
+      "diameterCX": 8.263048994450568e-10,
+      "colorPreset": "Red Alert",
+      "juliaKi": 0,
+      "colorPaletteLength": 20000,
+      "iterFunc": "Mandelbrot",
+      "name": "Burning Flower",
+      "colorPaletteRepeat": 17,
+      "centerCY": 7.471901591563082e-8,
+      "centerCX": -1.994333370674881,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 4048,
+      "picHeight": 600,
+      "diameterCX": 1.4242538971147528e-5,
+      "colorPreset": "RGB",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Power Drain",
+      "colorPaletteRepeat": 3,
+      "centerCY": -0.6596943393679405,
+      "centerCX": -0.17082046220138578,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3000,
+      "picHeight": 600,
+      "diameterCX": 2.9336e-6,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Antenna Satelite",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0.1318252536,
+      "centerCX": -0.743644786,
+      "juliaKr": 0
+    }
+  ]
+}
