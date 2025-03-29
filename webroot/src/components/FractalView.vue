@@ -9,7 +9,8 @@ import { fractalPresetByName, type FractalPreset } from '@/lib/use-presets'
 
 const imageUrl: Ref<string> = ref('')
 const loading = ref(true)
-const imgContainer: Ref<HTMLImageElement | null> = ref(null)
+const imgContainer: Ref<HTMLElement | null> = ref(null)
+const image: Ref<HTMLImageElement | null> = ref(null)
 const windowSizes = useElementResize(window.document.body, 1000)
 const colorPreset = useLocalStorageVariable('colorPreset', '')
 const fractalPreset = useLocalStorageVariable('fractalPreset', '')
@@ -66,19 +67,75 @@ watchEffect(() => {
   calcImage(fractalParams)
 })
 
+function afterImageLoad() {
+  loading.value = false
+  if (image.value) {
+    image.value.style.transform = ''
+  }
+}
+
 function calcImage(fractalParams: any) {
   const apiRoot = apiroot()
   loading.value = true
   // check for the most important values to be present:
   if (!fractalParams.width || !fractalParams.height) return
   if (!fractalParams.colorPreset) return
+  fractalParams.ts = new Date().getTime()
   imageUrl.value = `${apiRoot}/fractal-image.png?${queryStr(fractalParams)}`
+}
+
+let dragStartPos: { x: number; y: number } | null = null
+let dragDistance: { dx: number; dy: number } | null = null
+function onDragStart(ev: PointerEvent) {
+  ev.preventDefault()
+  dragStartPos = { x: ev.clientX, y: ev.clientY }
+  dragDistance = { dx: 0, dy: 0 }
+}
+
+function onDrag(ev: PointerEvent) {
+  ev.preventDefault()
+  if (dragStartPos) {
+    const dx = ev.clientX - dragStartPos.x
+    const dy = ev.clientY - dragStartPos.y
+    dragDistance = { dx, dy }
+    if (image.value) {
+      image.value.style.transform = `translate(${dx}px, ${dy}px)`
+    }
+  }
+}
+
+function onDragEnd(ev: PointerEvent) {
+  ev.preventDefault()
+  if (!dragDistance || (dragDistance.dx === 0 && dragDistance.dy === 0)) {
+    dragStartPos = null
+    dragDistance = null
+    return
+  }
+  const aspect = fractalParams.width / fractalParams.height
+  const fractDiameterCY = fractalParams.diameterCX / aspect
+  const moveFactorX = dragDistance ? dragDistance.dx / fractalParams.width : 0
+  const moveFactorY = dragDistance ? dragDistance.dy / fractalParams.height : 0
+  const fractDistX = fractalParams.diameterCX * moveFactorX
+  const fractDistY = fractDiameterCY * moveFactorY
+  fractalParams.centerCX -= fractDistX
+  fractalParams.centerCY += fractDistY
+  calcImage(fractalParams)
+  dragStartPos = null
+  dragDistance = null
 }
 </script>
 
 <template>
-  <div class="img-container" ref="imgContainer">
-    <img :src="imageUrl" @load="loading = false" alt="Fractal Image" />
+  <div class="display-container" ref="imgContainer">
+    <img
+      ref="image"
+      :src="imageUrl"
+      @load="afterImageLoad"
+      alt="Fractal Image"
+      @pointerdown="onDragStart"
+      @pointermove="onDrag"
+      @pointerup="onDragEnd"
+    />
     <div class="settings-overlay">
       <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
       <ColorPresetsSelect v-model="colorPreset"></ColorPresetsSelect>
@@ -92,7 +149,7 @@ function calcImage(fractalParams: any) {
 </template>
 
 <style scoped>
-.img-container {
+.display-container {
   width: 100%;
   height: 100%;
 }
@@ -117,7 +174,6 @@ function calcImage(fractalParams: any) {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
 }
 
 .label-field {
