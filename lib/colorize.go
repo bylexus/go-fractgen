@@ -39,26 +39,6 @@ func setPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 	// as the Max iteration count, but we only define anchor colors in-between. We then linear-interpolate the
 	// correct color based on the iteration count-to-max-iterations ratio.
 
-	// palette := ColorPalette{
-	// 	color.RGBA{R: 0, G: 0, B: 30, A: 255},
-	// 	color.RGBA{R: 253, G: 204, B: 60, A: 255},
-	// 	color.RGBA{R: 186, G: 84, B: 15, A: 255},
-	// 	color.RGBA{R: 0, G: 0, B: 255, A: 255},
-	// 	color.RGBA{R: 180, G: 180, B: 30, A: 255},
-	// 	color.RGBA{R: 103, G: 61, B: 135, A: 255},
-	// 	color.RGBA{R: 255, G: 0, B: 0, A: 255},
-	// 	color.RGBA{R: 0, G: 0, B: 30, A: 255},
-	// 	color.RGBA{R: 255, G: 255, B: 255, A: 255},
-	// 	color.RGBA{R: 230, G: 0, B: 230, A: 255},
-	// 	color.RGBA{R: 230, G: 0, B: 230, A: 255},
-	// 	color.RGBA{R: 0, G: 0, B: 30, A: 255},
-	// 	color.RGBA{R: 255, G: 0, B: 0, A: 255},
-	// 	color.RGBA{R: 255, G: 255, B: 0, A: 255},
-	// 	color.RGBA{R: 255, G: 255, B: 255, A: 255},
-	// color.RGBA{R: 0, G: 0, B: 0, A: 255},
-	// color.RGBA{R: 255, G: 255, B: 255, A: 255},
-	// }
-
 	var palette = fractParams.ColorPalette
 
 	// Default: If the iteration count exceeds the max iterations, set the pixel color to black

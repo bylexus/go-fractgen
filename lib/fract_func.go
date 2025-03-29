@@ -1,6 +1,11 @@
 package lib
 
-import "errors"
+import (
+	"errors"
+	"runtime"
+
+	"github.com/bylexus/go-stdlib/ethreads"
+)
 
 // const MAX_BETRAG_QUADRAT float64 = 256
 
@@ -101,14 +106,22 @@ type MandelbrotFractal struct {
 func (f MandelbrotFractal) CalcFractalImage() *FractImage {
 
 	img := NewFractImage(f.ImageWidth, f.ImageHeight)
+	tpool := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+	tpool.Start()
 
 	for y := 0; y < f.ImageHeight; y++ {
 		for x := 0; x < f.ImageWidth; x++ {
-			cx, cy := f.PixelToFractal(x, y)
-			fractRes := Mandelbrot(cx, cy, MAX_BETRAG_QUADRAT, f.MaxIterations)
-			setImagePixel(img, x, y, f.CommonFractParams, fractRes)
+			f := func(pixX, pixY int) ethreads.JobFn {
+				return func(id ethreads.ThreadId) {
+					cx, cy := f.PixelToFractal(pixX, pixY)
+					fractRes := Mandelbrot(cx, cy, MAX_BETRAG_QUADRAT, f.MaxIterations)
+					setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
+				}
+			}
+			tpool.AddJobFn(f(x, y))
 		}
 	}
+	tpool.Shutdown()
 
 	return img
 }
