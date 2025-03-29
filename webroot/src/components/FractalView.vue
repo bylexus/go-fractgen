@@ -141,6 +141,10 @@ function onDragEnd(ev: PointerEvent) {
       <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
       <ColorPresetsSelect v-model="colorPreset"></ColorPresetsSelect>
       <div class="label-field">
+        <label for="iterations">Max. Iterations</label>
+        <input type="number" v-model.lazy="fractalParams.maxIterations" id="iterations" />
+      </div>
+      <div class="label-field">
         <label for="paletteRepeat">Palette Repeat:</label>
         <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
       </div>

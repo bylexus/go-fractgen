@@ -477,7 +477,7 @@
     },
     {
       "defaultSteps": 256,
-      "name": "AI 2",
+      "name": "Ultra Fractal",
       "colors": [
         { "a": 255, "r": 66, "g": 30, "b": 15 },
         { "a": 255, "r": 25, "g": 7, "b": 26 },
