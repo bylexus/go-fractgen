@@ -130,8 +130,9 @@ function onDragEnd(ev: PointerEvent) {
     <img
       ref="image"
       :src="imageUrl"
-      @load="afterImageLoad"
       alt="Fractal Image"
+      style="touch-action: none;"
+      @load="afterImageLoad"
       @pointerdown="onDragStart"
       @pointermove="onDrag"
       @pointerup="onDragEnd"
