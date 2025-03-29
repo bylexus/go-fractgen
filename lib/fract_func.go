@@ -22,7 +22,7 @@ const (
 )
 
 type Fractal interface {
-	CalcFractalImage() *FractImage
+	CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage
 }
 
 type FractFunctionResult struct {
@@ -103,11 +103,14 @@ type MandelbrotFractal struct {
 	CommonFractParams
 }
 
-func (f MandelbrotFractal) CalcFractalImage() *FractImage {
+func (f MandelbrotFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage {
+	if threadPool == nil {
+		threadPool := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+		threadPool.Start()
+		defer threadPool.Shutdown()
+	}
 
 	img := NewFractImage(f.ImageWidth, f.ImageHeight)
-	tpool := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
-	tpool.Start()
 
 	for y := 0; y < f.ImageHeight; y++ {
 		for x := 0; x < f.ImageWidth; x++ {
@@ -118,10 +121,9 @@ func (f MandelbrotFractal) CalcFractalImage() *FractImage {
 					setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 				}
 			}
-			tpool.AddJobFn(f(x, y))
+			threadPool.AddJobFn(f(x, y))
 		}
 	}
-	tpool.Shutdown()
 
 	return img
 }

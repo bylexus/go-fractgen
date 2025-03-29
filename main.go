@@ -2,20 +2,33 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/bylexus/go-fract/lib"
+	"github.com/bylexus/go-fract/web"
 )
 
 func main() {
 
-	// width := 1920
-	// height := 1200
+	// demo()
+	webserver()
+
+}
+
+func webserver() {
+	presetsFile := "presets.json"
+	colorPresets, fractalPresets := lib.ReadPresetJson(presetsFile)
+
+	var server *web.WebServer = web.NewWebServer(colorPresets, fractalPresets)
+
+	fmt.Printf("Starting Webserver, listen on %s\n", server.Addr)
+	log.Fatal(server.ListenAndServe())
+}
+
+func demo() {
 	presetsFile := "presets.json"
 
 	colorPresets, fractalPresets := lib.ReadPresetJson(presetsFile)
-	// fmt.Printf("Loaded %d color presets and %d fractal presets\n", len(colorPresets), len(fractalPresets))
-	// fmt.Printf("Using fractal presets: %#v\n", fractalPresets)
-	// fmt.Printf("Using color presets: %#v\n", colorPresets)
 
 	// Standard mandelbrot view:
 	// var fractal lib.Fractal = lib.NewMandelbrotFractal(width, height, -0.7, 0.0, 4.0, 50)
@@ -30,7 +43,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		img := fractal.CalcFractalImage()
+		img := fractal.CalcFractalImage(nil)
 		img.SavePng(fmt.Sprintf("demo_images/image-color-preset-%02d.png", i))
 	}
 }
