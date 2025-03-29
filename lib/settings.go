@@ -6,27 +6,56 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
+type ColorPresets []ColorPreset
+type FractalPresets []FractalPreset
+
+type Presets struct {
+	ColorPresets   ColorPresets   `json:"colorPresets"`
+	FractalPresets FractalPresets `json:"fractalPresets"`
+}
+
+func (p ColorPresets) GetByName(name string) (ColorPreset, error) {
+	name = strings.ToLower(name)
+	for _, preset := range p {
+		if strings.ToLower(preset.Name) == name {
+			return preset, nil
+		}
+	}
+	return ColorPreset{}, errors.New("no color preset found")
+}
+
+func (p FractalPresets) GetByName(name string) (FractalPreset, error) {
+	name = strings.ToLower(name)
+	for _, preset := range p {
+		if strings.ToLower(preset.Name) == name {
+			return preset, nil
+		}
+	}
+	return FractalPreset{}, errors.New("no fractal preset found")
+}
+
 type ColorPreset struct {
-	Name    string
+	Name    string       `json:"name"`
 	Palette ColorPalette `json:"colors"`
 }
 
 type FractalPreset struct {
-	Name               string
-	PresetFunctionName string `json:"iterFunc"`
-	ImageWidth         int    `json:"picWidth"`
-	ImageHeight        int    `json:"picHeight"`
-	DiameterCX         float64
-	CenterCX           float64
-	CenterCY           float64
-	ColorPreset        string
-	JuliaKi            float64
-	JuliaKr            float64
-	MaxIterations      int
-	ColorPaletteLength int
-	ColorPaletteRepeat int
+	Name               string  `json:"name"`
+	PresetFunctionName string  `json:"iterFunc"`
+	ImageWidth         int     `json:"picWidth"`
+	ImageHeight        int     `json:"picHeight"`
+	DiameterCX         float64 `json:"diameterCX"`
+	CenterCX           float64 `json:"centerCX"`
+	CenterCY           float64 `json:"centerCY"`
+	ColorPreset        string  `json:"colorPreset"`
+	JuliaKi            float64 `json:"juliaKi"`
+	JuliaKr            float64 `json:"juliaKr"`
+	MaxIterations      int     `json:"maxIterations"`
+	ColorPaletteLength int     `json:"colorPaletteLength"`
+	ColorPaletteRepeat int     `json:"colorPaletteRepeat"`
 }
 
 func (f FractalPreset) FractalFunction() (FractalType, error) {
@@ -45,35 +74,29 @@ func (f FractalPreset) FractalFunction() (FractalType, error) {
 	}
 }
 
-func ReadPresetJson(path string) ([]ColorPreset, []FractalPreset) {
-	var colorPresets []ColorPreset = make([]ColorPreset, 0)
-	var fractalPresets []FractalPreset = make([]FractalPreset, 0)
+func ReadPresetJson(path string) Presets {
+	var presets Presets = Presets{
+		ColorPresets:   make([]ColorPreset, 0),
+		FractalPresets: make([]FractalPreset, 0),
+	}
 
 	jsonFile, err := os.Open(path)
 	if err != nil {
-		return colorPresets, fractalPresets
+		return presets
 	}
 	defer jsonFile.Close()
 
 	jsonData, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Println(err)
-		return colorPresets, fractalPresets
-	}
-
-	var presets struct {
-		ColorPresets   []ColorPreset   `json:"colorPresets"`
-		FractalPresets []FractalPreset `json:"fractalPresets"`
+		return presets
 	}
 
 	err = json.Unmarshal(jsonData, &presets)
 	if err != nil {
 		log.Println(err)
-		return colorPresets, fractalPresets
+		return presets
 	}
 
-	colorPresets = presets.ColorPresets
-	fractalPresets = presets.FractalPresets
-
-	return colorPresets, fractalPresets
+	return presets
 }

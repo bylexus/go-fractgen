@@ -1,49 +1,92 @@
 <script lang="ts" setup>
 import { type ElementInfo, useElementResize } from '@/lib/element-info'
-import { queryStr } from '@/lib/url_helper'
-import { onMounted, Ref, ref, watch, watchEffect } from 'vue'
+import { apiroot, queryStr } from '@/lib/url_helper'
+import { onMounted, reactive, type Ref, ref, watch, watchEffect } from 'vue'
+import ColorPresetsSelect from './ColorPresetsSelect.vue'
+import { useLocalStorageVariable } from '@/lib/use-local-storage'
+import FractalPresetsSelect from './FractalPresetsSelect.vue'
+import { fractalPresetByName, type FractalPreset } from '@/lib/use-presets'
 
-const imageUrl = ref(null)
+const imageUrl: Ref<string> = ref('')
 const loading = ref(true)
 const imgContainer: Ref<HTMLImageElement | null> = ref(null)
 const windowSizes = useElementResize(window.document.body, 1000)
+const colorPreset = useLocalStorageVariable('colorPreset', '')
+const fractalPreset = useLocalStorageVariable('fractalPreset', '')
 
-const fractalParams = {
-  width: 0,
-  height: 0,
-  iterFunc: 'Mandelbrot',
-  maxIterations: 40,
-  centerCY: 0,
-  centerCX: -0.7,
-  diameterCX: 4,
-}
+const fractalParams: FractalPreset & { width: number; height: number } = reactive(
+  Object.assign(
+    {
+      width: 0,
+      height: 0,
+      iterFunc: 'Mandelbrot',
+      maxIterations: 40,
+      centerCY: 0,
+      centerCX: -0.7,
+      diameterCX: 4,
+      colorPreset: colorPreset.value,
+      colorPaletteRepeat: 1,
+      juliaKr: 0,
+      juliaKi: 0,
+    },
+    fractalPresetByName(fractalPreset.value || ''),
+  ),
+)
 
 onMounted(() => {
   loading.value = true
   fractalParams.width = imgContainer.value?.clientWidth || 0
   fractalParams.height = imgContainer.value?.clientHeight || 0
-  calcImage(fractalParams)
 })
 
 watch(windowSizes.sizes, ({ width, height }) => {
   fractalParams.width = width
   fractalParams.height = height
+})
+
+watch(colorPreset, () => {
+  fractalParams.colorPreset = colorPreset.value || ''
+})
+
+watch(fractalPreset, () => {
+  const preset = fractalPresetByName(fractalPreset.value)
+  if (preset) {
+    fractalParams.iterFunc = preset.iterFunc
+    fractalParams.maxIterations = preset.maxIterations
+    fractalParams.centerCX = preset.centerCX
+    fractalParams.centerCY = preset.centerCY
+    fractalParams.diameterCX = preset.diameterCX
+    fractalParams.colorPreset = preset.colorPreset
+    fractalParams.colorPaletteRepeat = preset.colorPaletteRepeat
+    colorPreset.value = preset.colorPreset
+  }
+})
+
+watchEffect(() => {
   calcImage(fractalParams)
 })
 
 function calcImage(fractalParams: any) {
+  const apiRoot = apiroot()
   loading.value = true
-  imageUrl.value = `http://localhost:8000/fractal-image.png?${queryStr(fractalParams)}`
+  // check for the most important values to be present:
+  if (!fractalParams.width || !fractalParams.height) return
+  if (!fractalParams.colorPreset) return
+  imageUrl.value = `${apiRoot}/fractal-image.png?${queryStr(fractalParams)}`
 }
 </script>
 
 <template>
   <div class="img-container" ref="imgContainer">
-    <img
-      :src="imageUrl"
-      @load="loading = false"
-      alt="Fractal Image"
-    />
+    <img :src="imageUrl" @load="loading = false" alt="Fractal Image" />
+    <div class="settings-overlay">
+      <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
+      <ColorPresetsSelect v-model="colorPreset"></ColorPresetsSelect>
+      <div class="label-field">
+        <label for="paletteRepeat">Palette Repeat:</label>
+        <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
+      </div>
+    </div>
     <div v-if="loading" class="loading-overlay">Calculating...</div>
   </div>
 </template>
@@ -66,5 +109,22 @@ function calcImage(fractalParams: any) {
   color: white;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.settings-overlay {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.label-field {
+  display: inline-flex;
+  flex-direction: column;
+  label {
+    font-size: 0.875rem;
+  }
 }
 </style>

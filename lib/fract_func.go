@@ -43,8 +43,9 @@ type CommonFractParams struct {
 	ImageWidth  int
 	ImageHeight int
 
-	SmoothColors     bool
-	FixedSizePalette bool
+	SmoothColors       bool
+	FixedSizePalette   bool
+	ColorPaletteRepeat int
 
 	// calculaed during initialization:
 	aspect float64
@@ -57,12 +58,14 @@ type CommonFractParams struct {
 }
 
 func (f CommonFractParams) PixelToFractal(x, y int) (cx, cy float64) {
+	// y axis is inverted in image and fractal space:
+	y = f.ImageHeight - y
 	cx = f.minCX + (f.maxCX-f.minCX)*(float64(x)/float64(f.ImageWidth))
 	cy = f.minCY + (f.maxCY-f.minCY)*(float64(y)/float64(f.ImageHeight))
 	return cx, cy
 }
 
-func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diameterCX float64, maxIterations int, colorPalette ColorPalette) MandelbrotFractal {
+func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diameterCX float64, maxIterations int, colorPalette ColorPalette, colorPaletteRepeat int) MandelbrotFractal {
 	var aspect, fract_width, fract_heigth float64
 
 	aspect = float64(imageWidth) / float64(imageHeight)
@@ -74,6 +77,10 @@ func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diame
 	var min_cy = centerCY - (fract_heigth / 2)
 	var max_cy = min_cy + fract_heigth
 
+	if colorPaletteRepeat <= 0 {
+		colorPaletteRepeat = 1
+	}
+
 	var params CommonFractParams = CommonFractParams{
 		MaxIterations: maxIterations,
 		CenterCX:      centerCX,
@@ -81,10 +88,11 @@ func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diame
 		DiameterCX:    diameterCX,
 		// JuliaKr:          -0.6,
 		// JuliaKi:          0.6,
-		ImageWidth:       imageWidth,
-		ImageHeight:      imageHeight,
-		SmoothColors:     true,
-		FixedSizePalette: false,
+		ImageWidth:         imageWidth,
+		ImageHeight:        imageHeight,
+		SmoothColors:       true,
+		FixedSizePalette:   false,
+		ColorPaletteRepeat: colorPaletteRepeat,
 
 		ColorPalette: colorPalette,
 
@@ -143,6 +151,7 @@ func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset)
 			fractalPreset.DiameterCX,
 			fractalPreset.MaxIterations,
 			colorPreset.Palette,
+			fractalPreset.ColorPaletteRepeat,
 		), nil
 
 	default:

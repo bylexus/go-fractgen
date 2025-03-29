@@ -40,9 +40,15 @@ func setPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 	// correct color based on the iteration count-to-max-iterations ratio.
 
 	var palette = fractParams.ColorPalette
+	var nrOfColors = len(palette)
 
 	// Default: If the iteration count exceeds the max iterations, set the pixel color to black
 	var selectedColor color.Color = color.RGBA{R: 0, G: 0, B: 0, A: 255}
+	var repeat = 1
+	if fractParams.ColorPaletteRepeat > 0 {
+		repeat = fractParams.ColorPaletteRepeat
+	}
+	var paletteLength = len(palette) * repeat
 
 	if iterValue <= float64(fractParams.MaxIterations) {
 		// Calculate the iteration count-to-max-iterations ratio
@@ -52,14 +58,14 @@ func setPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 			selectedColor = palette[len(palette)-1]
 		} else {
 			ratio := float64(iterValue) / float64(fractParams.MaxIterations)
-			colorPaletteSectionWidth := float64(fractParams.MaxIterations) / float64(len(palette)-1)
+			colorPaletteSectionWidth := float64(fractParams.MaxIterations) / float64(paletteLength)
 
 			var lower, upper color.RGBA
 			var chosenPaletteIndex int = 0
-			for i := 0; i < len(palette)-1; i++ {
-				if float64(i)/float64(len(palette)-1) <= ratio {
-					lower = palette[i]
-					upper = palette[i+1]
+			for i := 0; i < paletteLength-1; i++ {
+				if float64(i)/float64(paletteLength) <= ratio {
+					lower = palette[i%nrOfColors]
+					upper = palette[(i+1)%nrOfColors]
 					chosenPaletteIndex = i
 				}
 			}
