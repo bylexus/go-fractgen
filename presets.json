@@ -1071,6 +1071,21 @@
     },
     {
       "picWidth": 960,
+      "maxIterations": 4000,
+      "picHeight": 600,
+      "diameterCX": 0.001502392578125,
+      "colorPreset": "Ultra Fractal",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Universes",
+      "colorPaletteRepeat": 6,
+      "centerCY": -0.5488990704798273,
+      "centerCX": 0.1984903038178337,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
       "maxIterations": 3000,
       "picHeight": 600,
       "diameterCX": 2.9336e-6,

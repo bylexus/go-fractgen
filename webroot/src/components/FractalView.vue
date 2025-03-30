@@ -1,70 +1,76 @@
 <script lang="ts" setup>
-import { type ElementInfo, useElementResize } from '@/lib/element-info'
+import { useElementResize } from '@/lib/element-info'
 import { apiroot, queryStr } from '@/lib/url_helper'
 import { onMounted, reactive, type Ref, ref, watch, watchEffect } from 'vue'
 import ColorPresetsSelect from './ColorPresetsSelect.vue'
 import { useLocalStorageVariable } from '@/lib/use-local-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
-import { fractalPresetByName, type FractalPreset } from '@/lib/use-presets'
+import { fractalPresetByName, useFractalPresets, type FractalPreset } from '@/lib/use-presets'
 
 const imageUrl: Ref<string> = ref('')
 const loading = ref(true)
 const imgContainer: Ref<HTMLElement | null> = ref(null)
 const image: Ref<HTMLImageElement | null> = ref(null)
 const windowSizes = useElementResize(window.document.body, 1000)
-const colorPreset = useLocalStorageVariable('colorPreset', '')
-const fractalPreset = useLocalStorageVariable('fractalPreset', '')
+const colorPreset = ref('')
+const fractalPreset = ref('')
 
-const fractalParams: FractalPreset & { width: number; height: number } = reactive(
-  Object.assign(
-    {
-      width: 0,
-      height: 0,
-      iterFunc: 'Mandelbrot',
-      maxIterations: 40,
-      centerCY: 0,
-      centerCX: -0.7,
-      diameterCX: 4,
-      colorPreset: colorPreset.value,
-      colorPaletteRepeat: 1,
-      juliaKr: 0,
-      juliaKi: 0,
-    },
-    fractalPresetByName(fractalPreset.value || ''),
-  ),
-)
+const fractalParams: Ref<FractalPreset & { width: number; height: number }> =
+  useLocalStorageVariable(
+    'fractalParams',
+    Object.assign(
+      {
+        width: 0,
+        height: 0,
+      },
+      { ...useFractalPresets().presets.value[0] },
+    ),
+  )
+
+// Initial values:
+colorPreset.value = fractalParams.value.colorPreset || ''
+fractalPreset.value = fractalParams.value.name || ''
 
 onMounted(() => {
   loading.value = true
-  fractalParams.width = imgContainer.value?.clientWidth || 0
-  fractalParams.height = imgContainer.value?.clientHeight || 0
+  fractalParams.value.width = imgContainer.value?.clientWidth || 0
+  fractalParams.value.height = imgContainer.value?.clientHeight || 0
 })
 
 watch(windowSizes.sizes, ({ width, height }) => {
-  fractalParams.width = width
-  fractalParams.height = height
+  fractalParams.value.width = width
+  fractalParams.value.height = height
 })
 
 watch(colorPreset, () => {
-  fractalParams.colorPreset = colorPreset.value || ''
+  fractalParams.value.colorPreset = colorPreset.value || ''
 })
 
 watch(fractalPreset, () => {
   const preset = fractalPresetByName(fractalPreset.value)
   if (preset) {
-    fractalParams.iterFunc = preset.iterFunc
-    fractalParams.maxIterations = preset.maxIterations
-    fractalParams.centerCX = preset.centerCX
-    fractalParams.centerCY = preset.centerCY
-    fractalParams.diameterCX = preset.diameterCX
-    fractalParams.colorPreset = preset.colorPreset
-    fractalParams.colorPaletteRepeat = preset.colorPaletteRepeat
+    fractalParams.value.iterFunc = preset.iterFunc
+    fractalParams.value.maxIterations = preset.maxIterations
+    fractalParams.value.centerCX = preset.centerCX
+    fractalParams.value.centerCY = preset.centerCY
+    fractalParams.value.diameterCX = preset.diameterCX
+    fractalParams.value.colorPreset = preset.colorPreset
+    fractalParams.value.colorPaletteRepeat = preset.colorPaletteRepeat
+    fractalParams.value.name = preset.name || ''
     colorPreset.value = preset.colorPreset
   }
 })
 
+watch(
+  fractalParams,
+  () => {
+    console.log('changed', fractalParams.value)
+  },
+  { deep: true },
+)
+
 watchEffect(() => {
-  calcImage(fractalParams)
+  calcImage(fractalParams.value)
 })
 
 function afterImageLoad() {
@@ -72,6 +78,16 @@ function afterImageLoad() {
   if (image.value) {
     image.value.style.transform = ''
   }
+}
+
+function zoomIn() {
+  image.value!.style.transform = 'scale(2)'
+  fractalParams.value.diameterCX /= 2.0
+}
+
+function zoomOut() {
+  image.value!.style.transform = 'scale(0.5)'
+  fractalParams.value.diameterCX *= 2.0
 }
 
 function calcImage(fractalParams: any) {
@@ -111,14 +127,14 @@ function onDragEnd(ev: PointerEvent) {
     dragDistance = null
     return
   }
-  const aspect = fractalParams.width / fractalParams.height
-  const fractDiameterCY = fractalParams.diameterCX / aspect
-  const moveFactorX = dragDistance ? dragDistance.dx / fractalParams.width : 0
-  const moveFactorY = dragDistance ? dragDistance.dy / fractalParams.height : 0
-  const fractDistX = fractalParams.diameterCX * moveFactorX
+  const aspect = fractalParams.value.width / fractalParams.value.height
+  const fractDiameterCY = fractalParams.value.diameterCX / aspect
+  const moveFactorX = dragDistance ? dragDistance.dx / fractalParams.value.width : 0
+  const moveFactorY = dragDistance ? dragDistance.dy / fractalParams.value.height : 0
+  const fractDistX = fractalParams.value.diameterCX * moveFactorX
   const fractDistY = fractDiameterCY * moveFactorY
-  fractalParams.centerCX -= fractDistX
-  fractalParams.centerCY += fractDistY
+  fractalParams.value.centerCX -= fractDistX
+  fractalParams.value.centerCY += fractDistY
   calcImage(fractalParams)
   dragStartPos = null
   dragDistance = null
@@ -131,7 +147,7 @@ function onDragEnd(ev: PointerEvent) {
       ref="image"
       :src="imageUrl"
       alt="Fractal Image"
-      style="touch-action: none;"
+      style="touch-action: none"
       @load="afterImageLoad"
       @pointerdown="onDragStart"
       @pointermove="onDrag"
@@ -148,6 +164,8 @@ function onDragEnd(ev: PointerEvent) {
         <label for="paletteRepeat">Palette Repeat:</label>
         <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
       </div>
+      <button type="button" @click="zoomIn">+</button>
+      <button type="button" @click="zoomOut">-</button>
     </div>
     <div v-if="loading" class="loading-overlay">Calculating...</div>
   </div>
