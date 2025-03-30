@@ -8,6 +8,10 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 
 ### TODOs
 
+#### General
+
+- [ ] implement missing fractal functions (julia, mandelbrot ^ n, ...)
+
 #### CLI
 
 - [ ] create a cli app
@@ -19,7 +23,7 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
       If the user only changes the color scheme, the last fract values per user
 	  should be saved. Needs some kind of session management.
 - [x] zoom in/out with buttons
-- [ ] zoom in with double-click
+- [x] zoom in with double-click
 - [ ] zoom in with drag a rectangle
 - [ ] zoom in pinch zoom
 - [ ] History / Undo stack
