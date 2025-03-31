@@ -1104,7 +1104,7 @@
       "iterFunc": "Mandelbrot",
       "picWidth": 960,
       "picHeight": 600,
-      "diameterCX": 2.7939677238E-10,
+      "diameterCX": 2.7939677238e-10,
       "centerCX": 0.3037470952469812,
       "centerCY": 0.021191287792123256,
       "colorPreset": "Ultra Fractal",
@@ -1112,8 +1112,22 @@
       "juliaKr": 0,
       "maxIterations": 1000,
       "colorPaletteLength": 10000,
-      "colorPaletteRepeat": 16,
-      "ts": 1743325454781
+      "colorPaletteRepeat": 16
+    },
+    {
+      "name": "Mandelbrot Julia Guardians",
+      "iterFunc": "Mandelbrot",
+      "picWidth": 960,
+      "picHeight": 600,
+      "diameterCX": 2.9802322387695312e-8,
+      "centerCX": -1.6748593002526977,
+      "centerCY": 0.000004937065946312495,
+      "colorPreset": "Nature",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 1000,
+      "colorPaletteLength": 10000,
+      "colorPaletteRepeat": 7
     }
   ]
 }

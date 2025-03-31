@@ -40,12 +40,19 @@ onMounted(() => {
 
   let imagePointerHandler = usePointer(image.value!)
 
-  imagePointerHandler.onSingleClick((ev: PointerEvent) => {
-    console.log('single click!')
-  })
   imagePointerHandler.onDoubleClick((ev: PointerEvent) => {
-    console.log('double click!')
-    centerAndScale(ev, 0.5)
+    ev.preventDefault()
+    centerZoom(ev, 2)
+  })
+  // on drag: move the image
+  watch(imagePointerHandler.pointerMoveWhileDragging, ({ dx, dy }) => {
+    if (image.value) {
+      image.value.style.transform = `translate(${dx}px, ${dy}px)`
+    }
+  })
+  imagePointerHandler.onDragEnd((ev: PointerEvent, { dx, dy }: { dx: number; dy: number }) => {
+    ev.preventDefault()
+    onDragEnd({ dx, dy })
   })
 })
 
@@ -114,47 +121,22 @@ function calcImage(fractalParams: any) {
   imageUrl.value = `${apiRoot}/fractal-image.png?${queryStr(fractalParams)}`
 }
 
-let dragStartPos: { x: number; y: number } | null = null
-let dragDistance: { dx: number; dy: number } | null = null
-function onDragStart(ev: PointerEvent) {
-  ev.preventDefault()
-  dragStartPos = { x: ev.clientX, y: ev.clientY }
-  dragDistance = { dx: 0, dy: 0 }
-}
-
-function onDrag(ev: PointerEvent) {
-  ev.preventDefault()
-  if (dragStartPos) {
-    const dx = ev.clientX - dragStartPos.x
-    const dy = ev.clientY - dragStartPos.y
-    dragDistance = { dx, dy }
-    if (image.value) {
-      image.value.style.transform = `translate(${dx}px, ${dy}px)`
-    }
-  }
-}
-
-function onDragEnd(ev: PointerEvent) {
-  ev.preventDefault()
-  if (!dragDistance || (dragDistance.dx === 0 && dragDistance.dy === 0)) {
-    dragStartPos = null
-    dragDistance = null
+function onDragEnd({ dx, dy }: { dx: number; dy: number }) {
+  if (dx === 0 && dy === 0) {
     return
   }
   const aspect = fractalParams.value.width / fractalParams.value.height
   const fractDiameterCY = fractalParams.value.diameterCX / aspect
-  const moveFactorX = dragDistance ? dragDistance.dx / fractalParams.value.width : 0
-  const moveFactorY = dragDistance ? dragDistance.dy / fractalParams.value.height : 0
+  const moveFactorX = dx / fractalParams.value.width
+  const moveFactorY = dy / fractalParams.value.height
   const fractDistX = fractalParams.value.diameterCX * moveFactorX
   const fractDistY = fractDiameterCY * moveFactorY
   fractalParams.value.centerCX -= fractDistX
   fractalParams.value.centerCY += fractDistY
   calcImage(fractalParams)
-  dragStartPos = null
-  dragDistance = null
 }
 
-function centerAndScale(ev: PointerEvent, scale: number) {
+function centerZoom(ev: PointerEvent, scale: number) {
   const imgRect = image.value!.getBoundingClientRect()
   // calc the distance from the clicked coord to the center:
   const dX = ev.clientX - imgRect.left - fractalParams.value.width / 2.0
@@ -168,8 +150,10 @@ function centerAndScale(ev: PointerEvent, scale: number) {
   const fractDistY = fractDiameterCY * moveFactorY
   fractalParams.value.centerCX += fractDistX
   fractalParams.value.centerCY -= fractDistY
-  fractalParams.value.diameterCX *= scale
+  fractalParams.value.diameterCX /= scale
   fractalParams.value.maxIterations = recalcIterations(fractalParams.value.diameterCX)
+
+  image.value!.style.transform = `scale(${scale}) translate(${-1*dX}px, ${-1*dY}px)`
 
   calcImage(fractalParams)
 }
@@ -183,9 +167,6 @@ function centerAndScale(ev: PointerEvent, scale: number) {
       alt="Fractal Image"
       style="touch-action: none"
       @load="afterImageLoad"
-      @pointerdown="onDragStart"
-      @pointermove="onDrag"
-      @pointerup="onDragEnd"
     />
     <div class="settings-overlay">
       <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
