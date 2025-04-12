@@ -1,2 +1,4 @@
 .DS_Store
 /demo_images/
+/webroot/node_modules/
+/webroot/dist/

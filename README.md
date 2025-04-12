@@ -27,4 +27,3 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 - [ ] zoom in with drag a rectangle
 - [ ] zoom in pinch zoom
 - [ ] History / Undo stack
-- [ ] WASM Frontend calc instead of Backend Server-side calc

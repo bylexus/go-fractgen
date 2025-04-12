@@ -113,7 +113,8 @@ type MandelbrotFractal struct {
 
 func (f MandelbrotFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage {
 	if threadPool == nil {
-		threadPool := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+		tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+		threadPool = &tp
 		threadPool.Start()
 		defer threadPool.Shutdown()
 	}
