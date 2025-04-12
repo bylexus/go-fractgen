@@ -28,3 +28,33 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 - [ ] zoom in pinch zoom
 - [ ] History / Undo stack
 - [ ] WASM Frontend calc instead of Backend Server-side calc
+
+## Build Notes
+
+### CLI/Server
+
+### WASM
+
+Prep: Copy js runtime from go:
+
+```sh
+cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" webroot/public/
+```
+
+Build wasm lib:
+
+```sh
+GOOS=js GOARCH=wasm go build -o webroot/public/main.wasm wasm/main.go
+```
+
+Initiate in index.html:
+
+```html
+    <script src="wasm_exec.js"></script>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+          go.run(result.instance);
+      });
+	</script>
+```

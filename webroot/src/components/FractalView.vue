@@ -5,38 +5,48 @@ import { onMounted, reactive, type Ref, ref, watch, watchEffect } from 'vue'
 import ColorPresetsSelect from './ColorPresetsSelect.vue'
 import { useLocalStorageVariable } from '@/lib/use-local-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
-import { fractalPresetByName, useFractalPresets, type FractalPreset } from '@/lib/use-presets'
+import {
+  colorPresetByName,
+  fractalPresetByName,
+  useFractalPresets,
+  type FractalPreset,
+} from '@/lib/use-presets'
 import { usePointer } from '@/lib/use-pointer'
 
+declare global {
+  interface Window {
+    calcFract: Function
+  }
+}
+
 const imageUrl: Ref<string> = ref('')
-const loading = ref(true)
+const loading = ref(false)
 const imgContainer: Ref<HTMLElement | null> = ref(null)
-const image: Ref<HTMLImageElement | null> = ref(null)
+const image: Ref<HTMLCanvasElement | null> = ref(null)
 const windowSizes = useElementResize(window.document.body, 1000)
 const colorPreset = ref('')
 const fractalPreset = ref('')
 
-const fractalParams: Ref<FractalPreset & { width: number; height: number }> =
-  useLocalStorageVariable(
-    'fractalParams',
-    Object.assign(
-      {
-        width: 0, // will be updated on mount, based on the container size
-        height: 0,
-      },
-      // we use the first preset as default:
-      { ...useFractalPresets().presets.value[0] },
-    ),
-  )
+const fractalParams: Ref<FractalPreset> = useLocalStorageVariable(
+  'fractalParams',
+  Object.assign(
+    {
+      picWidth: 0, // will be updated on mount, based on the container size
+      picHeight: 0,
+    },
+    // we use the first preset as default:
+    { ...useFractalPresets().presets.value[0] },
+  ),
+)
 
 // Initial values:
 colorPreset.value = fractalParams.value.colorPreset || ''
 fractalPreset.value = fractalParams.value.name || ''
 
 onMounted(() => {
-  loading.value = true
-  fractalParams.value.width = imgContainer.value?.clientWidth || 0
-  fractalParams.value.height = imgContainer.value?.clientHeight || 0
+  // loading.value = true
+  fractalParams.value.picWidth = imgContainer.value?.clientWidth || 0
+  fractalParams.value.picHeight = imgContainer.value?.clientHeight || 0
 
   let imagePointerHandler = usePointer(image.value!)
 
@@ -57,8 +67,8 @@ onMounted(() => {
 })
 
 watch(windowSizes.sizes, ({ width, height }) => {
-  fractalParams.value.width = width
-  fractalParams.value.height = height
+  fractalParams.value.picWidth = width
+  fractalParams.value.picHeight = height
 })
 
 watch(colorPreset, () => {
@@ -89,7 +99,7 @@ function recalcIterations(diameterCX: number) {
   // which seems to work well:
   // maxIter = 50 * (log10(scale))^1.25
   // where scale is pixelWidth/complexPlaneWidth e.g. 1280/5
-  return Math.ceil(50 * Math.pow(Math.log10(fractalParams.value.width / diameterCX), 1.25))
+  return Math.ceil(50 * Math.pow(Math.log10(fractalParams.value.picWidth / diameterCX), 1.25))
 }
 
 function afterImageLoad() {
@@ -112,23 +122,25 @@ function zoomOut() {
 }
 
 function calcImage(fractalParams: any) {
-  const apiRoot = apiroot()
+  // const apiRoot = apiroot()
   loading.value = true
   // check for the most important values to be present:
   if (!fractalParams.width || !fractalParams.height) return
   if (!fractalParams.colorPreset) return
   fractalParams.ts = new Date().getTime()
-  imageUrl.value = `${apiRoot}/fractal-image.png?${queryStr(fractalParams)}`
+  // imageUrl.value = `${apiRoot}/fractal-image.png?${queryStr(fractalParams)}`
+
+  wasmTest()
 }
 
 function onDragEnd({ dx, dy }: { dx: number; dy: number }) {
   if (dx === 0 && dy === 0) {
     return
   }
-  const aspect = fractalParams.value.width / fractalParams.value.height
+  const aspect = fractalParams.value.picWidth / fractalParams.value.picHeight
   const fractDiameterCY = fractalParams.value.diameterCX / aspect
-  const moveFactorX = dx / fractalParams.value.width
-  const moveFactorY = dy / fractalParams.value.height
+  const moveFactorX = dx / fractalParams.value.picWidth
+  const moveFactorY = dy / fractalParams.value.picHeight
   const fractDistX = fractalParams.value.diameterCX * moveFactorX
   const fractDistY = fractDiameterCY * moveFactorY
   fractalParams.value.centerCX -= fractDistX
@@ -139,13 +151,13 @@ function onDragEnd({ dx, dy }: { dx: number; dy: number }) {
 function centerZoom(ev: PointerEvent, scale: number) {
   const imgRect = image.value!.getBoundingClientRect()
   // calc the distance from the clicked coord to the center:
-  const dX = ev.clientX - imgRect.left - fractalParams.value.width / 2.0
-  const dY = ev.clientY - imgRect.top - fractalParams.value.height / 2.0
+  const dX = ev.clientX - imgRect.left - fractalParams.value.picWidth / 2.0
+  const dY = ev.clientY - imgRect.top - fractalParams.value.picHeight / 2.0
 
-  const aspect = fractalParams.value.width / fractalParams.value.height
+  const aspect = fractalParams.value.picWidth / fractalParams.value.picHeight
   const fractDiameterCY = fractalParams.value.diameterCX / aspect
-  const moveFactorX = dX / fractalParams.value.width
-  const moveFactorY = dY / fractalParams.value.height
+  const moveFactorX = dX / fractalParams.value.picWidth
+  const moveFactorY = dY / fractalParams.value.picHeight
   const fractDistX = fractalParams.value.diameterCX * moveFactorX
   const fractDistY = fractDiameterCY * moveFactorY
   fractalParams.value.centerCX += fractDistX
@@ -153,14 +165,33 @@ function centerZoom(ev: PointerEvent, scale: number) {
   fractalParams.value.diameterCX /= scale
   fractalParams.value.maxIterations = recalcIterations(fractalParams.value.diameterCX)
 
-  image.value!.style.transform = `scale(${scale}) translate(${-1*dX}px, ${-1*dY}px)`
+  image.value!.style.transform = `scale(${scale}) translate(${-1 * dX}px, ${-1 * dY}px)`
 
   calcImage(fractalParams)
+}
+
+async function wasmTest() {
+  const ctx = image.value?.getContext('2d')
+  const colorPreset = colorPresetByName(fractalParams.value.colorPreset)
+  const imgData = ctx?.getImageData(
+    0,
+    0,
+    fractalParams.value.picWidth,
+    fractalParams.value.picHeight,
+  )
+  const arr = new Uint8Array(10)
+  const params = { ...fractalParams.value }
+  const res = await window.calcFract(JSON.stringify(params), JSON.stringify(colorPreset))
+  imgData?.data.set(res)
+  ctx?.putImageData(imgData!, 0, 0)
+  // console.log(res)
+  afterImageLoad()
 }
 </script>
 
 <template>
   <div class="display-container" ref="imgContainer">
+    <!--
     <img
       ref="image"
       :src="imageUrl"
@@ -168,6 +199,13 @@ function centerZoom(ev: PointerEvent, scale: number) {
       style="touch-action: none"
       @load="afterImageLoad"
     />
+  -->
+    <canvas
+      ref="image"
+      :width="fractalParams.picWidth"
+      :height="fractalParams.picHeight"
+      style="touch-action: none"
+    ></canvas>
     <div class="settings-overlay">
       <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
       <ColorPresetsSelect v-model="colorPreset"></ColorPresetsSelect>
@@ -181,6 +219,7 @@ function centerZoom(ev: PointerEvent, scale: number) {
       </div>
       <button type="button" @click="zoomIn">+</button>
       <button type="button" @click="zoomOut">-</button>
+      <button type="button" @click="wasmTest">WASM!</button>
     </div>
     <div v-if="loading" class="loading-overlay">Calculating...</div>
   </div>

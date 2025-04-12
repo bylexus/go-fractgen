@@ -2,6 +2,7 @@ package lib
 
 import (
 	"errors"
+	"fmt"
 	"runtime"
 
 	"github.com/bylexus/go-stdlib/ethreads"
@@ -113,23 +114,25 @@ type MandelbrotFractal struct {
 
 func (f MandelbrotFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage {
 	if threadPool == nil {
-		threadPool := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+		tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
+		threadPool = &tp
 		threadPool.Start()
 		defer threadPool.Shutdown()
 	}
+	fmt.Printf("tp: %#v", threadPool)
 
 	img := NewFractImage(f.ImageWidth, f.ImageHeight)
 
 	for y := 0; y < f.ImageHeight; y++ {
 		for x := 0; x < f.ImageWidth; x++ {
-			f := func(pixX, pixY int) ethreads.JobFn {
+			fn := func(pixX, pixY int) ethreads.JobFn {
 				return func(id ethreads.ThreadId) {
 					cx, cy := f.PixelToFractal(pixX, pixY)
 					fractRes := Mandelbrot(cx, cy, MAX_BETRAG_QUADRAT, f.MaxIterations)
 					setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 				}
 			}
-			threadPool.AddJobFn(f(x, y))
+			threadPool.AddJobFn(fn(x, y))
 		}
 	}
 

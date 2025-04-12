@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  base: '/dist/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

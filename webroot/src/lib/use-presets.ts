@@ -15,6 +15,8 @@ export type FractalPreset = {
   name?: string
   iterFunc: string
   maxIterations: number
+  picWidth: number
+  picHeight: number
   centerCX: number
   centerCY: number
   diameterCX: number
@@ -57,6 +59,15 @@ export function useFractalPresets() {
 
 export function fractalPresetByName(name: string): FractalPreset | null {
   for (const preset of fractalPresets.value) {
+    if (preset.name === name) {
+      return preset
+    }
+  }
+  return null
+}
+
+export function colorPresetByName(name: string): ColorPreset | null {
+  for (const preset of colorPresets.value) {
     if (preset.name === name) {
       return preset
     }
