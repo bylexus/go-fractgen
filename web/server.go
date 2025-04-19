@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/bylexus/go-fract/lib"
 	"github.com/bylexus/go-stdlib/ethreads"
@@ -48,7 +49,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
-	// iterFunc := strings.ToLower(r.URL.Query().Get("iterFunc"))
+	iterFunc := strings.ToLower(r.URL.Query().Get("iterFunc"))
 	centerCX, _ := strconv.ParseFloat(r.URL.Query().Get("centerCX"), 64)
 	centerCY, _ := strconv.ParseFloat(r.URL.Query().Get("centerCY"), 64)
 	diameterCX, _ := strconv.ParseFloat(r.URL.Query().Get("diameterCX"), 64)
@@ -60,12 +61,31 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 		colorPreset = s.colorPresets[0]
 	}
 
-	fractal := lib.NewMandelbrotFractal(
-		width, height,
-		centerCX, centerCY, diameterCX,
-		maxIterations, colorPreset.Palette,
-		colorPaletteRepeat,
-	)
+	var fractal lib.Fractal
+	switch iterFunc {
+	case "mandelbrot":
+		fractal = lib.NewMandelbrotFractal(
+			width, height,
+			centerCX, centerCY, diameterCX,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
+	case "julia":
+		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
+		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
+		fractal = lib.NewJuliaFractal(
+			width, height,
+			centerCX, centerCY, diameterCX,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+			juliaKr, juliaKi,
+		)
+		break
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	img := fractal.CalcFractalImage(s.threadPool)
 	w.WriteHeader(http.StatusOK)
@@ -78,6 +98,8 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	if zoomLevel < 0 || zoomLevel > 50 {
 		zoomLevel = 0
 	}
+
+	iterFunc := strings.ToLower(r.URL.Query().Get("iterFunc"))
 
 	tileX, _ := strconv.Atoi(r.URL.Query().Get("TileCol"))
 	tileY, _ := strconv.Atoi(r.URL.Query().Get("TileRow"))
@@ -115,13 +137,31 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		colorPreset = s.colorPresets[0]
 	}
 
-	fractal := lib.NewMandelbrotFractal(
-		tileWidthPixels, tileWidthPixels,
-
-		centerCX, centerCY, tileWidthFractal,
-		maxIterations, colorPreset.Palette,
-		colorPaletteRepeat,
-	)
+	var fractal lib.Fractal
+	switch iterFunc {
+	case "mandelbrot":
+		fractal = lib.NewMandelbrotFractal(
+			tileWidthPixels, tileWidthPixels,
+			centerCX, centerCY, tileWidthFractal,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
+	case "julia":
+		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
+		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
+		fractal = lib.NewJuliaFractal(
+			tileWidthPixels, tileWidthPixels,
+			centerCX, centerCY, tileWidthFractal,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+			juliaKr, juliaKi,
+		)
+		break
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	img := fractal.CalcFractalImage(s.threadPool)
 	w.Header().Set("Cache-Control", "public, max-age=15552000;")

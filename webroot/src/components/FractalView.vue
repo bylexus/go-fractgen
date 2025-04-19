@@ -71,8 +71,11 @@ onMounted(() => {
         TileMatrix: zoomLevel,
         maxIterations: maxIterations,
         colorPaletteRepeat: colorPaletteRepeat,
+        iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
         tileWidthFractal: (view.getResolution() || 0) * tileWidth,
+        juliaKr: fractalParams.value.juliaKr,
+        juliaKi: fractalParams.value.juliaKi,
       })
       ;(imgTile.getImage() as HTMLImageElement).src = `${src}&${urlParams}`
     },
@@ -150,6 +153,8 @@ watch(fractalPreset, () => {
     fractalParams.value.diameterCX = preset.diameterCX
     fractalParams.value.colorPreset = preset.colorPreset
     fractalParams.value.colorPaletteRepeat = preset.colorPaletteRepeat
+    fractalParams.value.juliaKr = preset.juliaKr
+    fractalParams.value.juliaKi = preset.juliaKi
     fractalParams.value.name = preset.name || ''
     colorPreset.value = preset.colorPreset
 
@@ -201,12 +206,15 @@ function calcImage(fractalParams: any) {
   const imageParams = {
     width: olMap.getSize()[0],
     height: olMap.getSize()[1],
+    iterFunc: fractalParams.iterFunc,
     maxIterations: fractalParams.maxIterations,
     centerCX: viewCenter[0],
     centerCY: viewCenter[1],
     diameterCX: actExtent[2] - actExtent[0],
     colorPreset: colorPreset.value,
     colorPaletteRepeat: fractalParams.colorPaletteRepeat,
+    juliaKr: fractalParams.juliaKr,
+    juliaKi: fractalParams.juliaKi,
   }
   // TODO: this image link should be placed on a button or in a small menu to
   // choose the destination / output size, then generate an image from it:
