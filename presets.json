@@ -3,6 +3,7 @@
     {
       "defaultSteps": 256,
       "name": "Patchwork",
+      "ident": "patchwork",
       "colors": [
         {
           "a": 255,
@@ -93,6 +94,7 @@
     {
       "defaultSteps": 256,
       "name": "Shades of Blue",
+      "ident": "shades-of-blue",
       "colors": [
         {
           "a": 255,
@@ -118,6 +120,7 @@
     {
       "defaultSteps": 256,
       "name": "Red Alert",
+      "ident": "red-alert",
       "colors": [
         {
           "a": 255,
@@ -160,6 +163,7 @@
     {
       "defaultSteps": 256,
       "name": "Women's Choice",
+      "ident": "womens-choice",
       "colors": [
         {
           "a": 255,
@@ -190,12 +194,13 @@
     {
       "defaultSteps": 256,
       "name": "Shades of Gray",
+      "ident": "shades-of-gray",
       "colors": [
         {
           "a": 255,
-          "r": 30,
-          "b": 30,
-          "g": 30
+          "r": 0,
+          "b": 0,
+          "g": 0
         },
         {
           "a": 255,
@@ -208,6 +213,7 @@
     {
       "defaultSteps": 256,
       "name": "Pastel Blue",
+      "ident": "pastel-blue",
       "colors": [
         {
           "a": 255,
@@ -255,6 +261,7 @@
     {
       "defaultSteps": 256,
       "name": "Sunny Sky",
+      "ident": "sunny-sky",
       "colors": [
         {
           "a": 255,
@@ -291,6 +298,7 @@
     {
       "defaultSteps": 256,
       "name": "RGB",
+      "ident": "rgb",
       "colors": [
         {
           "a": 255,
@@ -321,6 +329,7 @@
     {
       "defaultSteps": 256,
       "name": "Baloooons",
+      "ident": "baloooons",
       "colors": [
         {
           "a": 255,
@@ -357,6 +366,7 @@
     {
       "defaultSteps": 256,
       "name": "Nature",
+      "ident": "nature",
       "colors": [
         {
           "a": 255,
@@ -401,6 +411,7 @@
     {
       "defaultSteps": 256,
       "name": "Wonder Wall",
+      "ident": "wonder-wall",
       "colors": [
         {
           "a": 255,
@@ -442,6 +453,7 @@
     {
       "defaultSteps": 256,
       "name": "AI 1",
+      "ident": "ai-1",
       "colors": [
         {
           "a": 255,
@@ -478,6 +490,7 @@
     {
       "defaultSteps": 256,
       "name": "Ultra Fractal",
+      "ident": "ultra-fractal",
       "colors": [
         { "a": 255, "r": 66, "g": 30, "b": 15 },
         { "a": 255, "r": 25, "g": 7, "b": 26 },
@@ -1128,6 +1141,21 @@
       "maxIterations": 1000,
       "colorPaletteLength": 10000,
       "colorPaletteRepeat": 7
+    },
+    {
+      "name": "Mandelbrot Eye of the Beholder",
+      "iterFunc": "Mandelbrot",
+      "picWidth": 960,
+      "picHeight": 600,
+      "diameterCX": 1.7389538697898388e-8,
+      "centerCX": -0.17590299153782224,
+      "centerCY": -1.0866134534875305,
+      "colorPreset": "Ultra Fractal",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 7000,
+      "colorPaletteLength": 10000,
+      "colorPaletteRepeat":120 
     }
   ]
 }

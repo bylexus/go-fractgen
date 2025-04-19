@@ -19,7 +19,7 @@ const colorPreset = ref('')
 const fractalPreset = ref('')
 const map = ref<HTMLDivElement | null>(null)
 const tileWidth = 256
-const maxZoom = 64
+const maxZoom = 46
 
 let disableIterRecalcOnZoom = false
 
@@ -44,7 +44,7 @@ onMounted(() => {
   const mandelbrotExtent = [-1.7, -1, 0.3, 1] // Complex plane bounds
   // resolution means: unit per pixel (in our case: fractal pixel per screen pixel)
   // as a tile is 256 x 256 pixels, the
-  const resolutions = Array.from({ length: maxZoom }, (_, z) => 1 / (tileWidth * Math.pow(2, z)))
+  const resolutions = Array.from({ length: maxZoom }, (_, z) => 4 / (tileWidth * Math.pow(2, z)))
 
   const tileGrid = new WMTSTileGrid({
     origin: [mandelbrotExtent[0], mandelbrotExtent[1]],
@@ -59,12 +59,9 @@ onMounted(() => {
     matrixSet: 'default',
     url: `${apiroot()}/wmts`,
     tileGrid: tileGrid,
-    format: 'image/png',
+    format: 'image/jpeg',
     tileLoadFunction: (tile: Tile, src) => {
       const zoomLevel = tile.getTileCoord()[0]
-      // console.log(tile)
-      // console.log(view.getZoom())
-      // console.log(tile.getTileCoord())
       // const maxIterations = Math.ceil(50 * Math.pow(1.3, zoomLevel))
       const maxIterations = fractalParams.value.maxIterations
       const colorPaletteRepeat = fractalParams.value.colorPaletteRepeat
@@ -89,6 +86,8 @@ onMounted(() => {
     zoom: 1,
     constrainResolution: true,
     maxZoom: maxZoom,
+    enableRotation: false,
+    constrainOnlyCenter: true,
     projection: new Projection({
       code: 'MANDELBROT',
       extent: mandelbrotExtent,
@@ -121,7 +120,7 @@ onMounted(() => {
         )
       } else {
         zoomDiff = Math.abs(zoomDiff)
-        fractalParams.value.maxIterations = Math.floor(
+        fractalParams.value.maxIterations = Math.ceil(
           fractalParams.value.maxIterations / Math.pow(1.25, zoomDiff || 1),
         )
       }
@@ -129,6 +128,7 @@ onMounted(() => {
       oldZoom = view.getZoom() || 0
     }
   })
+  console.log(olMap.getInteractions())
 
   // Initial values:
   colorPreset.value = fractalParams.value.colorPreset || ''
@@ -196,7 +196,22 @@ function recalcIterations(diameterCX: number) {
 }
 
 function calcImage(fractalParams: any) {
-  console.log('recalc:', fractalParams)
+  const actExtent = olMap.getView().calculateExtent()
+  const viewCenter = olMap.getView().getCenter()
+  const imageParams = {
+    width: olMap.getSize()[0],
+    height: olMap.getSize()[1],
+    maxIterations: fractalParams.maxIterations,
+    centerCX: viewCenter[0],
+    centerCY: viewCenter[1],
+    diameterCX: actExtent[2] - actExtent[0],
+    colorPreset: colorPreset.value,
+    colorPaletteRepeat: fractalParams.colorPaletteRepeat,
+  }
+  // TODO: this image link should be placed on a button or in a small menu to
+  // choose the destination / output size, then generate an image from it:
+  let imgLink = `${apiroot()}/fractal-image.jpg?${fractParamsAsQueryParams(imageParams)}`
+  console.log(imgLink)
   fractalOlLayer?.getSource()?.changed()
 }
 </script>
@@ -273,5 +288,11 @@ function calcImage(fractalParams: any) {
     text-shadow: 1px 1px 2px black;
     font-size: 0.75rem;
   }
+}
+</style>
+
+<style lang="css">
+.ol-dragzoom {
+  border: 2px solid white !important;
 }
 </style>

@@ -29,7 +29,7 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/fractal-image.png", server.handleFractalImage)
+	mux.HandleFunc("/fractal-image.jpg", server.handleFractalImage)
 	mux.HandleFunc("/wmts", server.handleWmtsRequest)
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
 	mux.Handle("/", http.FileServer(http.Dir("webroot")))
@@ -44,7 +44,7 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 }
 
 func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Type", "image/jpeg")
 	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
@@ -69,11 +69,11 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 
 	img := fractal.CalcFractalImage(s.threadPool)
 	w.WriteHeader(http.StatusOK)
-	img.EncodePng(w)
+	img.EncodeJpeg(w)
 }
 
 func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Type", "image/jpeg")
 	zoomLevel, _ := strconv.Atoi(r.URL.Query().Get("TileMatrix"))
 	if zoomLevel < 0 || zoomLevel > 50 {
 		zoomLevel = 0
@@ -126,7 +126,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	img := fractal.CalcFractalImage(s.threadPool)
 	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
-	img.EncodePng(w)
+	img.EncodeJpeg(w)
 }
 
 func (s *WebServer) handlePresetsJson(w http.ResponseWriter, r *http.Request) {
