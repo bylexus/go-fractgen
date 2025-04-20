@@ -103,8 +103,7 @@ func CalcFractalImage(f Fractal) *FractImage {
 
 	for y := 0; y < f.ImageHeight(); y++ {
 		for x := 0; x < f.ImageWidth(); x++ {
-			fn := f.CreatePixelCalcFunc(x, y, img)
-			tp.AddJobFn(fn)
+			tp.AddJobFn(f.CreatePixelCalcFunc(x, y, img))
 		}
 	}
 	tp.Shutdown()

@@ -8,9 +8,6 @@ import (
 type ColorPalette []color.RGBA
 
 func setImagePixel(img *FractImage, x, y int, fractParams CommonFractParams, fractRes FractFunctionResult) {
-	// store fractal calc result for caching:
-	img.fractResults[x+y*fractParams.ImageWidth] = fractRes
-
 	// calc the color for this pixel:
 	var LOG_2 float64 = math.Log(2)
 	var LOG_MAX_BETRAG = math.Log(fractParams.MaxAbsSquareAmount)

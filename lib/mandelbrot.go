@@ -26,7 +26,8 @@ func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diame
 func (f MandelbrotFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
 	return func(id ethreads.ThreadId) {
 		cx, cy := f.PixelToFractal(pixX, pixY)
-		fractRes := Mandelbrot(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
+		var fractRes FractFunctionResult
+		fractRes = Mandelbrot(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
 		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 	}
 }

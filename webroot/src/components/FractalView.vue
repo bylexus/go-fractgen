@@ -19,9 +19,12 @@ import type { ImageTile, Tile } from 'ol'
 const loading = ref(false)
 const colorPreset = ref('')
 const fractalPreset = ref('')
-const map = ref<HTMLDivElement | null>(null)
+const map = ref<HTMLDivElement>()
+const mapControls = ref<HTMLDivElement>()
+const settingsOverlay = ref<HTMLDivElement>()
 const tileWidth = 256
 const maxZoom = 46
+const hudVisible = ref(true)
 
 let disableIterRecalcOnZoom = false
 
@@ -98,10 +101,11 @@ onMounted(() => {
         */
     },
   })
-  // console.log(tileGrid)
+
   fractalOlLayer = new TileLayer({
     source: fractalSource,
   })
+
   const view = new View({
     center: [-0.7, 0],
     zoom: 1,
@@ -114,9 +118,7 @@ onMounted(() => {
       extent: mandelbrotExtent,
     }),
   })
-  view.on('change:resolution', () => {
-    // console.log(view.getZoom())
-  })
+
   olMap = new OlMap({
     target: map.value!,
     layers: [fractalOlLayer],
@@ -127,9 +129,15 @@ onMounted(() => {
     controls: defaultControls({
       rotate: false,
       zoom: true,
+      zoomOptions: {
+        target: mapControls.value,
+      },
       attribution: true,
     }),
   })
+
+  olMap.on('singleclick', () => (hudVisible.value = !hudVisible.value))
+
   let oldZoom = 0
   olMap.on('movestart', () => {
     oldZoom = view.getZoom() || 0
@@ -212,6 +220,20 @@ watch(
   { deep: true },
 )
 
+// watch(hudOpacity, (newVal) => {
+//   // Watch for the hudOpacity to change: If we hide the HUD,
+//   // we need to set the visibility to hidden, so that the divs do not overlay the
+//   // map anymore (and therefore would prevent interacting with the map).
+//   // But we need to wait for the transition to finish before actually setting the
+//   // visibility to hidden.
+//   let timeout = newVal ? 0 : 300
+//   setTimeout(() => {
+//     let visibility = newVal ? 'visible' : 'hidden'
+//     if (mapControls.value) mapControls.value.style.visibility = visibility
+//     if (settingsOverlay.value) settingsOverlay.value.style.visibility = visibility
+//   }, timeout)
+// })
+
 function fractParamsAsQueryParams(inputObj: { [key: string]: any }) {
   return queryStr({ ...inputObj, colorPreset: colorPreset.value })
 }
@@ -253,7 +275,8 @@ function calcImage(fractalParams: any) {
 <template>
   <div class="display-container">
     <div ref="map" class="img-map"></div>
-    <div class="settings-overlay">
+    <div ref="mapControls" :class="{ 'map-controls': true, hidden: !hudVisible }"></div>
+    <div ref="settingsOverlay" :class="{ 'settings-overlay': true, hidden: !hudVisible }">
       <div class="label-field">
         <label>Preset:</label>
         <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
@@ -275,7 +298,7 @@ function calcImage(fractalParams: any) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 @import 'ol/ol.css';
 
 .display-container {
@@ -311,6 +334,40 @@ function calcImage(fractalParams: any) {
   left: 0;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.3);
+  transition: opacity 0.2s ease-in-out, bottom 0.2s ease-in-out;
+  &.hidden {
+    opacity: 0;
+    bottom: -100%;
+  }
+}
+
+.map-controls {
+  display: inline-block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  margin: 0.5rem;
+  transition: opacity 0.2s ease-in-out, top 0.2s ease-in-out;
+  &.hidden {
+    opacity: 0;
+    top: -100%;
+  }
+
+  :deep(.ol-zoom) {
+    display: flex;
+    gap: 0.2rem;
+    button {
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid #aaa;
+      opacity: 0.75;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .label-field {
