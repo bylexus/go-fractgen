@@ -850,7 +850,7 @@
       "colorPreset": "Patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
-      "iterFunc": "Mandelbrot Z^3",
+      "iterFunc": "Mandelbrot3",
       "name": "Mandelbrot Z^3 Total",
       "colorPaletteRepeat": 1,
       "centerCY": 0,
@@ -865,11 +865,41 @@
       "colorPreset": "Nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
-      "iterFunc": "Mandelbrot Z^3",
+      "iterFunc": "Mandelbrot3",
       "name": "Mandelbrot Z^3 Blue Lagoon",
       "colorPaletteRepeat": 8,
       "centerCY": -0.955870931708354,
       "centerCX": 0.2529507755416894,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 40,
+      "picHeight": 600,
+      "diameterCX": 4.5,
+      "colorPreset": "Patchwork",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot4",
+      "name": "Mandelbrot Z^4 Total",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0,
+      "centerCX": 0,
+      "juliaKr": 0
+    },
+    {
+      "picWidth": 960,
+      "maxIterations": 3000,
+      "picHeight": 600,
+      "diameterCX": 4.5,
+      "colorPreset": "Ultra Fractal",
+      "juliaKi": 0,
+      "colorPaletteLength": 10000,
+      "iterFunc": "Mandelbrot4",
+      "name": "Mandelbrot Z^4 Swirls",
+      "colorPaletteRepeat": 4,
+      "centerCY": -1.1228205247898588,
+      "centerCX": 0.011897463875357053,
       "juliaKr": 0
     },
     {
@@ -880,8 +910,8 @@
       "colorPreset": "Women's Choice",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
-      "iterFunc": "Mandelbrot Z^4",
-      "name": "Mandelbrot Z^3 Mother with children",
+      "iterFunc": "Mandelbrot4",
+      "name": "Mandelbrot Z^4 Mother with children",
       "colorPaletteRepeat": 14,
       "centerCY": -0.003908503961746147,
       "centerCX": -1.1659069101345705,
@@ -895,7 +925,7 @@
       "colorPreset": "Shades of Blue",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
-      "iterFunc": "Mandelbrot Z^3",
+      "iterFunc": "Mandelbrot3",
       "name": "Mandelbrot Z^3 Nightsky",
       "colorPaletteRepeat": 2,
       "centerCY": 1.2785310463844937,
@@ -1155,7 +1185,7 @@
       "juliaKr": -0.6,
       "maxIterations": 7000,
       "colorPaletteLength": 10000,
-      "colorPaletteRepeat":120 
+      "colorPaletteRepeat": 120
     }
   ]
 }

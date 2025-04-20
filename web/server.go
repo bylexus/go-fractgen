@@ -71,6 +71,22 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 			colorPaletteRepeat,
 		)
 		break
+	case "mandelbrot3":
+		fractal = lib.NewMandelbrot3Fractal(
+			width, height,
+			centerCX, centerCY, diameterCX,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
+	case "mandelbrot4":
+		fractal = lib.NewMandelbrot4Fractal(
+			width, height,
+			centerCX, centerCY, diameterCX,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
 	case "julia":
 		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
 		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
@@ -141,6 +157,22 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	switch iterFunc {
 	case "mandelbrot":
 		fractal = lib.NewMandelbrotFractal(
+			tileWidthPixels, tileWidthPixels,
+			centerCX, centerCY, tileWidthFractal,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
+	case "mandelbrot3":
+		fractal = lib.NewMandelbrot3Fractal(
+			tileWidthPixels, tileWidthPixels,
+			centerCX, centerCY, tileWidthFractal,
+			maxIterations, colorPreset.Palette,
+			colorPaletteRepeat,
+		)
+		break
+	case "mandelbrot4":
+		fractal = lib.NewMandelbrot4Fractal(
 			tileWidthPixels, tileWidthPixels,
 			centerCX, centerCY, tileWidthFractal,
 			maxIterations, colorPreset.Palette,
