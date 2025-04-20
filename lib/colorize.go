@@ -9,11 +9,10 @@ type ColorPalette []color.RGBA
 
 func setImagePixel(img *FractImage, x, y int, fractParams CommonFractParams, fractRes FractFunctionResult) {
 	var LOG_2 float64 = math.Log(2)
-	var LOG_MAX_BETRAG = math.Log(MAX_BETRAG_QUADRAT)
+	var LOG_MAX_BETRAG = math.Log(fractParams.MaxAbsSquareAmount)
 	// var LOG_4 float64 = math.Log(4)
 
 	var iterValue float64
-	// var whiteIntensity uint8
 	if fractRes.Iterations <= fractParams.MaxIterations {
 		if fractParams.SmoothColors == true {
 			// Smooth coloring, see http://de.wikipedia.org/wiki/Mandelbrot-Menge#Iteration_eines_Bildpunktes:
@@ -22,14 +21,7 @@ func setImagePixel(img *FractImage, x, y int, fractParams CommonFractParams, fra
 			// Rough coloring: Escape time algorithm:
 			iterValue = float64(fractRes.Iterations)
 		}
-		// whiteIntensity = uint8(iterValue * 255 / float64(fractParams.MaxIterations))
-		// whiteIntensity = uint8(iterValue * 255 / float64(fractParams.MaxIterations))
-
-		// } else {
-		// whiteIntensity = 0
 	}
-	// var whiteIntensity = uint8(math.Mod(iterValue, 255))
-	// img.Set(x, y, color.RGBA{whiteIntensity, whiteIntensity, whiteIntensity, 255})
 
 	setPaletteColor(img, x, y, iterValue, fractParams, fractRes)
 }

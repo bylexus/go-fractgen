@@ -7,9 +7,9 @@ import (
 	"github.com/bylexus/go-stdlib/ethreads"
 )
 
-// const MAX_BETRAG_QUADRAT float64 = 256
-
-const MAX_BETRAG_QUADRAT float64 = 4
+// max amount = 256 gives smoother colors around the fractal:
+// const MAX_ABS_SQUARE_AMOUNT float64 = 4
+const MAX_ABS_SQUARE_AMOUNT float64 = 256
 
 type FractalType int
 
@@ -22,7 +22,10 @@ const (
 )
 
 type Fractal interface {
-	CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage
+	// CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage
+	CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn
+	ImageWidth() int
+	ImageHeight() int
 }
 
 type FractFunctionResult struct {
@@ -31,7 +34,8 @@ type FractFunctionResult struct {
 }
 
 type CommonFractParams struct {
-	MaxIterations int
+	MaxAbsSquareAmount float64
+	MaxIterations      int
 
 	CenterCX   float64
 	CenterCY   float64
@@ -86,6 +90,7 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	commonFractParams.maxCX = max_cx
 	commonFractParams.minCY = min_cy
 	commonFractParams.maxCY = max_cy
+	commonFractParams.MaxAbsSquareAmount = MAX_ABS_SQUARE_AMOUNT
 
 	return commonFractParams
 
@@ -110,30 +115,20 @@ func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diame
 	return MandelbrotFractal{params}
 }
 
-func (f MandelbrotFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage {
-	if threadPool == nil {
-		tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
-		threadPool = &tp
-		threadPool.Start()
-		defer threadPool.Shutdown()
+func (f MandelbrotFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
+	return func(id ethreads.ThreadId) {
+		cx, cy := f.PixelToFractal(pixX, pixY)
+		fractRes := Mandelbrot(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
+		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 	}
+}
 
-	img := NewFractImage(f.ImageWidth, f.ImageHeight)
+func (f MandelbrotFractal) ImageWidth() int {
+	return f.CommonFractParams.ImageWidth
+}
 
-	for y := 0; y < f.ImageHeight; y++ {
-		for x := 0; x < f.ImageWidth; x++ {
-			f := func(pixX, pixY int) ethreads.JobFn {
-				return func(id ethreads.ThreadId) {
-					cx, cy := f.PixelToFractal(pixX, pixY)
-					fractRes := Mandelbrot(cx, cy, MAX_BETRAG_QUADRAT, f.MaxIterations)
-					setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
-				}
-			}
-			threadPool.AddJobFn(f(x, y))
-		}
-	}
-
-	return img
+func (f MandelbrotFractal) ImageHeight() int {
+	return f.CommonFractParams.ImageHeight
 }
 
 type JuliaFractal struct {
@@ -157,7 +152,23 @@ func NewJuliaFractal(imageWidth, imageHeight int, centerCX, centerCY, diameterCX
 	return JuliaFractal{params, juliaKr, juliaKi}
 }
 
-func (f JuliaFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage {
+func (f JuliaFractal) ImageWidth() int {
+	return f.CommonFractParams.ImageWidth
+}
+
+func (f JuliaFractal) ImageHeight() int {
+	return f.CommonFractParams.ImageHeight
+}
+
+func (f JuliaFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
+	return func(id ethreads.ThreadId) {
+		cx, cy := f.PixelToFractal(pixX, pixY)
+		fractRes := Julia(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations, f.JuliaKr, f.JuliaKi)
+		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
+	}
+}
+
+func CalcFractalImage(threadPool *ethreads.ThreadPool, f Fractal) *FractImage {
 	if threadPool == nil {
 		tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
 		threadPool = &tp
@@ -165,18 +176,12 @@ func (f JuliaFractal) CalcFractalImage(threadPool *ethreads.ThreadPool) *FractIm
 		defer threadPool.Shutdown()
 	}
 
-	img := NewFractImage(f.ImageWidth, f.ImageHeight)
+	img := NewFractImage(f.ImageWidth(), f.ImageHeight())
 
-	for y := 0; y < f.ImageHeight; y++ {
-		for x := 0; x < f.ImageWidth; x++ {
-			f := func(pixX, pixY int) ethreads.JobFn {
-				return func(id ethreads.ThreadId) {
-					cx, cy := f.PixelToFractal(pixX, pixY)
-					fractRes := Julia(cx, cy, MAX_BETRAG_QUADRAT, f.MaxIterations, f.JuliaKr, f.JuliaKi)
-					setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
-				}
-			}
-			threadPool.AddJobFn(f(x, y))
+	for y := 0; y < f.ImageHeight(); y++ {
+		for x := 0; x < f.ImageWidth(); x++ {
+			fn := f.CreatePixelCalcFunc(x, y, img)
+			threadPool.AddJobFn(fn)
 		}
 	}
 

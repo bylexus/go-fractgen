@@ -87,7 +87,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	img := fractal.CalcFractalImage(s.threadPool)
+	img := lib.CalcFractalImage(s.threadPool, fractal)
 	w.WriteHeader(http.StatusOK)
 	img.EncodeJpeg(w)
 }
@@ -163,7 +163,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	img := fractal.CalcFractalImage(s.threadPool)
+	img := lib.CalcFractalImage(s.threadPool, fractal)
 	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
 	img.EncodeJpeg(w)
