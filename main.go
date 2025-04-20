@@ -43,7 +43,7 @@ func demo() {
 		if err != nil {
 			panic(err)
 		}
-		img := lib.CalcFractalImage(nil, fractal)
+		img := lib.CalcFractalImage(fractal)
 		img.SavePng(fmt.Sprintf("demo_images/image-color-preset-%02d.png", i))
 	}
 }

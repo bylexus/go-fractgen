@@ -3,28 +3,21 @@ package web
 import (
 	"encoding/json"
 	"net/http"
-	"runtime"
 	"strconv"
 	"strings"
 
 	"github.com/bylexus/go-fract/lib"
-	"github.com/bylexus/go-stdlib/ethreads"
 )
 
 type WebServer struct {
 	http.Server
-
-	threadPool *ethreads.ThreadPool
 
 	colorPresets   lib.ColorPresets
 	fractalPresets lib.FractalPresets
 }
 
 func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPresets) *WebServer {
-	threadPool := ethreads.NewThreadPool(runtime.NumCPU(), nil)
-	threadPool.Start()
 	server := &WebServer{
-		threadPool:     &threadPool,
 		colorPresets:   colorPresets,
 		fractalPresets: fractalPresets,
 	}
@@ -103,7 +96,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	img := lib.CalcFractalImage(s.threadPool, fractal)
+	img := lib.CalcFractalImage(fractal)
 	w.WriteHeader(http.StatusOK)
 	img.EncodeJpeg(w)
 }
@@ -195,7 +188,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	img := lib.CalcFractalImage(s.threadPool, fractal)
+	img := lib.CalcFractalImage(fractal)
 	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
 	img.EncodeJpeg(w)

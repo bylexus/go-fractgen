@@ -95,22 +95,19 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 
 }
 
-func CalcFractalImage(threadPool *ethreads.ThreadPool, f Fractal) *FractImage {
-	if threadPool == nil {
-		tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
-		threadPool = &tp
-		threadPool.Start()
-		defer threadPool.Shutdown()
-	}
+func CalcFractalImage(f Fractal) *FractImage {
+	tp := ethreads.NewThreadPool(runtime.NumCPU(), nil)
+	tp.Start()
 
 	img := NewFractImage(f.ImageWidth(), f.ImageHeight())
 
 	for y := 0; y < f.ImageHeight(); y++ {
 		for x := 0; x < f.ImageWidth(); x++ {
 			fn := f.CreatePixelCalcFunc(x, y, img)
-			threadPool.AddJobFn(fn)
+			tp.AddJobFn(fn)
 		}
 	}
+	tp.Shutdown()
 
 	return img
 }

@@ -3,6 +3,7 @@ import { apiroot } from './url_helper'
 
 export type ColorPreset = {
   name: string
+  ident: string
   colors: Array<{
     R: number
     G: number

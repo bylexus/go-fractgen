@@ -17,7 +17,7 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 
 #### General
 
-- [ ] implement missing fractal functions (julia, mandelbrot ^ n, ...)
+- [x] implement missing fractal functions (julia, mandelbrot ^ n, ...)
 
 #### CLI
 

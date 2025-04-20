@@ -12,6 +12,8 @@ import TileLayer from 'ol/layer/Tile'
 import WMTS from 'ol/source/WMTS'
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import Projection from 'ol/proj/Projection'
+import { defaults as defaultInteractions } from 'ol/interaction/defaults'
+import { defaults as defaultControls } from 'ol/control/defaults'
 import type { ImageTile, Tile } from 'ol'
 
 const loading = ref(false)
@@ -23,7 +25,7 @@ const maxZoom = 46
 
 let disableIterRecalcOnZoom = false
 
-let olMap: OlMap | null = null
+let olMap: OlMap
 let fractalOlLayer: TileLayer | null = null
 
 const fractalParams: Ref<FractalPreset & { width: number; height: number }> =
@@ -78,6 +80,22 @@ onMounted(() => {
         juliaKi: fractalParams.value.juliaKi,
       })
       ;(imgTile.getImage() as HTMLImageElement).src = `${src}&${urlParams}`
+
+      /**
+      const image = imgTile.getImage() as HTMLImageElement
+      fetch(`${src}&${urlParams}`)
+        .then((response) => {
+          if (!response.ok) {
+            return Promise.reject()
+          }
+          return response.blob()
+        })
+        .then((blob) => {
+          const imageUrl = URL.createObjectURL(blob)
+          image.src = imageUrl
+        })
+        .catch(() => tile.setState(3)) // error
+        */
     },
   })
   // console.log(tileGrid)
@@ -103,6 +121,14 @@ onMounted(() => {
     target: map.value!,
     layers: [fractalOlLayer],
     view: view,
+    interactions: defaultInteractions({
+      altShiftDragRotate: false,
+    }),
+    controls: defaultControls({
+      rotate: false,
+      zoom: true,
+      attribution: true,
+    }),
   })
   let oldZoom = 0
   olMap.on('movestart', () => {
@@ -202,10 +228,10 @@ function recalcIterations(diameterCX: number) {
 
 function calcImage(fractalParams: any) {
   const actExtent = olMap.getView().calculateExtent()
-  const viewCenter = olMap.getView().getCenter()
+  const viewCenter = olMap.getView().getCenter()!
   const imageParams = {
-    width: olMap.getSize()[0],
-    height: olMap.getSize()[1],
+    width: olMap.getSize()![0],
+    height: olMap.getSize()![1],
     iterFunc: fractalParams.iterFunc,
     maxIterations: fractalParams.maxIterations,
     centerCX: viewCenter[0],
@@ -260,7 +286,7 @@ function calcImage(fractalParams: any) {
 .img-map {
   width: 100%;
   height: 100%;
-  background-color: blue;
+  background-color: black;
 }
 
 .loading-overlay {

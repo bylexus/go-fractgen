@@ -10,11 +10,12 @@ import (
 
 type FractImage struct {
 	*image.RGBA
+	fractResults []FractFunctionResult
 }
 
 func NewFractImage(width, height int) *FractImage {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	return &FractImage{img}
+	return &FractImage{img, make([]FractFunctionResult, width*height)}
 }
 
 func (img *FractImage) EncodePng(w io.Writer) error {
