@@ -5,90 +5,20 @@
       "name": "Patchwork",
       "ident": "patchwork",
       "colors": [
-        {
-          "a": 255,
-          "r": 0,
-          "b": 30,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 253,
-          "b": 6,
-          "g": 204
-        },
-        {
-          "a": 255,
-          "r": 186,
-          "b": 15,
-          "g": 84
-        },
-        {
-          "a": 255,
-          "r": 0,
-          "b": 255,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 180,
-          "b": 30,
-          "g": 180
-        },
-        {
-          "a": 255,
-          "r": 103,
-          "b": 135,
-          "g": 61
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 0,
-          "b": 30,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255
-        },
-        {
-          "a": 255,
-          "r": 230,
-          "b": 230,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 0,
-          "b": 30,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 255
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255
-        }
+        { "a": 255, "r": 0, "b": 30, "g": 0 },
+        { "a": 255, "r": 253, "b": 6, "g": 204 },
+        { "a": 255, "r": 186, "b": 15, "g": 84 },
+        { "a": 255, "r": 0, "b": 255, "g": 0 },
+        { "a": 255, "r": 180, "b": 30, "g": 180 },
+        { "a": 255, "r": 103, "b": 135, "g": 61 },
+        { "a": 255, "r": 255, "b": 0, "g": 0 },
+        { "a": 255, "r": 0, "b": 30, "g": 0 },
+        { "a": 255, "r": 255, "b": 255, "g": 255 },
+        { "a": 255, "r": 230, "b": 230, "g": 0 },
+        { "a": 255, "r": 0, "b": 30, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 255 },
+        { "a": 255, "r": 255, "b": 255, "g": 255 }
       ]
     },
     {
@@ -96,25 +26,9 @@
       "name": "Shades of Blue",
       "ident": "shades-of-blue",
       "colors": [
-        {
-          "a": 255,
-          "r": 0,
-          "b": 20,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 128,
-          "b": 255,
-          "g": 128,
-          "steps": 64
-        },
-        {
-          "a": 255,
-          "r": 200,
-          "b": 255,
-          "g": 200
-        }
+        { "a": 255, "r": 0, "b": 20, "g": 0 },
+        { "a": 255, "r": 128, "b": 255, "g": 128, "steps": 64 },
+        { "a": 255, "r": 200, "b": 255, "g": 200 }
       ]
     },
     {
@@ -122,42 +36,12 @@
       "name": "Red Alert",
       "ident": "red-alert",
       "colors": [
-        {
-          "a": 255,
-          "r": 30,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 128,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 128
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 255
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255
-        }
+        { "a": 255, "r": 30, "b": 0, "g": 0 },
+        { "a": 255, "r": 128, "b": 0, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 128 },
+        { "a": 255, "r": 255, "b": 0, "g": 255 },
+        { "a": 255, "r": 255, "b": 255, "g": 255 }
       ]
     },
     {
@@ -165,30 +49,10 @@
       "name": "Women's Choice",
       "ident": "womens-choice",
       "colors": [
-        {
-          "a": 255,
-          "r": 30,
-          "b": 25,
-          "g": 5
-        },
-        {
-          "a": 255,
-          "r": 128,
-          "b": 89,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 204,
-          "g": 102
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 232,
-          "g": 179
-        }
+        { "a": 255, "r": 30, "b": 25, "g": 5 },
+        { "a": 255, "r": 128, "b": 89, "g": 0 },
+        { "a": 255, "r": 255, "b": 204, "g": 102 },
+        { "a": 255, "r": 255, "b": 232, "g": 179 }
       ]
     },
     {
@@ -196,18 +60,8 @@
       "name": "Shades of Gray",
       "ident": "shades-of-gray",
       "colors": [
-        {
-          "a": 255,
-          "r": 0,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255
-        }
+        { "a": 255, "r": 0, "b": 0, "g": 0 },
+        { "a": 255, "r": 255, "b": 255, "g": 255 }
       ]
     },
     {
@@ -215,47 +69,12 @@
       "name": "Pastel Blue",
       "ident": "pastel-blue",
       "colors": [
-        {
-          "a": 255,
-          "r": 68,
-          "b": 128,
-          "g": 76,
-          "steps": 256
-        },
-        {
-          "a": 255,
-          "r": 109,
-          "b": 157,
-          "g": 115,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 208,
-          "b": 230,
-          "g": 211,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 102,
-          "b": 191,
-          "g": 114,
-          "steps": 256
-        },
-        {
-          "a": 255,
-          "r": 122,
-          "b": 201,
-          "g": 133,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 231,
-          "b": 255,
-          "g": 234
-        }
+        { "a": 255, "r": 68, "b": 128, "g": 76, "steps": 256 },
+        { "a": 255, "r": 109, "b": 157, "g": 115, "steps": 128 },
+        { "a": 255, "r": 208, "b": 230, "g": 211, "steps": 128 },
+        { "a": 255, "r": 102, "b": 191, "g": 114, "steps": 256 },
+        { "a": 255, "r": 122, "b": 201, "g": 133, "steps": 128 },
+        { "a": 255, "r": 231, "b": 255, "g": 234 }
       ]
     },
     {
@@ -263,36 +82,11 @@
       "name": "Sunny Sky",
       "ident": "sunny-sky",
       "colors": [
-        {
-          "a": 255,
-          "r": 109,
-          "b": 175,
-          "g": 174
-        },
-        {
-          "a": 255,
-          "r": 237,
-          "b": 21,
-          "g": 222
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 222,
-          "g": 244
-        },
-        {
-          "a": 255,
-          "r": 142,
-          "b": 208,
-          "g": 207
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 246,
-          "g": 254
-        }
+        { "a": 255, "r": 109, "b": 175, "g": 174 },
+        { "a": 255, "r": 237, "b": 21, "g": 222 },
+        { "a": 255, "r": 255, "b": 222, "g": 244 },
+        { "a": 255, "r": 142, "b": 208, "g": 207 },
+        { "a": 255, "r": 255, "b": 246, "g": 254 }
       ]
     },
     {
@@ -300,30 +94,10 @@
       "name": "RGB",
       "ident": "rgb",
       "colors": [
-        {
-          "a": 255,
-          "r": 0,
-          "b": 127,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 255
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255
-        }
+        { "a": 255, "r": 0, "b": 127, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 0 },
+        { "a": 255, "r": 255, "b": 0, "g": 255 },
+        { "a": 255, "r": 255, "b": 255, "g": 255 }
       ]
     },
     {
@@ -331,36 +105,11 @@
       "name": "Baloooons",
       "ident": "baloooons",
       "colors": [
-        {
-          "a": 255,
-          "r": 44,
-          "b": 112,
-          "g": 60
-        },
-        {
-          "a": 255,
-          "r": 183,
-          "b": 131,
-          "g": 105
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 222,
-          "g": 112
-        },
-        {
-          "a": 255,
-          "r": 98,
-          "b": 115,
-          "g": 73
-        },
-        {
-          "a": 255,
-          "r": 194,
-          "b": 255,
-          "g": 255
-        }
+        { "a": 255, "r": 44, "b": 112, "g": 60 },
+        { "a": 255, "r": 183, "b": 131, "g": 105 },
+        { "a": 255, "r": 255, "b": 222, "g": 112 },
+        { "a": 255, "r": 98, "b": 115, "g": 73 },
+        { "a": 255, "r": 194, "b": 255, "g": 255 }
       ]
     },
     {
@@ -368,44 +117,12 @@
       "name": "Nature",
       "ident": "nature",
       "colors": [
-        {
-          "a": 255,
-          "r": 41,
-          "b": 18,
-          "g": 18
-        },
-        {
-          "a": 255,
-          "r": 19,
-          "b": 18,
-          "g": 62
-        },
-        {
-          "a": 255,
-          "r": 111,
-          "b": 172,
-          "g": 210
-        },
-        {
-          "a": 255,
-          "r": 22,
-          "b": 73,
-          "g": 25
-        },
-        {
-          "a": 255,
-          "r": 107,
-          "b": 225,
-          "g": 215,
-          "steps": 64
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 255,
-          "g": 255,
-          "steps": 64
-        }
+        { "a": 255, "r": 41, "b": 18, "g": 18 },
+        { "a": 255, "r": 19, "b": 18, "g": 62 },
+        { "a": 255, "r": 111, "b": 172, "g": 210 },
+        { "a": 255, "r": 22, "b": 73, "g": 25 },
+        { "a": 255, "r": 107, "b": 225, "g": 215, "steps": 64 },
+        { "a": 255, "r": 255, "b": 255, "g": 255, "steps": 64 }
       ]
     },
     {
@@ -413,41 +130,11 @@
       "name": "Wonder Wall",
       "ident": "wonder-wall",
       "colors": [
-        {
-          "a": 255,
-          "r": 3,
-          "b": 1,
-          "g": 3,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 220,
-          "b": 193,
-          "g": 152,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 85,
-          "b": 26,
-          "g": 125,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 149,
-          "b": 61,
-          "g": 37,
-          "steps": 128
-        },
-        {
-          "a": 255,
-          "r": 227,
-          "b": 233,
-          "g": 240,
-          "steps": 128
-        }
+        { "a": 255, "r": 3, "b": 1, "g": 3, "steps": 128 },
+        { "a": 255, "r": 220, "b": 193, "g": 152, "steps": 128 },
+        { "a": 255, "r": 85, "b": 26, "g": 125, "steps": 128 },
+        { "a": 255, "r": 149, "b": 61, "g": 37, "steps": 128 },
+        { "a": 255, "r": 227, "b": 233, "g": 240, "steps": 128 }
       ]
     },
     {
@@ -455,36 +142,11 @@
       "name": "AI 1",
       "ident": "ai-1",
       "colors": [
-        {
-          "a": 255,
-          "r": 0,
-          "b": 139,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 75,
-          "b": 130,
-          "g": 0
-        },
-        {
-          "a": 255,
-          "r": 0,
-          "b": 255,
-          "g": 191
-        },
-        {
-          "a": 255,
-          "r": 255,
-          "b": 0,
-          "g": 215
-        },
-        {
-          "a": 255,
-          "r": 139,
-          "b": 0,
-          "g": 0
-        }
+        { "a": 255, "r": 0, "b": 139, "g": 0 },
+        { "a": 255, "r": 75, "b": 130, "g": 0 },
+        { "a": 255, "r": 0, "b": 255, "g": 191 },
+        { "a": 255, "r": 255, "b": 0, "g": 215 },
+        { "a": 255, "r": 139, "b": 0, "g": 0 }
       ]
     },
     {
@@ -517,7 +179,7 @@
       "maxIterations": 40,
       "picHeight": 600,
       "diameterCX": 4,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -532,7 +194,7 @@
       "maxIterations": 100,
       "picHeight": 600,
       "diameterCX": 0.53184,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -547,7 +209,7 @@
       "maxIterations": 400,
       "picHeight": 600,
       "diameterCX": 0.01611,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -562,7 +224,7 @@
       "maxIterations": 500,
       "picHeight": 600,
       "diameterCX": 0.0022878,
-      "colorPreset": "Women's Choice",
+      "colorPreset": "womens-choice",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -577,7 +239,7 @@
       "maxIterations": 3000,
       "picHeight": 600,
       "diameterCX": 6.6208e-7,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -592,7 +254,7 @@
       "maxIterations": 400,
       "picHeight": 600,
       "diameterCX": 0.02403828125,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -607,7 +269,7 @@
       "maxIterations": 5000,
       "picHeight": 600,
       "diameterCX": 1.0096719999999999e-7,
-      "colorPreset": "Shades of Gray",
+      "colorPreset": "shades-of-gray",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -622,7 +284,7 @@
       "maxIterations": 1000,
       "picHeight": 600,
       "diameterCX": 0.26592,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -636,8 +298,8 @@
       "picWidth": 960,
       "maxIterations": 2500,
       "picHeight": 600,
-      "diameterCX": 3.6573043007812505e-5,
-      "colorPreset": "Shades of Blue",
+      "diameterCX": 0.000036573043007812505,
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -652,7 +314,7 @@
       "maxIterations": 5000,
       "picHeight": 600,
       "diameterCX": 1.0320131581138046e-7,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -666,8 +328,8 @@
       "picWidth": 960,
       "maxIterations": 5000,
       "picHeight": 600,
-      "diameterCX": 9.171127505090332e-5,
-      "colorPreset": "Red Alert",
+      "diameterCX": 0.00009171127505090332,
+      "colorPreset": "red-alert",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -682,7 +344,7 @@
       "maxIterations": 25000,
       "picHeight": 600,
       "diameterCX": 5.6334929242238016e-11,
-      "colorPreset": "Pastel Blue",
+      "colorPreset": "pastel-blue",
       "juliaKi": 0.6,
       "colorPaletteLength": 30000,
       "iterFunc": "Mandelbrot",
@@ -696,8 +358,8 @@
       "picWidth": 960,
       "maxIterations": 5000,
       "picHeight": 600,
-      "diameterCX": 8.376309798955982e-6,
-      "colorPreset": "Women's Choice",
+      "diameterCX": 0.000008376309798955982,
+      "colorPreset": "womens-choice",
       "juliaKi": 0.6,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -712,7 +374,7 @@
       "maxIterations": 80,
       "picHeight": 600,
       "diameterCX": 4,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0.8,
       "colorPaletteLength": 10000,
       "iterFunc": "Julia",
@@ -726,8 +388,8 @@
       "picWidth": 960,
       "maxIterations": 750,
       "picHeight": 600,
-      "diameterCX": 6.215899658203127e-4,
-      "colorPreset": "Women's Choice",
+      "diameterCX": 0.0006215899658203127,
+      "colorPreset": "womens-choice",
       "juliaKi": 0.2,
       "colorPaletteLength": 10000,
       "iterFunc": "Julia",
@@ -739,10 +401,25 @@
     },
     {
       "picWidth": 960,
+      "maxIterations": 728,
+      "picHeight": 600,
+      "diameterCX": 7.448742562344572e-11,
+      "colorPreset": "wonder-wall",
+      "juliaKi": 0.8,
+      "colorPaletteLength": 35000,
+      "iterFunc": "Julia",
+      "name": "Julia Tentacle",
+      "colorPaletteRepeat": 10,
+      "centerCY": -0.46679493784904497,
+      "centerCX": 0.5484441816806793,
+      "juliaKr": -0.2 
+    },
+    {
+      "picWidth": 960,
       "maxIterations": 33655,
       "picHeight": 600,
       "diameterCX": 7.448742562344572e-11,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0,
       "colorPaletteLength": 35000,
       "iterFunc": "Mandelbrot",
@@ -757,7 +434,7 @@
       "maxIterations": 456,
       "picHeight": 600,
       "diameterCX": 0.0029454794999999997,
-      "colorPreset": "Pastel Blue",
+      "colorPreset": "pastel-blue",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -772,7 +449,7 @@
       "maxIterations": 3782,
       "picHeight": 600,
       "diameterCX": 8.875640775193726e-8,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -787,7 +464,7 @@
       "maxIterations": 3771,
       "picHeight": 600,
       "diameterCX": 2.2282162735290527e-7,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -802,7 +479,7 @@
       "maxIterations": 5000,
       "picHeight": 600,
       "diameterCX": 6.173474248535155e-7,
-      "colorPreset": "Nature",
+      "colorPreset": "nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -817,7 +494,7 @@
       "maxIterations": 14302,
       "picHeight": 600,
       "diameterCX": 2.0063791307739252e-8,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0,
       "colorPaletteLength": 15000,
       "iterFunc": "Mandelbrot",
@@ -832,7 +509,7 @@
       "maxIterations": 4503,
       "picHeight": 600,
       "diameterCX": 6.406733893997191e-8,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -847,7 +524,7 @@
       "maxIterations": 40,
       "picHeight": 600,
       "diameterCX": 4.5,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot3",
@@ -862,7 +539,7 @@
       "maxIterations": 10000,
       "picHeight": 600,
       "diameterCX": 1.5201032775878903e-8,
-      "colorPreset": "Nature",
+      "colorPreset": "nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot3",
@@ -877,7 +554,7 @@
       "maxIterations": 40,
       "picHeight": 600,
       "diameterCX": 4.5,
-      "colorPreset": "Patchwork",
+      "colorPreset": "patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot4",
@@ -892,7 +569,7 @@
       "maxIterations": 3000,
       "picHeight": 600,
       "diameterCX": 4.5,
-      "colorPreset": "Ultra Fractal",
+      "colorPreset": "ultra-fractal",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot4",
@@ -907,7 +584,7 @@
       "maxIterations": 3950,
       "picHeight": 600,
       "diameterCX": 1.3543938995361328e-7,
-      "colorPreset": "Women's Choice",
+      "colorPreset": "womens-choice",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot4",
@@ -922,7 +599,7 @@
       "maxIterations": 4579,
       "picHeight": 600,
       "diameterCX": 1.408093650054932e-7,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot3",
@@ -937,7 +614,7 @@
       "maxIterations": 9115,
       "picHeight": 600,
       "diameterCX": 4.914502654174805e-7,
-      "colorPreset": "Nature",
+      "colorPreset": "nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -952,7 +629,7 @@
       "maxIterations": 578,
       "picHeight": 600,
       "diameterCX": 0.003949804687500001,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0.65,
       "colorPaletteLength": 10000,
       "iterFunc": "Julia",
@@ -966,8 +643,8 @@
       "picWidth": 960,
       "maxIterations": 5000,
       "picHeight": 600,
-      "diameterCX": 2.7877705759388686e-5,
-      "colorPreset": "Shades of Blue",
+      "diameterCX": 0.000027877705759388686,
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -982,7 +659,7 @@
       "maxIterations": 5000,
       "picHeight": 600,
       "diameterCX": 4.688311580400011e-8,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -997,7 +674,7 @@
       "maxIterations": 2226,
       "picHeight": 600,
       "diameterCX": 9.214391588660157e-7,
-      "colorPreset": "Nature",
+      "colorPreset": "nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1012,7 +689,7 @@
       "maxIterations": 2345,
       "picHeight": 600,
       "diameterCX": 6.969426439847171e-7,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1026,8 +703,8 @@
       "picWidth": 960,
       "maxIterations": 1506,
       "picHeight": 600,
-      "diameterCX": 5.328256758619744e-6,
-      "colorPreset": "Nature",
+      "diameterCX": 0.000005328256758619744,
+      "colorPreset": "nature",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1042,7 +719,7 @@
       "maxIterations": 36345,
       "picHeight": 600,
       "diameterCX": 1.2403750557893055e-10,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0,
       "colorPaletteLength": 40000,
       "iterFunc": "Mandelbrot",
@@ -1057,7 +734,7 @@
       "maxIterations": 54247,
       "picHeight": 600,
       "diameterCX": 2.0683026289597354e-8,
-      "colorPreset": "Women's Choice",
+      "colorPreset": "womens-choice",
       "juliaKi": 0,
       "colorPaletteLength": 60000,
       "iterFunc": "Mandelbrot",
@@ -1072,7 +749,7 @@
       "maxIterations": 43855,
       "picHeight": 600,
       "diameterCX": 2.821459423993879e-8,
-      "colorPreset": "Shades of Blue",
+      "colorPreset": "shades-of-blue",
       "juliaKi": 0,
       "colorPaletteLength": 50000,
       "iterFunc": "Mandelbrot",
@@ -1087,7 +764,7 @@
       "maxIterations": 16662,
       "picHeight": 600,
       "diameterCX": 8.263048994450568e-10,
-      "colorPreset": "Red Alert",
+      "colorPreset": "red-alert",
       "juliaKi": 0,
       "colorPaletteLength": 20000,
       "iterFunc": "Mandelbrot",
@@ -1101,8 +778,8 @@
       "picWidth": 960,
       "maxIterations": 4048,
       "picHeight": 600,
-      "diameterCX": 1.4242538971147528e-5,
-      "colorPreset": "RGB",
+      "diameterCX": 0.000014242538971147528,
+      "colorPreset": "rgb",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1117,7 +794,7 @@
       "maxIterations": 4000,
       "picHeight": 600,
       "diameterCX": 0.001502392578125,
-      "colorPreset": "Ultra Fractal",
+      "colorPreset": "ultra-fractal",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1131,8 +808,8 @@
       "picWidth": 960,
       "maxIterations": 3000,
       "picHeight": 600,
-      "diameterCX": 2.9336e-6,
-      "colorPreset": "Patchwork",
+      "diameterCX": 0.0000029336,
+      "colorPreset": "patchwork",
       "juliaKi": 0,
       "colorPaletteLength": 10000,
       "iterFunc": "Mandelbrot",
@@ -1150,7 +827,7 @@
       "diameterCX": 2.7939677238e-10,
       "centerCX": 0.3037470952469812,
       "centerCY": 0.021191287792123256,
-      "colorPreset": "Ultra Fractal",
+      "colorPreset": "ultra-fractal",
       "juliaKi": 0,
       "juliaKr": 0,
       "maxIterations": 1000,
@@ -1165,7 +842,7 @@
       "diameterCX": 2.9802322387695312e-8,
       "centerCX": -1.6748593002526977,
       "centerCY": 0.000004937065946312495,
-      "colorPreset": "Nature",
+      "colorPreset": "nature",
       "juliaKi": 0.6,
       "juliaKr": -0.6,
       "maxIterations": 1000,
@@ -1180,7 +857,7 @@
       "diameterCX": 1.7389538697898388e-8,
       "centerCX": -0.17590299153782224,
       "centerCY": -1.0866134534875305,
-      "colorPreset": "Ultra Fractal",
+      "colorPreset": "ultra-fractal",
       "juliaKi": 0.6,
       "juliaKr": -0.6,
       "maxIterations": 7000,

@@ -17,10 +17,9 @@ type Presets struct {
 	FractalPresets FractalPresets `json:"fractalPresets"`
 }
 
-func (p ColorPresets) GetByName(name string) (ColorPreset, error) {
-	name = strings.ToLower(name)
+func (p ColorPresets) GetByIdent(ident string) (ColorPreset, error) {
 	for _, preset := range p {
-		if strings.ToLower(preset.Name) == name {
+		if strings.ToLower(preset.Ident) == ident {
 			return preset, nil
 		}
 	}
@@ -39,12 +38,13 @@ func (p FractalPresets) GetByName(name string) (FractalPreset, error) {
 
 type ColorPreset struct {
 	Name    string       `json:"name"`
+	Ident   string       `json:"ident"`
 	Palette ColorPalette `json:"colors"`
 }
 
 type FractalPreset struct {
 	Name               string  `json:"name"`
-	PresetFunctionName string  `json:"iterFunc"`
+	IterFunc           string  `json:"iterFunc"`
 	ImageWidth         int     `json:"picWidth"`
 	ImageHeight        int     `json:"picHeight"`
 	DiameterCX         float64 `json:"diameterCX"`
@@ -60,7 +60,7 @@ type FractalPreset struct {
 
 func (f FractalPreset) FractalFunction() (FractalType, error) {
 
-	switch f.PresetFunctionName {
+	switch f.IterFunc {
 	case "Mandelbrot":
 		return FRACTAL_TYPE_MANDELBROT, nil
 	case "Mandelbrot Z^3":

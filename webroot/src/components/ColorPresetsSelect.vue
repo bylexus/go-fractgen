@@ -12,7 +12,7 @@ watch(colorPresets.presets, () => {
 
 <template>
   <select v-model="colorPreset">
-    <option v-for="preset in colorPresets.presets.value" :value="preset.name" :key="preset.name">
+    <option v-for="preset in colorPresets.presets.value" :value="preset.ident" :key="preset.ident">
       {{ preset.name }}
     </option>
   </select>

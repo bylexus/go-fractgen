@@ -56,7 +56,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	colorPresetParam := r.URL.Query().Get("colorPreset")
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteRepeat"))
 
-	colorPreset, err := s.colorPresets.GetByName(colorPresetParam)
+	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
 		colorPreset = s.colorPresets[0]
 	}
@@ -148,7 +148,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		colorPaletteRepeat = 1
 	}
 
-	colorPreset, err := s.colorPresets.GetByName(colorPresetParam)
+	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
 		colorPreset = s.colorPresets[0]
 	}
