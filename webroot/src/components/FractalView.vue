@@ -15,8 +15,8 @@ import Projection from 'ol/proj/Projection'
 import { defaults as defaultInteractions } from 'ol/interaction/defaults'
 import { defaults as defaultControls } from 'ol/control/defaults'
 import type { ImageTile, Tile } from 'ol'
+import ExportDialog from './ExportDialog.vue'
 
-const loading = ref(false)
 const colorPreset = ref('')
 const fractalPreset = ref('')
 const map = ref<HTMLDivElement>()
@@ -25,6 +25,7 @@ const settingsOverlay = ref<HTMLDivElement>()
 const tileWidth = 256
 const maxZoom = 46
 const hudVisible = ref(true)
+const showExportDlg = ref(false)
 
 let disableIterRecalcOnZoom = false
 
@@ -75,6 +76,7 @@ onMounted(() => {
       const urlParams = fractParamsAsQueryParams({
         TileMatrix: zoomLevel,
         maxIterations: maxIterations,
+        colorPreset: colorPreset.value,
         colorPaletteRepeat: colorPaletteRepeat,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
@@ -235,7 +237,7 @@ watch(
 // })
 
 function fractParamsAsQueryParams(inputObj: { [key: string]: any }) {
-  return queryStr({ ...inputObj, colorPreset: colorPreset.value })
+  return queryStr({ ...inputObj })
 }
 
 function recalcIterations(diameterCX: number) {
@@ -249,26 +251,30 @@ function recalcIterations(diameterCX: number) {
 }
 
 function calcImage(fractalParams: any) {
-  const actExtent = olMap.getView().calculateExtent()
-  const viewCenter = olMap.getView().getCenter()!
-  const imageParams = {
-    width: olMap.getSize()![0],
-    height: olMap.getSize()![1],
-    iterFunc: fractalParams.iterFunc,
-    maxIterations: fractalParams.maxIterations,
-    centerCX: viewCenter[0],
-    centerCY: viewCenter[1],
-    diameterCX: actExtent[2] - actExtent[0],
-    colorPreset: colorPreset.value,
-    colorPaletteRepeat: fractalParams.colorPaletteRepeat,
-    juliaKr: fractalParams.juliaKr,
-    juliaKi: fractalParams.juliaKi,
-  }
+  const imageParams = getActualFractParams()
   // TODO: this image link should be placed on a button or in a small menu to
   // choose the destination / output size, then generate an image from it:
   let imgLink = `${apiroot()}/fractal-image.jpg?${fractParamsAsQueryParams(imageParams)}`
   console.log(imgLink)
   fractalOlLayer?.getSource()?.changed()
+}
+
+function getActualFractParams(): FractalPreset & { width: number; height: number } {
+  const actExtent = olMap.getView().calculateExtent()
+  const viewCenter = olMap.getView().getCenter()!
+  return {
+    width: olMap.getSize()![0],
+    height: olMap.getSize()![1],
+    iterFunc: fractalParams.value.iterFunc,
+    maxIterations: fractalParams.value.maxIterations,
+    centerCX: viewCenter[0],
+    centerCY: viewCenter[1],
+    diameterCX: actExtent[2] - actExtent[0],
+    colorPreset: colorPreset.value,
+    colorPaletteRepeat: fractalParams.value.colorPaletteRepeat,
+    juliaKr: fractalParams.value.juliaKr,
+    juliaKi: fractalParams.value.juliaKi,
+  }
 }
 </script>
 
@@ -293,8 +299,10 @@ function calcImage(fractalParams: any) {
         <label for="paletteRepeat">Palette Repeat:</label>
         <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
       </div>
+      <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
+      <!-- <button type="button" @click="showExportDlg = true">export</button> -->
     </div>
-    <div v-if="loading" class="loading-overlay">Calculating...</div>
+    <ExportDialog v-model="showExportDlg" />
   </div>
 </template>
 
@@ -312,29 +320,22 @@ function calcImage(fractalParams: any) {
   background-color: black;
 }
 
-.loading-overlay {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  color: white;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .settings-overlay {
   position: absolute;
   padding: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.2rem;
   z-index: 1;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.3);
-  transition: opacity 0.2s ease-in-out, bottom 0.2s ease-in-out;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  transition:
+    opacity 0.2s ease-in-out,
+    bottom 0.2s ease-in-out;
   &.hidden {
     opacity: 0;
     bottom: -100%;
@@ -348,7 +349,9 @@ function calcImage(fractalParams: any) {
   top: 0;
   right: 0;
   margin: 0.5rem;
-  transition: opacity 0.2s ease-in-out, top 0.2s ease-in-out;
+  transition:
+    opacity 0.2s ease-in-out,
+    top 0.2s ease-in-out;
   &.hidden {
     opacity: 0;
     top: -100%;
@@ -359,12 +362,15 @@ function calcImage(fractalParams: any) {
     gap: 0.2rem;
     button {
       border-radius: 50%;
+      font-size: 1.3rem;
       width: 2rem;
       height: 2rem;
       border: 1px solid #aaa;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
       opacity: 0.75;
       &:hover {
         opacity: 1;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
       }
     }
   }
