@@ -13,6 +13,7 @@ export type ColorPreset = {
 }
 
 export type FractalPreset = {
+  [key: string]: any
   name?: string
   iterFunc: string
   maxIterations: number
@@ -24,6 +25,8 @@ export type FractalPreset = {
   juliaKr: number
   juliaKi: number
 }
+
+export type FractalParams = FractalPreset & { width: number; height: number }
 
 const isLoading = ref(false)
 let loaded = false

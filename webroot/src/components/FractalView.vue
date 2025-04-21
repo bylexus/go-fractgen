@@ -1,187 +1,42 @@
 <script lang="ts" setup>
-import { useElementResize } from '@/lib/element-info'
 import { apiroot, queryStr } from '@/lib/url_helper'
 import { onMounted, reactive, type Ref, ref, watch, watchEffect } from 'vue'
 import ColorPresetsSelect from './ColorPresetsSelect.vue'
 import { useLocalStorageVariable } from '@/lib/use-local-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
-import { fractalPresetByName, useFractalPresets, type FractalPreset } from '@/lib/use-presets'
-import OlMap from 'ol/Map'
-import View from 'ol/View'
-import TileLayer from 'ol/layer/Tile'
-import WMTS from 'ol/source/WMTS'
-import WMTSTileGrid from 'ol/tilegrid/WMTS'
-import Projection from 'ol/proj/Projection'
-import { defaults as defaultInteractions } from 'ol/interaction/defaults'
-import { defaults as defaultControls } from 'ol/control/defaults'
-import type { ImageTile, Tile } from 'ol'
+import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/lib/use-presets'
 import ExportDialog from './ExportDialog.vue'
+import FractalMap from './FractalMap.vue'
 
-const colorPreset = ref('')
+// const colorPreset = ref('')
 const fractalPreset = ref('')
-const map = ref<HTMLDivElement>()
-const mapControls = ref<HTMLDivElement>()
 const settingsOverlay = ref<HTMLDivElement>()
-const tileWidth = 256
-const maxZoom = 46
+const fractalMap = ref<InstanceType<typeof FractalMap>>()
 const hudVisible = ref(true)
 const showExportDlg = ref(false)
 
-let disableIterRecalcOnZoom = false
-
-let olMap: OlMap
-let fractalOlLayer: TileLayer | null = null
-
-const fractalParams: Ref<FractalPreset & { width: number; height: number }> =
-  useLocalStorageVariable(
-    'fractalParams',
-    Object.assign(
-      {
-        width: 0, // will be updated on mount, based on the container size
-        height: 0,
-      },
-      // we use the first preset as default:
-      { ...useFractalPresets().presets.value[0] },
-    ),
-  )
-
-onMounted(() => {
-  // minx, miny, maxx, maxy
-  const mandelbrotExtent = [-1.7, -1, 0.3, 1] // Complex plane bounds
-  // resolution means: unit per pixel (in our case: fractal pixel per screen pixel)
-  // as a tile is 256 x 256 pixels, the
-  const resolutions = Array.from({ length: maxZoom }, (_, z) => 4 / (tileWidth * Math.pow(2, z)))
-
-  const tileGrid = new WMTSTileGrid({
-    origin: [mandelbrotExtent[0], mandelbrotExtent[1]],
-    resolutions: resolutions,
-    tileSize: tileWidth,
-    matrixIds: resolutions.map((_, i) => i.toString()),
-  })
-  // console.log(tileGrid)
-  const fractalSource = new WMTS({
-    layer: 'fractal',
-    style: 'fractal',
-    matrixSet: 'default',
-    url: `${apiroot()}/wmts`,
-    tileGrid: tileGrid,
-    format: 'image/jpeg',
-    tileLoadFunction: (tile: Tile, src) => {
-      const zoomLevel = tile.getTileCoord()[0]
-      // const maxIterations = Math.ceil(50 * Math.pow(1.3, zoomLevel))
-      const maxIterations = fractalParams.value.maxIterations
-      const colorPaletteRepeat = fractalParams.value.colorPaletteRepeat
-
-      const imgTile = tile as ImageTile
-      const urlParams = fractParamsAsQueryParams({
-        TileMatrix: zoomLevel,
-        maxIterations: maxIterations,
-        colorPreset: colorPreset.value,
-        colorPaletteRepeat: colorPaletteRepeat,
-        iterFunc: fractalParams.value.iterFunc,
-        tileWidthPixels: tileWidth,
-        tileWidthFractal: (view.getResolution() || 0) * tileWidth,
-        juliaKr: fractalParams.value.juliaKr,
-        juliaKi: fractalParams.value.juliaKi,
-      })
-      ;(imgTile.getImage() as HTMLImageElement).src = `${src}&${urlParams}`
-
-      /**
-      const image = imgTile.getImage() as HTMLImageElement
-      fetch(`${src}&${urlParams}`)
-        .then((response) => {
-          if (!response.ok) {
-            return Promise.reject()
-          }
-          return response.blob()
-        })
-        .then((blob) => {
-          const imageUrl = URL.createObjectURL(blob)
-          image.src = imageUrl
-        })
-        .catch(() => tile.setState(3)) // error
-        */
+const fractalParams: Ref<FractalParams> = useLocalStorageVariable(
+  'fractalParams',
+  Object.assign(
+    {
+      width: 0, // will be updated on mount, based on the container size
+      height: 0,
     },
-  })
+    // we use the first preset as default:
+    { ...useFractalPresets().presets.value[0] },
+  ),
+)
+// Initial values:
+// colorPreset.value = fractalParams.value.colorPreset || ''
+fractalPreset.value = fractalParams.value.name || ''
 
-  fractalOlLayer = new TileLayer({
-    source: fractalSource,
-  })
-
-  const view = new View({
-    center: [-0.7, 0],
-    zoom: 1,
-    constrainResolution: true,
-    maxZoom: maxZoom,
-    enableRotation: false,
-    constrainOnlyCenter: true,
-    projection: new Projection({
-      code: 'MANDELBROT',
-      extent: mandelbrotExtent,
-    }),
-  })
-
-  olMap = new OlMap({
-    target: map.value!,
-    layers: [fractalOlLayer],
-    view: view,
-    interactions: defaultInteractions({
-      altShiftDragRotate: false,
-    }),
-    controls: defaultControls({
-      rotate: false,
-      zoom: true,
-      zoomOptions: {
-        target: mapControls.value,
-      },
-      attribution: true,
-    }),
-  })
-
-  olMap.on('singleclick', () => (hudVisible.value = !hudVisible.value))
-
-  let oldZoom = 0
-  olMap.on('movestart', () => {
-    oldZoom = view.getZoom() || 0
-    console.log('start zoom', view.getZoom())
-  })
-  olMap.on('moveend', () => {
-    if (disableIterRecalcOnZoom) {
-      disableIterRecalcOnZoom = false
-      return
-    }
-    console.log('end zoom', view.getZoom())
-    if (oldZoom !== view.getZoom()) {
-      let zoomDiff = view.getZoom()! - oldZoom
-      if (zoomDiff > 0) {
-        fractalParams.value.maxIterations = Math.floor(
-          fractalParams.value.maxIterations * Math.pow(1.25, zoomDiff || 1),
-        )
-      } else {
-        zoomDiff = Math.abs(zoomDiff)
-        fractalParams.value.maxIterations = Math.ceil(
-          fractalParams.value.maxIterations / Math.pow(1.25, zoomDiff || 1),
-        )
-      }
-      // fractalParams.value.maxIterations = Math.floor(50 * Math.pow(1.3, (view.getZoom() || 1) - 1))
-      oldZoom = view.getZoom() || 0
-    }
-  })
-  console.log(olMap.getInteractions())
-
-  // Initial values:
-  colorPreset.value = fractalParams.value.colorPreset || ''
-  fractalPreset.value = fractalParams.value.name || ''
-})
-
-watch(colorPreset, () => {
-  fractalParams.value.colorPreset = colorPreset.value || ''
-})
+// watch(colorPreset, () => {
+//   fractalParams.value.colorPreset = colorPreset.value || ''
+// })
 
 watch(fractalPreset, () => {
   const preset = fractalPresetByName(fractalPreset.value)
   if (preset) {
-    disableIterRecalcOnZoom = true
     fractalParams.value.iterFunc = preset.iterFunc
     fractalParams.value.maxIterations = preset.maxIterations
     fractalParams.value.centerCX = preset.centerCX
@@ -192,49 +47,9 @@ watch(fractalPreset, () => {
     fractalParams.value.juliaKr = preset.juliaKr
     fractalParams.value.juliaKi = preset.juliaKi
     fractalParams.value.name = preset.name || ''
-    colorPreset.value = preset.colorPreset
-
-    if (olMap) {
-      // olMap.getView().setCenter([preset.centerCX, preset.centerCY])
-      // olMap.getView().setZoom(1)
-      // console.log(olMap.getView().getZoomForResolution(preset.diameterCX / tileWidth))
-      // olMap.getView().setResolution(preset.diameterCX / tileWidth)
-      const halfWidth = preset.diameterCX / 2
-      const halfHeight = preset.diameterCX / 2
-      olMap
-        .getView()
-        .fit([
-          preset.centerCX - halfWidth,
-          preset.centerCY - halfHeight,
-          preset.centerCX + halfWidth,
-          preset.centerCY + halfHeight,
-        ])
-      // fractalParams.value.maxIterations = preset.maxIterations
-    }
+    // colorPreset.value = preset.colorPreset
   }
 })
-
-watch(
-  fractalParams,
-  () => {
-    calcImage(fractalParams.value)
-  },
-  { deep: true },
-)
-
-// watch(hudOpacity, (newVal) => {
-//   // Watch for the hudOpacity to change: If we hide the HUD,
-//   // we need to set the visibility to hidden, so that the divs do not overlay the
-//   // map anymore (and therefore would prevent interacting with the map).
-//   // But we need to wait for the transition to finish before actually setting the
-//   // visibility to hidden.
-//   let timeout = newVal ? 0 : 300
-//   setTimeout(() => {
-//     let visibility = newVal ? 'visible' : 'hidden'
-//     if (mapControls.value) mapControls.value.style.visibility = visibility
-//     if (settingsOverlay.value) settingsOverlay.value.style.visibility = visibility
-//   }, timeout)
-// })
 
 function fractParamsAsQueryParams(inputObj: { [key: string]: any }) {
   return queryStr({ ...inputObj })
@@ -249,39 +64,18 @@ function recalcIterations(diameterCX: number) {
   // where scale is pixelWidth/complexPlaneWidth e.g. 1280/5
   return Math.ceil(50 * Math.pow(Math.log10(fractalParams.value.width / diameterCX), 1.25))
 }
-
-function calcImage(fractalParams: any) {
-  const imageParams = getActualFractParams()
-  // TODO: this image link should be placed on a button or in a small menu to
-  // choose the destination / output size, then generate an image from it:
-  let imgLink = `${apiroot()}/fractal-image.jpg?${fractParamsAsQueryParams(imageParams)}`
-  console.log(imgLink)
-  fractalOlLayer?.getSource()?.changed()
-}
-
-function getActualFractParams(): FractalPreset & { width: number; height: number } {
-  const actExtent = olMap.getView().calculateExtent()
-  const viewCenter = olMap.getView().getCenter()!
-  return {
-    width: olMap.getSize()![0],
-    height: olMap.getSize()![1],
-    iterFunc: fractalParams.value.iterFunc,
-    maxIterations: fractalParams.value.maxIterations,
-    centerCX: viewCenter[0],
-    centerCY: viewCenter[1],
-    diameterCX: actExtent[2] - actExtent[0],
-    colorPreset: colorPreset.value,
-    colorPaletteRepeat: fractalParams.value.colorPaletteRepeat,
-    juliaKr: fractalParams.value.juliaKr,
-    juliaKi: fractalParams.value.juliaKi,
-  }
-}
 </script>
 
 <template>
   <div class="display-container">
-    <div ref="map" class="img-map"></div>
-    <div ref="mapControls" :class="{ 'map-controls': true, hidden: !hudVisible }"></div>
+    <FractalMap
+      ref="fractalMap"
+      v-model:fractalParams="fractalParams"
+      :color-preset="fractalParams.colorPreset"
+      :show-hud="hudVisible"
+      @map-single-click="hudVisible = !hudVisible"
+    ></FractalMap>
+
     <div ref="settingsOverlay" :class="{ 'settings-overlay': true, hidden: !hudVisible }">
       <div class="label-field">
         <label>Preset:</label>
@@ -289,7 +83,7 @@ function getActualFractParams(): FractalPreset & { width: number; height: number
       </div>
       <div class="label-field">
         <label>Color Palette:</label>
-        <ColorPresetsSelect v-model="colorPreset"></ColorPresetsSelect>
+        <ColorPresetsSelect v-model="fractalParams.colorPreset"></ColorPresetsSelect>
       </div>
       <div class="label-field">
         <label for="iterations">Max. Iterations</label>
@@ -300,24 +94,16 @@ function getActualFractParams(): FractalPreset & { width: number; height: number
         <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
       </div>
       <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
-      <!-- <button type="button" @click="showExportDlg = true">export</button> -->
+      <button type="button" @click="showExportDlg = true">export</button>
     </div>
     <ExportDialog v-model="showExportDlg" />
   </div>
 </template>
 
 <style scoped lang="scss">
-@import 'ol/ol.css';
-
 .display-container {
   width: 100%;
   height: 100%;
-}
-
-.img-map {
-  width: 100%;
-  height: 100%;
-  background-color: black;
 }
 
 .settings-overlay {
@@ -342,40 +128,6 @@ function getActualFractParams(): FractalPreset & { width: number; height: number
   }
 }
 
-.map-controls {
-  display: inline-block;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  margin: 0.5rem;
-  transition:
-    opacity 0.2s ease-in-out,
-    top 0.2s ease-in-out;
-  &.hidden {
-    opacity: 0;
-    top: -100%;
-  }
-
-  :deep(.ol-zoom) {
-    display: flex;
-    gap: 0.2rem;
-    button {
-      border-radius: 50%;
-      font-size: 1.3rem;
-      width: 2rem;
-      height: 2rem;
-      border: 1px solid #aaa;
-      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-      opacity: 0.75;
-      &:hover {
-        opacity: 1;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-      }
-    }
-  }
-}
-
 .label-field {
   display: inline-flex;
   flex-direction: column;
@@ -385,11 +137,5 @@ function getActualFractParams(): FractalPreset & { width: number; height: number
     text-shadow: 1px 1px 2px black;
     font-size: 0.75rem;
   }
-}
-</style>
-
-<style lang="css">
-.ol-dragzoom {
-  border: 2px solid white !important;
 }
 </style>
