@@ -26,7 +26,7 @@ export type FractalPreset = {
   juliaKi: number
 }
 
-export type FractalParams = FractalPreset & { width: number; height: number }
+export type FractalParams = FractalPreset & { width?: number; height?: number }
 
 const isLoading = ref(false)
 let loaded = false

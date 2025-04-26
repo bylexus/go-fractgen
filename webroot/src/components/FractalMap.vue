@@ -2,11 +2,9 @@
 import OlMap from 'ol/Map'
 import View from 'ol/View'
 import TileLayer from 'ol/layer/Tile'
-import TileState from 'ol/TileState'
 import WMTS from 'ol/source/WMTS'
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import Projection from 'ol/proj/Projection'
-import { defaults as defaultInteractions } from 'ol/interaction/defaults'
 import DoubleClickZoom from 'ol/interaction/DoubleClickZoom'
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'
 import DragPan from 'ol/interaction/DragPan'
@@ -32,18 +30,27 @@ const mapControls = ref<HTMLDivElement>()
 
 const tileWidth = 256
 const maxZoom = 46
+const mapRedrawProps = [
+  'iterFunc',
+  'maxIterations',
+  'diameterCX',
+  'colorPreset',
+  'colorPaletteRepeat',
+  'juliaKr',
+  'juliaKi',
+]
 
 let olMap: OlMap
 let fractalOlLayer: TileLayer | null = null
 let zoomInProgress = false
-let refreshTiles = false
 
 onMounted(() => {
   const mapSizes = useElementResize(map.value!)
   watch(mapSizes.sizes, () => {
-    fractalParams.value.width = mapSizes.width.value
-    fractalParams.value.height = mapSizes.height.value
-    console.log('map size updated')
+    changeFractalParams({
+      width: mapSizes.width.value,
+      height: mapSizes.height.value,
+    })
   })
 
   // minx, miny, maxx, maxy
@@ -82,28 +89,11 @@ onMounted(() => {
         colorPaletteRepeat: colorPaletteRepeat,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
-        // tileWidthFractal: (view.getResolution() || 0) * tileWidth,
         tileWidthFractal: res * tileWidth,
         juliaKr: fractalParams.value.juliaKr,
         juliaKi: fractalParams.value.juliaKi,
       })
       ;(imgTile.getImage() as HTMLImageElement).src = `${src}&${urlParams}`
-
-      /**
-      const image = imgTile.getImage() as HTMLImageElement
-      fetch(`${src}&${urlParams}`)
-        .then((response) => {
-          if (!response.ok) {
-            return Promise.reject()
-          }
-          return response.blob()
-        })
-        .then((blob) => {
-          const imageUrl = URL.createObjectURL(blob)
-          image.src = imageUrl
-        })
-        .catch(() => tile.setState(3)) // error
-        */
     },
   })
 
@@ -156,46 +146,55 @@ onMounted(() => {
   olMap.on('moveend', () => {
     zoomInProgress = false
     console.log('end zoom', view.getZoom())
-    refreshTiles = false
-    if (oldZoom !== view.getZoom()) {
-      refreshTiles = true
-      let zoomDiff = view.getZoom()! - oldZoom
-      if (zoomDiff > 0) {
-        fractalParams.value.maxIterations = Math.floor(
-          fractalParams.value.maxIterations * Math.pow(1.25, zoomDiff || 1),
-        )
-      } else {
-        zoomDiff = Math.abs(zoomDiff)
-        fractalParams.value.maxIterations = Math.ceil(
-          fractalParams.value.maxIterations / Math.pow(1.25, zoomDiff || 1),
-        )
-      }
-      // fractalParams.value.maxIterations = Math.floor(50 * Math.pow(1.3, (view.getZoom() || 1) - 1))
-      oldZoom = view.getZoom() || 0
-    }
+    // if (oldZoom !== view.getZoom()) {
+    //   refreshTiles = true
+    //   let zoomDiff = view.getZoom()! - oldZoom
+    //   if (zoomDiff > 0) {
+    //     fractalParams.value.maxIterations = Math.floor(
+    //       fractalParams.value.maxIterations * Math.pow(1.25, zoomDiff || 1),
+    //     )
+    //   } else {
+    //     zoomDiff = Math.abs(zoomDiff)
+    //     fractalParams.value.maxIterations = Math.ceil(
+    //       fractalParams.value.maxIterations / Math.pow(1.25, zoomDiff || 1),
+    //     )
+    //   }
+    //   // fractalParams.value.maxIterations = Math.floor(50 * Math.pow(1.3, (view.getZoom() || 1) - 1))
+    //   oldZoom = view.getZoom() || 0
+    // }
 
     // Update fractal parameters to reflect actual map settings:
     const actExtent = olMap.getView().calculateExtent()
     const viewCenter = olMap.getView().getCenter()!
-    fractalParams.value.centerCX = viewCenter[0]
-    fractalParams.value.centerCY = viewCenter[1]
-    fractalParams.value.diameterCX = actExtent[2] - actExtent[0]
+    changeFractalParams({
+      centerCX: viewCenter[0],
+      centerCY: viewCenter[1],
+      diameterCX: actExtent[2] - actExtent[0],
+    })
   })
 
-  console.log(fractalParams.value)
   calcMap(fractalParams.value)
 })
 
-watch(
-  fractalParams,
-  () => {
-    calcMap(fractalParams.value)
-  },
-  { deep: true },
-)
+watch(fractalParams, (newVal, oldVal) => {
+  // check for relevant changes that need a map reload: This is not the case when the user just
+  // pans / zooms
+  let refresh = false
+  for (const prop of mapRedrawProps) {
+    if (newVal[prop] !== oldVal[prop]) {
+      refresh = true
+      break
+    }
+  }
 
-function calcMap(fractalParams: FractalParams) {
-  console.log('calcMap', fractalParams)
+  calcMap(fractalParams.value, refresh)
+})
+
+function changeFractalParams(params: Partial<FractalParams>) {
+  fractalParams.value = { ...fractalParams.value, ...params }
+}
+
+function calcMap(fractalParams: FractalParams, refresh = false) {
   // olMap.getView().setCenter([preset.centerCX, preset.centerCY])
   // olMap.getView().setZoom(1)
   console.log(
@@ -219,8 +218,17 @@ function calcMap(fractalParams: FractalParams) {
   // choose the destination / output size, then generate an image from it:
   let imgLink = `${apiroot()}/fractal-image.jpg?${fractParamsAsQueryParams(imageParams)}`
   console.log(imgLink)
+  // console.log(imgLink)
+  // fractalOlLayer?.getSource()?.changed()
+  if (refresh) {
+    refreshTiles()
+  }
+}
+
+function refreshTiles() {
   fractalOlLayer?.getSource()?.changed()
 }
+
 function getActualFractParams(): FractalParams {
   const actExtent = olMap.getView().calculateExtent()
   const viewCenter = olMap.getView().getCenter()!

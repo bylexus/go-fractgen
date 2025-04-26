@@ -5,7 +5,9 @@ const show = defineModel<boolean>()
 <template>
   <div :class="{ dialog: true, hidden: !show }">
     <button class="close-btn" type="button" @click="show = false">X</button>
-    <slot></slot>
+    <div class="dialog-content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -23,7 +25,7 @@ const show = defineModel<boolean>()
     bottom 0.2s ease-in-out;
   &.hidden {
     opacity: 0;
-    bottom: -100%;
+    bottom: -150%;
   }
 
   .close-btn {
@@ -41,6 +43,9 @@ const show = defineModel<boolean>()
       opacity: 1;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
     }
+  }
+  .dialog-content {
+    margin-top: 2rem;
   }
 }
 </style>

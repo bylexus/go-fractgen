@@ -37,32 +37,32 @@ fractalPreset.value = fractalParams.value.name || ''
 watch(fractalPreset, () => {
   const preset = fractalPresetByName(fractalPreset.value)
   if (preset) {
-    fractalParams.value.iterFunc = preset.iterFunc
-    fractalParams.value.maxIterations = preset.maxIterations
-    fractalParams.value.centerCX = preset.centerCX
-    fractalParams.value.centerCY = preset.centerCY
-    fractalParams.value.diameterCX = preset.diameterCX
-    fractalParams.value.colorPreset = preset.colorPreset
-    fractalParams.value.colorPaletteRepeat = preset.colorPaletteRepeat
-    fractalParams.value.juliaKr = preset.juliaKr
-    fractalParams.value.juliaKi = preset.juliaKi
-    fractalParams.value.name = preset.name || ''
-    // colorPreset.value = preset.colorPreset
+    changeFractalParams(preset)
   }
 })
 
-function fractParamsAsQueryParams(inputObj: { [key: string]: any }) {
-  return queryStr({ ...inputObj })
+watch(fractalParams, (newVal) => {
+  console.log('changed params: ', newVal)
+})
+
+function changeFractalParams(params: Partial<FractalParams>) {
+  fractalParams.value = { ...fractalParams.value, ...params }
 }
 
-function recalcIterations(diameterCX: number) {
+function recalcIterations() {
   // approximation of the number of iterations, based on the following formula,
   // maxIterations := int(40 * math.Pow(1.3, float64(zoomLevel)))
 
   // which seems to work well:
   // maxIter = 50 * (log10(scale))^1.25
   // where scale is pixelWidth/complexPlaneWidth e.g. 1280/5
-  return Math.ceil(50 * Math.pow(Math.log10(fractalParams.value.width / diameterCX), 1.25))
+  const optimalIterationsForScale = Math.ceil(
+    60 *
+      Math.pow(Math.log10((fractalParams.value.width || 0) / fractalParams.value.diameterCX), 1.25),
+  )
+  changeFractalParams({
+    maxIterations: optimalIterationsForScale,
+  })
 }
 </script>
 
@@ -83,20 +83,49 @@ function recalcIterations(diameterCX: number) {
       </div>
       <div class="label-field">
         <label>Color Palette:</label>
-        <ColorPresetsSelect v-model="fractalParams.colorPreset"></ColorPresetsSelect>
+        <ColorPresetsSelect
+          :model-value="fractalParams.colorPreset"
+          @change.lazy="
+            (e: Event) => changeFractalParams({ colorPreset: (e.target as HTMLInputElement).value })
+          "
+        ></ColorPresetsSelect>
       </div>
       <div class="label-field">
         <label for="iterations">Max. Iterations</label>
-        <input type="number" v-model.lazy="fractalParams.maxIterations" id="iterations" />
+        <!-- <input type="number" v-model.lazy="fractalParams.maxIterations" id="iterations" /> -->
+        <div style="display: flex; gap: 0.25rem; align-items: end">
+          <input
+            type="number"
+            :value="fractalParams.maxIterations"
+            @change.lazy="
+              (e: Event) =>
+                changeFractalParams({
+                  maxIterations: parseInt((e.target as HTMLInputElement).value),
+                })
+            "
+            id="iterations"
+          />
+          <button type="button" @click="recalcIterations()">🧮</button>
+        </div>
       </div>
       <div class="label-field">
         <label for="paletteRepeat">Palette Repeat:</label>
-        <input type="number" v-model.lazy="fractalParams.colorPaletteRepeat" id="paletteRepeat" />
+        <input
+          type="number"
+          :value="fractalParams.colorPaletteRepeat"
+          id="paletteRepeat"
+          @change.lazy="
+            (e: Event) =>
+              changeFractalParams({
+                colorPaletteRepeat: parseInt((e.target as HTMLInputElement).value),
+              })
+          "
+        />
       </div>
       <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
       <button type="button" @click="showExportDlg = true">export</button>
     </div>
-    <ExportDialog v-model="showExportDlg" />
+    <ExportDialog v-model="showExportDlg" :fract-params="fractalParams" />
   </div>
 </template>
 

@@ -175,9 +175,7 @@
   ],
   "fractalPresets": [
     {
-      "picWidth": 960,
       "maxIterations": 40,
-      "picHeight": 600,
       "diameterCX": 4,
       "colorPreset": "patchwork",
       "juliaKi": 0.6,
@@ -190,9 +188,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 100,
-      "picHeight": 600,
       "diameterCX": 0.53184,
       "colorPreset": "patchwork",
       "juliaKi": 0.6,
@@ -205,9 +201,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 400,
-      "picHeight": 600,
       "diameterCX": 0.01611,
       "colorPreset": "patchwork",
       "juliaKi": 0.6,
@@ -220,9 +214,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 500,
-      "picHeight": 600,
       "diameterCX": 0.0022878,
       "colorPreset": "womens-choice",
       "juliaKi": 0.6,
@@ -235,9 +227,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 3000,
-      "picHeight": 600,
       "diameterCX": 6.6208e-7,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0.6,
@@ -250,9 +240,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 400,
-      "picHeight": 600,
       "diameterCX": 0.02403828125,
       "colorPreset": "patchwork",
       "juliaKi": 0.6,
@@ -265,9 +253,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 1.0096719999999999e-7,
       "colorPreset": "shades-of-gray",
       "juliaKi": 0.6,
@@ -280,9 +266,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 1000,
-      "picHeight": 600,
       "diameterCX": 0.26592,
       "colorPreset": "red-alert",
       "juliaKi": 0.6,
@@ -295,9 +279,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 2500,
-      "picHeight": 600,
       "diameterCX": 0.000036573043007812505,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0.6,
@@ -310,9 +292,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 1.0320131581138046e-7,
       "colorPreset": "red-alert",
       "juliaKi": 0.6,
@@ -325,9 +305,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 0.00009171127505090332,
       "colorPreset": "red-alert",
       "juliaKi": 0.6,
@@ -340,9 +318,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 25000,
-      "picHeight": 600,
       "diameterCX": 5.6334929242238016e-11,
       "colorPreset": "pastel-blue",
       "juliaKi": 0.6,
@@ -355,9 +331,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 0.000008376309798955982,
       "colorPreset": "womens-choice",
       "juliaKi": 0.6,
@@ -370,9 +344,7 @@
       "juliaKr": -0.6
     },
     {
-      "picWidth": 960,
       "maxIterations": 80,
-      "picHeight": 600,
       "diameterCX": 4,
       "colorPreset": "patchwork",
       "juliaKi": 0.8,
@@ -385,9 +357,7 @@
       "juliaKr": -0.2
     },
     {
-      "picWidth": 960,
       "maxIterations": 750,
-      "picHeight": 600,
       "diameterCX": 0.0006215899658203127,
       "colorPreset": "womens-choice",
       "juliaKi": 0.2,
@@ -400,9 +370,7 @@
       "juliaKr": -0.8
     },
     {
-      "picWidth": 960,
       "maxIterations": 728,
-      "picHeight": 600,
       "diameterCX": 7.448742562344572e-11,
       "colorPreset": "wonder-wall",
       "juliaKi": 0.8,
@@ -412,12 +380,10 @@
       "colorPaletteRepeat": 10,
       "centerCY": -0.46679493784904497,
       "centerCX": 0.5484441816806793,
-      "juliaKr": -0.2 
+      "juliaKr": -0.2
     },
     {
-      "picWidth": 960,
       "maxIterations": 33655,
-      "picHeight": 600,
       "diameterCX": 7.448742562344572e-11,
       "colorPreset": "red-alert",
       "juliaKi": 0,
@@ -430,9 +396,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 456,
-      "picHeight": 600,
       "diameterCX": 0.0029454794999999997,
       "colorPreset": "pastel-blue",
       "juliaKi": 0,
@@ -445,9 +409,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 3782,
-      "picHeight": 600,
       "diameterCX": 8.875640775193726e-8,
       "colorPreset": "red-alert",
       "juliaKi": 0,
@@ -460,9 +422,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 3771,
-      "picHeight": 600,
       "diameterCX": 2.2282162735290527e-7,
       "colorPreset": "patchwork",
       "juliaKi": 0,
@@ -475,9 +435,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 6.173474248535155e-7,
       "colorPreset": "nature",
       "juliaKi": 0,
@@ -490,9 +448,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 14302,
-      "picHeight": 600,
       "diameterCX": 2.0063791307739252e-8,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0,
@@ -505,9 +461,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 4503,
-      "picHeight": 600,
       "diameterCX": 6.406733893997191e-8,
       "colorPreset": "patchwork",
       "juliaKi": 0,
@@ -520,9 +474,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 40,
-      "picHeight": 600,
       "diameterCX": 4.5,
       "colorPreset": "patchwork",
       "juliaKi": 0,
@@ -535,9 +487,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 10000,
-      "picHeight": 600,
       "diameterCX": 1.5201032775878903e-8,
       "colorPreset": "nature",
       "juliaKi": 0,
@@ -550,9 +500,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 40,
-      "picHeight": 600,
       "diameterCX": 4.5,
       "colorPreset": "patchwork",
       "juliaKi": 0,
@@ -565,9 +513,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 3000,
-      "picHeight": 600,
       "diameterCX": 4.5,
       "colorPreset": "ultra-fractal",
       "juliaKi": 0,
@@ -580,9 +526,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 3950,
-      "picHeight": 600,
       "diameterCX": 1.3543938995361328e-7,
       "colorPreset": "womens-choice",
       "juliaKi": 0,
@@ -595,9 +539,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 4579,
-      "picHeight": 600,
       "diameterCX": 1.408093650054932e-7,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0,
@@ -610,9 +552,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 9115,
-      "picHeight": 600,
       "diameterCX": 4.914502654174805e-7,
       "colorPreset": "nature",
       "juliaKi": 0,
@@ -625,9 +565,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 578,
-      "picHeight": 600,
       "diameterCX": 0.003949804687500001,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0.65,
@@ -640,9 +578,7 @@
       "juliaKr": -0.5
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 0.000027877705759388686,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0,
@@ -655,9 +591,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 5000,
-      "picHeight": 600,
       "diameterCX": 4.688311580400011e-8,
       "colorPreset": "red-alert",
       "juliaKi": 0,
@@ -670,9 +604,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 2226,
-      "picHeight": 600,
       "diameterCX": 9.214391588660157e-7,
       "colorPreset": "nature",
       "juliaKi": 0,
@@ -685,9 +617,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 2345,
-      "picHeight": 600,
       "diameterCX": 6.969426439847171e-7,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0,
@@ -700,9 +630,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 1506,
-      "picHeight": 600,
       "diameterCX": 0.000005328256758619744,
       "colorPreset": "nature",
       "juliaKi": 0,
@@ -715,9 +643,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 36345,
-      "picHeight": 600,
       "diameterCX": 1.2403750557893055e-10,
       "colorPreset": "red-alert",
       "juliaKi": 0,
@@ -730,9 +656,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 54247,
-      "picHeight": 600,
       "diameterCX": 2.0683026289597354e-8,
       "colorPreset": "womens-choice",
       "juliaKi": 0,
@@ -745,9 +669,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 43855,
-      "picHeight": 600,
       "diameterCX": 2.821459423993879e-8,
       "colorPreset": "shades-of-blue",
       "juliaKi": 0,
@@ -760,9 +682,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 16662,
-      "picHeight": 600,
       "diameterCX": 8.263048994450568e-10,
       "colorPreset": "red-alert",
       "juliaKi": 0,
@@ -775,9 +695,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 4048,
-      "picHeight": 600,
       "diameterCX": 0.000014242538971147528,
       "colorPreset": "rgb",
       "juliaKi": 0,
@@ -790,9 +708,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 4000,
-      "picHeight": 600,
       "diameterCX": 0.001502392578125,
       "colorPreset": "ultra-fractal",
       "juliaKi": 0,
@@ -805,9 +721,7 @@
       "juliaKr": 0
     },
     {
-      "picWidth": 960,
       "maxIterations": 3000,
-      "picHeight": 600,
       "diameterCX": 0.0000029336,
       "colorPreset": "patchwork",
       "juliaKi": 0,
@@ -822,8 +736,6 @@
     {
       "name": "Mandelbrot Double Tentacle",
       "iterFunc": "Mandelbrot",
-      "picWidth": 960,
-      "picHeight": 600,
       "diameterCX": 2.7939677238e-10,
       "centerCX": 0.3037470952469812,
       "centerCY": 0.021191287792123256,
@@ -837,8 +749,6 @@
     {
       "name": "Mandelbrot Julia Guardians",
       "iterFunc": "Mandelbrot",
-      "picWidth": 960,
-      "picHeight": 600,
       "diameterCX": 2.9802322387695312e-8,
       "centerCX": -1.6748593002526977,
       "centerCY": 0.000004937065946312495,
@@ -852,8 +762,6 @@
     {
       "name": "Mandelbrot Eye of the Beholder",
       "iterFunc": "Mandelbrot",
-      "picWidth": 960,
-      "picHeight": 600,
       "diameterCX": 1.7389538697898388e-8,
       "centerCX": -0.17590299153782224,
       "centerCY": -1.0866134534875305,
@@ -863,6 +771,19 @@
       "maxIterations": 7000,
       "colorPaletteLength": 10000,
       "colorPaletteRepeat": 120
+    },
+    {
+      "name": "Mandelbrot The Fortress",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 7.220890552162018e-13,
+      "centerCX": -0.74486366548725,
+      "centerCY": 0.13104096184196912,
+      "colorPreset": "ultra-fractal",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 1831,
+      "colorPaletteLength": 10000,
+      "colorPaletteRepeat": 10
     }
   ]
 }

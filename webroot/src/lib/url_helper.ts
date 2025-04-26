@@ -1,12 +1,12 @@
 export function apiroot(): string {
-  return import.meta.env.VITE_API_ROOT;
+  return import.meta.env.VITE_API_ROOT
 }
 export function queryStr(obj: { [key: string]: any }) {
   const parts = []
   for (const key in obj) {
     const value = obj[key]
     if (value instanceof Object) {
-      parts.push(`${key}=${JSON.stringify(value)}`)
+      parts.push(`${key}=${encodeURIComponent(JSON.stringify(value))}`)
     } else {
       parts.push(`${key}=${encodeURIComponent(value)}`)
     }
