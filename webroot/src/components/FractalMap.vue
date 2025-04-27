@@ -83,6 +83,7 @@ onMounted(() => {
       // const maxIterations = Math.ceil(50 * Math.pow(1.3, zoomLevel))
       const maxIterations = fractalParams.value.maxIterations
       const colorPaletteRepeat = fractalParams.value.colorPaletteRepeat
+      const colorPaletteLength = fractalParams.value.colorPaletteLength
 
       const res = calcResolutionForZoom(zoomLevel)
 
@@ -92,6 +93,7 @@ onMounted(() => {
         maxIterations: maxIterations,
         colorPreset: props.colorPreset,
         colorPaletteRepeat: colorPaletteRepeat,
+        colorPaletteLength: colorPaletteLength,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
         tileWidthFractal: res * tileWidth,
@@ -128,14 +130,14 @@ onMounted(() => {
       new MouseWheelZoom({ duration: 250 }),
       new DragPan(),
       new DragZoom({ duration: 250 }),
-      new PinchZoom({ duration: 0 }),
+      new PinchZoom({ duration: 250 }),
     ],
     controls: defaultControls({
       rotate: false,
       zoom: true,
       zoomOptions: {
         target: mapControls.value,
-        duration: 0,
+        duration: 250,
       },
       attribution: true,
     }),

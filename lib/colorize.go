@@ -52,7 +52,6 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 	if fractParams.ColorPaletteRepeat > 0 {
 		repeat = fractParams.ColorPaletteRepeat
 	}
-
 	/*
 			A palette is defined from single color stops. Each stop also defines its "length", ranging from 0 (=0%) to 256 (=100%):
 
@@ -93,22 +92,29 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 			(675 - 256 - 128 - 256) / 128 = 0.27 --> 27% from the left color stop.
 
 	*/
-	// var paletteLength = len(palette) * repeat
-	var paletteLength = 0
-	var colorStopLengths = make([]int, 0)
-	for i := 0; i < repeat; i++ {
-		for _, entry := range palette {
-			if entry.Steps > 0 {
-				paletteLength += entry.Steps
-				colorStopLengths = append(colorStopLengths, entry.Steps)
-			} else {
-				paletteLength += defaultPaletteLength
-				colorStopLengths = append(colorStopLengths, defaultPaletteLength)
-			}
-		}
-	}
 
 	if iterValue <= maxIterations {
+		if fractParams.ColorPaletteLength > 0 {
+			// means: the palette length is defined by the user, not by the max iterations
+			maxIterations = float64(fractParams.ColorPaletteLength)
+			iterValue = math.Mod(iterValue, maxIterations)
+			repeat = 1
+		}
+
+		// var paletteLength = len(palette) * repeat
+		var paletteLength = 0
+		var colorStopLengths = make([]int, 0)
+		for i := 0; i < repeat; i++ {
+			for _, entry := range palette {
+				if entry.Steps > 0 {
+					paletteLength += entry.Steps
+					colorStopLengths = append(colorStopLengths, entry.Steps)
+				} else {
+					paletteLength += defaultPaletteLength
+					colorStopLengths = append(colorStopLengths, defaultPaletteLength)
+				}
+			}
+		}
 
 		// Find the two anchor colors that the current iteration count is between
 		if iterValue == maxIterations {
@@ -159,67 +165,3 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 	// Set the pixel color
 	img.Set(x, y, selectedColor.RGBA)
 }
-
-// func setPaletteColorFixedLength(img *FractImage, x, y int, iterValue float64, fractParams CommonFractParams, fractRes FractFunctionResult) {
-// 	// the color palette is defined with a set of "anchor colors": The full color palette is the same length
-// 	// as the Max iteration count, but we only define anchor colors in-between. We then linear-interpolate the
-// 	// correct color based on the iteration count-to-max-iterations ratio.
-
-// 	var palette = fractParams.ColorPalette
-// 	var nrOfColors = len(palette)
-
-// 	// Default: If the iteration count exceeds the max iterations, set the pixel color to black
-// 	var selectedColor color.Color = color.RGBA{R: 0, G: 0, B: 0, A: 255}
-// 	var repeat = 1
-// 	var intIterValue = int(math.Floor(iterValue))
-// 	var lengthBoundary = 1024
-// 	// var lengthBoundary = fractParams.MaxIterations
-// 	// if fractParams.ColorPaletteRepeat > 0 {
-// 	// 	repeat = fractParams.ColorPaletteRepeat
-// 	// }
-// 	var paletteLength = 0
-// 	for _, entry := range palette {
-// 		if entry.Steps > 0 {
-// 			paletteLength += entry.Steps
-// 		} else {
-// 			paletteLength += defaultPaletteLength
-// 		}
-// 	}
-
-// 	iterValue = math.Mod(iterValue, float64(lengthBoundary))
-// 	intIterValue = intIterValue % lengthBoundary
-
-// 	if intIterValue <= lengthBoundary {
-// 		// Calculate the iteration count-to-max-iterations ratio
-
-// 		// Find the two anchor colors that the current iteration count is between
-// 		if intIterValue == lengthBoundary {
-// 			selectedColor = palette[len(palette)-1]
-// 		} else {
-// 			ratio := iterValue / float64(lengthBoundary)
-// 			colorPaletteSectionWidth := float64(lengthBoundary) / float64(paletteLength)
-
-// 			var lower, upper color.RGBA
-// 			var chosenPaletteIndex int = 0
-// 			for i := 0; i < paletteLength-1; i++ {
-// 				if float64(i)/float64(paletteLength) <= ratio {
-// 					lower = palette[i%nrOfColors]
-// 					upper = palette[(i+1)%nrOfColors]
-// 					chosenPaletteIndex = i
-// 				}
-// 			}
-// 			relativeColorDistance := iterValue - float64(chosenPaletteIndex)*colorPaletteSectionWidth
-// 			relativeRatio := relativeColorDistance / colorPaletteSectionWidth
-
-// 			// Linear-interpolate the correct color based on the ratio
-// 			selectedColor = color.RGBA{
-// 				R: uint8(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio),
-// 				G: uint8(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio),
-// 				B: uint8(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio),
-// 				A: 255,
-// 			}
-// 		}
-// 	}
-// 	// Set the pixel color
-// 	img.Set(x, y, selectedColor)
-// }

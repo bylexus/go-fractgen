@@ -9,6 +9,7 @@ export type ColorPreset = {
     G: number
     B: number
     A: number
+    steps?: number
   }>
 }
 
@@ -22,6 +23,7 @@ export type FractalPreset = {
   diameterCX: number
   colorPreset: string
   colorPaletteRepeat: number
+  colorPaletteLength: number
   juliaKr: number
   juliaKi: number
 }

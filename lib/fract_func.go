@@ -21,7 +21,6 @@ const (
 )
 
 type Fractal interface {
-	// CalcFractalImage(threadPool *ethreads.ThreadPool) *FractImage
 	CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn
 	ImageWidth() int
 	ImageHeight() int
@@ -79,9 +78,11 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	if commonFractParams.ColorPaletteRepeat <= 0 {
 		commonFractParams.ColorPaletteRepeat = 1
 	}
+	if commonFractParams.ColorPaletteLength <= 0 {
+		commonFractParams.ColorPaletteLength = -1
+	}
 
 	commonFractParams.SmoothColors = true
-	commonFractParams.ColorPaletteLength = -1
 
 	// Calculated during initialization:
 	commonFractParams.aspect = aspect

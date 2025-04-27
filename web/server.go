@@ -59,6 +59,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	diameterCX, _ := strconv.ParseFloat(r.URL.Query().Get("diameterCX"), 64)
 	colorPresetParam := r.URL.Query().Get("colorPreset")
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteRepeat"))
+	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteLength"))
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -75,7 +76,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 		MaxIterations:      maxIterations,
 		ColorPalette:       colorPreset.Palette,
 		ColorPaletteRepeat: colorPaletteRepeat,
-		ColorPaletteLength: -1,
+		ColorPaletteLength: colorPaletteLength,
 	}
 
 	switch iterFunc {
@@ -150,6 +151,10 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	if colorPaletteRepeat == 0 {
 		colorPaletteRepeat = 1
 	}
+	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteLength"))
+	if colorPaletteLength == 0 {
+		colorPaletteLength = -1
+	}
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -166,7 +171,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		MaxIterations:      maxIterations,
 		ColorPalette:       colorPreset.Palette,
 		ColorPaletteRepeat: colorPaletteRepeat,
-		ColorPaletteLength: -1,
+		ColorPaletteLength: colorPaletteLength,
 	}
 	switch iterFunc {
 	case "mandelbrot":
@@ -219,7 +224,10 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 	if width <= 0 {
 		width = 1024
 	}
-	maxIter := width
+	maxIter, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
+	if maxIter == 0 {
+		maxIter = width
+	}
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	if height <= 0 {
 		height = 100
@@ -227,6 +235,10 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("paletteRepeat"))
 	if colorPaletteRepeat == 0 {
 		colorPaletteRepeat = 1
+	}
+	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("paletteLength"))
+	if colorPaletteLength == 0 {
+		colorPaletteLength = -1
 	}
 	dir := r.URL.Query().Get("dir")
 	if dir == "" {
@@ -251,7 +263,7 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 				MaxIterations:      maxIter,
 				ColorPalette:       colorPreset.Palette,
 				ColorPaletteRepeat: colorPaletteRepeat,
-				ColorPaletteLength: -1,
+				ColorPaletteLength: colorPaletteLength,
 			}
 			var iterValue float64
 			switch dir {

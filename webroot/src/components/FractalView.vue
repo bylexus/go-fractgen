@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { apiroot, queryStr } from '@/lib/url_helper'
-import { onMounted, reactive, type Ref, ref, watch, watchEffect } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 import ColorPresetsSelect from './ColorPresetsSelect.vue'
-import { useLocalStorageVariable } from '@/lib/use-local-storage'
+import { useSessionStorageVariable } from '@/lib/use-session-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
 import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/lib/use-presets'
 import ExportDialog from './ExportDialog.vue'
@@ -15,7 +14,7 @@ const fractalMap = ref<InstanceType<typeof FractalMap>>()
 const hudVisible = ref(true)
 const showExportDlg = ref(false)
 
-const fractalParams: Ref<FractalParams> = useLocalStorageVariable(
+const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
   'fractalParams',
   Object.assign(
     {
