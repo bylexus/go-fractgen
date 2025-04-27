@@ -66,41 +66,32 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var fractal lib.Fractal
+	var commonFractParams = lib.CommonFractParams{
+		ImageWidth:         width,
+		ImageHeight:        height,
+		CenterCX:           centerCX,
+		CenterCY:           centerCY,
+		DiameterCX:         diameterCX,
+		MaxIterations:      maxIterations,
+		ColorPalette:       colorPreset.Palette,
+		ColorPaletteRepeat: colorPaletteRepeat,
+		ColorPaletteLength: -1,
+	}
+
 	switch iterFunc {
 	case "mandelbrot":
-		fractal = lib.NewMandelbrotFractal(
-			width, height,
-			centerCX, centerCY, diameterCX,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrotFractal(commonFractParams)
 		break
 	case "mandelbrot3":
-		fractal = lib.NewMandelbrot3Fractal(
-			width, height,
-			centerCX, centerCY, diameterCX,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrot3Fractal(commonFractParams)
 		break
 	case "mandelbrot4":
-		fractal = lib.NewMandelbrot4Fractal(
-			width, height,
-			centerCX, centerCY, diameterCX,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrot4Fractal(commonFractParams)
 		break
 	case "julia":
 		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
 		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
-		fractal = lib.NewJuliaFractal(
-			width, height,
-			centerCX, centerCY, diameterCX,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-			juliaKr, juliaKi,
-		)
+		fractal = lib.NewJuliaFractal(commonFractParams, juliaKr, juliaKi)
 		break
 	default:
 		w.WriteHeader(http.StatusBadRequest)
@@ -166,41 +157,31 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var fractal lib.Fractal
+	var commonFractParams = lib.CommonFractParams{
+		ImageWidth:         tileWidthPixels,
+		ImageHeight:        tileWidthPixels,
+		CenterCX:           centerCX,
+		CenterCY:           centerCY,
+		DiameterCX:         tileWidthFractal,
+		MaxIterations:      maxIterations,
+		ColorPalette:       colorPreset.Palette,
+		ColorPaletteRepeat: colorPaletteRepeat,
+		ColorPaletteLength: -1,
+	}
 	switch iterFunc {
 	case "mandelbrot":
-		fractal = lib.NewMandelbrotFractal(
-			tileWidthPixels, tileWidthPixels,
-			centerCX, centerCY, tileWidthFractal,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrotFractal(commonFractParams)
 		break
 	case "mandelbrot3":
-		fractal = lib.NewMandelbrot3Fractal(
-			tileWidthPixels, tileWidthPixels,
-			centerCX, centerCY, tileWidthFractal,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrot3Fractal(commonFractParams)
 		break
 	case "mandelbrot4":
-		fractal = lib.NewMandelbrot4Fractal(
-			tileWidthPixels, tileWidthPixels,
-			centerCX, centerCY, tileWidthFractal,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-		)
+		fractal = lib.NewMandelbrot4Fractal(commonFractParams)
 		break
 	case "julia":
 		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
 		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
-		fractal = lib.NewJuliaFractal(
-			tileWidthPixels, tileWidthPixels,
-			centerCX, centerCY, tileWidthFractal,
-			maxIterations, colorPreset.Palette,
-			colorPaletteRepeat,
-			juliaKr, juliaKi,
-		)
+		fractal = lib.NewJuliaFractal(commonFractParams, juliaKr, juliaKi)
 		break
 	default:
 		w.WriteHeader(http.StatusBadRequest)
@@ -270,6 +251,7 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 				MaxIterations:      maxIter,
 				ColorPalette:       colorPreset.Palette,
 				ColorPaletteRepeat: colorPaletteRepeat,
+				ColorPaletteLength: -1,
 			}
 			var iterValue float64
 			switch dir {

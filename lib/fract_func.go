@@ -44,7 +44,7 @@ type CommonFractParams struct {
 	ImageHeight int
 
 	SmoothColors       bool
-	FixedSizePalette   bool
+	ColorPaletteLength int
 	ColorPalette       ColorPalette
 	ColorPaletteRepeat int
 
@@ -81,7 +81,7 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	}
 
 	commonFractParams.SmoothColors = true
-	commonFractParams.FixedSizePalette = false
+	commonFractParams.ColorPaletteLength = -1
 
 	// Calculated during initialization:
 	commonFractParams.aspect = aspect
@@ -116,54 +116,26 @@ func NewFractalFromPresets(width, height int, colorPreset ColorPreset, fractalPr
 	if err != nil {
 		return nil, err
 	}
+	commonParams := CommonFractParams{
+		ImageWidth:         width,
+		ImageHeight:        height,
+		CenterCX:           fractalPreset.CenterCX,
+		CenterCY:           fractalPreset.CenterCY,
+		DiameterCX:         fractalPreset.DiameterCX,
+		MaxIterations:      fractalPreset.MaxIterations,
+		ColorPalette:       colorPreset.Palette,
+		ColorPaletteRepeat: fractalPreset.ColorPaletteRepeat,
+		ColorPaletteLength: fractalPreset.ColorPaletteLength,
+	}
 	switch fractFunc {
 	case FRACTAL_TYPE_MANDELBROT:
-		return NewMandelbrotFractal(
-			width,
-			height,
-			fractalPreset.CenterCX,
-			fractalPreset.CenterCY,
-			fractalPreset.DiameterCX,
-			fractalPreset.MaxIterations,
-			colorPreset.Palette,
-			fractalPreset.ColorPaletteRepeat,
-		), nil
+		return NewMandelbrotFractal(commonParams), nil
 	case FRACTAL_TYPE_MANDELBROT3:
-		return NewMandelbrot3Fractal(
-			width,
-			height,
-			fractalPreset.CenterCX,
-			fractalPreset.CenterCY,
-			fractalPreset.DiameterCX,
-			fractalPreset.MaxIterations,
-			colorPreset.Palette,
-			fractalPreset.ColorPaletteRepeat,
-		), nil
+		return NewMandelbrot3Fractal(commonParams), nil
 	case FRACTAL_TYPE_MANDELBROT4:
-		return NewMandelbrot4Fractal(
-			width,
-			height,
-			fractalPreset.CenterCX,
-			fractalPreset.CenterCY,
-			fractalPreset.DiameterCX,
-			fractalPreset.MaxIterations,
-			colorPreset.Palette,
-			fractalPreset.ColorPaletteRepeat,
-		), nil
+		return NewMandelbrot4Fractal(commonParams), nil
 	case FRACTAL_TYPE_JULIA:
-		return NewJuliaFractal(
-			width,
-			height,
-			fractalPreset.CenterCX,
-			fractalPreset.CenterCY,
-			fractalPreset.DiameterCX,
-			fractalPreset.MaxIterations,
-			colorPreset.Palette,
-			fractalPreset.ColorPaletteRepeat,
-			fractalPreset.JuliaKr,
-			fractalPreset.JuliaKi,
-		), nil
-
+		return NewJuliaFractal(commonParams, fractalPreset.JuliaKr, fractalPreset.JuliaKi), nil
 	default:
 		return nil, errors.New("unknown fractal function")
 	}

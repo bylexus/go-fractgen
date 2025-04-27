@@ -10,17 +10,8 @@ type JuliaFractal struct {
 	JuliaKi float64
 }
 
-func NewJuliaFractal(imageWidth, imageHeight int, centerCX, centerCY, diameterCX float64, maxIterations int, colorPalette ColorPalette, colorPaletteRepeat int, juliaKr, juliaKi float64) JuliaFractal {
-	var params = initializeFractParams(CommonFractParams{
-		ImageWidth:         imageWidth,
-		ImageHeight:        imageHeight,
-		CenterCX:           centerCX,
-		CenterCY:           centerCY,
-		DiameterCX:         diameterCX,
-		MaxIterations:      maxIterations,
-		ColorPalette:       colorPalette,
-		ColorPaletteRepeat: colorPaletteRepeat,
-	})
+func NewJuliaFractal(fractalParams CommonFractParams, juliaKr, juliaKi float64) JuliaFractal {
+	var params = initializeFractParams(fractalParams)
 
 	return JuliaFractal{params, juliaKr, juliaKi}
 }

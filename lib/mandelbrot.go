@@ -8,18 +8,8 @@ type MandelbrotFractal struct {
 	CommonFractParams
 }
 
-func NewMandelbrotFractal(imageWidth, imageHeight int, centerCX, centerCY, diameterCX float64, maxIterations int, colorPalette ColorPalette, colorPaletteRepeat int) MandelbrotFractal {
-	var params = initializeFractParams(CommonFractParams{
-		ImageWidth:         imageWidth,
-		ImageHeight:        imageHeight,
-		CenterCX:           centerCX,
-		CenterCY:           centerCY,
-		DiameterCX:         diameterCX,
-		MaxIterations:      maxIterations,
-		ColorPalette:       colorPalette,
-		ColorPaletteRepeat: colorPaletteRepeat,
-	})
-
+func NewMandelbrotFractal(fractalParams CommonFractParams) MandelbrotFractal {
+	var params = initializeFractParams(fractalParams)
 	return MandelbrotFractal{params}
 }
 
