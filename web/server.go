@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"image"
 	"net/http"
 	"strconv"
 	"strings"
@@ -24,6 +25,7 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/fractal-image/{format}", server.handleFractalImage)
+	mux.HandleFunc("/paletteViewer", server.handlePaletteViewer)
 	mux.HandleFunc("/wmts", server.handleWmtsRequest)
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
 	mux.Handle("/", http.FileServer(http.Dir("webroot")))
@@ -227,4 +229,61 @@ func (s *WebServer) handlePresetsJson(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonStream)
+}
+
+func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.WriteHeader(http.StatusOK)
+	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
+	if width <= 0 {
+		width = 1024
+	}
+	maxIter := width
+	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
+	if height <= 0 {
+		height = 100
+	}
+	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("paletteRepeat"))
+	if colorPaletteRepeat == 0 {
+		colorPaletteRepeat = 1
+	}
+	dir := r.URL.Query().Get("dir")
+	if dir == "" {
+		dir = "horizontal"
+	}
+
+	switch dir {
+	case "horizontal":
+		maxIter = width
+		break
+	case "vertical":
+		maxIter = height
+		break
+	}
+
+	colorPreset, _ := s.colorPresets.GetByIdent(r.URL.Query().Get("colorPreset"))
+
+	img := lib.FractImage{image.NewRGBA(image.Rect(0, 0, width, height))}
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			fractParams := lib.CommonFractParams{
+				MaxIterations:      maxIter,
+				ColorPalette:       colorPreset.Palette,
+				ColorPaletteRepeat: colorPaletteRepeat,
+			}
+			var iterValue float64
+			switch dir {
+			case "horizontal":
+				iterValue = float64(x)
+				break
+			case "vertical":
+				iterValue = float64(y)
+				break
+			}
+			result := lib.FractFunctionResult{}
+			lib.SetPaletteColor(&img, x, y, iterValue, fractParams, result)
+		}
+	}
+	img.EncodeJpeg(w)
+
 }

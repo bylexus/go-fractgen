@@ -38,3 +38,5 @@ of the fractal images as tiles.
 - [x] export fractal params as JSON
 - [x] export fractal params as png / jpeg
 - [ ] import function: import a preset / a color scheme
+- [ ] palette length: bound to max iter (done), or fixed length
+- [ ] palette editor

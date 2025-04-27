@@ -1,7 +1,6 @@
 {
   "colorPresets": [
     {
-      "defaultSteps": 256,
       "name": "Patchwork",
       "ident": "patchwork",
       "colors": [
@@ -22,17 +21,15 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Shades of Blue",
       "ident": "shades-of-blue",
       "colors": [
         { "a": 255, "r": 0, "b": 20, "g": 0 },
         { "a": 255, "r": 128, "b": 255, "g": 128, "steps": 64 },
-        { "a": 255, "r": 200, "b": 255, "g": 200 }
+        { "a": 255, "r": 200, "b": 255, "g": 200, "steps": 64 }
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Red Alert",
       "ident": "red-alert",
       "colors": [
@@ -45,27 +42,24 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Women's Choice",
       "ident": "womens-choice",
       "colors": [
         { "a": 255, "r": 30, "b": 25, "g": 5 },
         { "a": 255, "r": 128, "b": 89, "g": 0 },
         { "a": 255, "r": 255, "b": 204, "g": 102 },
-        { "a": 255, "r": 255, "b": 232, "g": 179 }
+        { "a": 255, "r": 255, "b": 232, "g": 179, "steps": 64 }
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Shades of Gray",
       "ident": "shades-of-gray",
       "colors": [
         { "a": 255, "r": 0, "b": 0, "g": 0 },
-        { "a": 255, "r": 255, "b": 255, "g": 255 }
+        { "a": 255, "r": 255, "b": 255, "g": 255, "steps": 64 }
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Pastel Blue",
       "ident": "pastel-blue",
       "colors": [
@@ -78,7 +72,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Sunny Sky",
       "ident": "sunny-sky",
       "colors": [
@@ -90,7 +83,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "RGB",
       "ident": "rgb",
       "colors": [
@@ -101,7 +93,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Baloooons",
       "ident": "baloooons",
       "colors": [
@@ -113,7 +104,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Nature",
       "ident": "nature",
       "colors": [
@@ -126,7 +116,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Wonder Wall",
       "ident": "wonder-wall",
       "colors": [
@@ -138,7 +127,6 @@
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "AI 1",
       "ident": "ai-1",
       "colors": [
@@ -146,11 +134,10 @@
         { "a": 255, "r": 75, "b": 130, "g": 0 },
         { "a": 255, "r": 0, "b": 255, "g": 191 },
         { "a": 255, "r": 255, "b": 0, "g": 215 },
-        { "a": 255, "r": 139, "b": 0, "g": 0 }
+        { "a": 255, "r": 139, "b": 0, "g": 0, "steps": 64 }
       ]
     },
     {
-      "defaultSteps": 256,
       "name": "Ultra Fractal",
       "ident": "ultra-fractal",
       "colors": [
@@ -169,7 +156,7 @@
         { "a": 255, "r": 255, "g": 170, "b": 0 },
         { "a": 255, "r": 204, "g": 128, "b": 0 },
         { "a": 255, "r": 153, "g": 87, "b": 0 },
-        { "a": 255, "r": 106, "g": 52, "b": 3 }
+        { "a": 255, "r": 106, "g": 52, "b": 3, "steps": 64 }
       ]
     }
   ],
@@ -331,17 +318,17 @@
       "juliaKr": -0.6
     },
     {
-      "maxIterations": 5000,
-      "diameterCX": 0.000008376309798955982,
+      "name": "Mandelbrot A Dream In Pink",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 0.000012874603271484375,
+      "centerCX": -0.7711962564771899,
+      "centerCY": 0.11536369181405741,
       "colorPreset": "womens-choice",
       "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 824,
       "colorPaletteLength": 10000,
-      "iterFunc": "Mandelbrot",
-      "name": "Mandelbrot A Dream In Pink",
-      "colorPaletteRepeat": 6,
-      "centerCY": 0.11536423928621213,
-      "centerCX": -0.7711961329605335,
-      "juliaKr": -0.6
+      "colorPaletteRepeat": 7
     },
     {
       "maxIterations": 80,
