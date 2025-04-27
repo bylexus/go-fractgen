@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import type { FractalParams } from '@/lib/use-presets'
 import Dialog from './Dialog.vue'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { apiroot, queryStr } from '@/lib/url_helper'
+import { screenSize } from '@/lib/element-info'
 const props = defineProps<{
   fractParams: FractalParams
 }>()
+
+const { physicalWidth, physicalHeight } = screenSize()
+
+const state = reactive({
+  imgWidth: physicalWidth || props.fractParams.width,
+  imgHeight: physicalHeight || props.fractParams.height,
+})
 
 const isSecureContext = computed(() => {
   return window.isSecureContext
@@ -16,9 +24,15 @@ function fractParamsAsQueryParams(inputObj: { [key: string]: any }) {
 }
 
 const jpegImageLink = computed(() => {
-  return `${apiroot()}/fractal-image/jpg?${fractParamsAsQueryParams(props.fractParams)}`
+  const params = { ...props.fractParams }
+  params.width = state.imgWidth
+  params.height = state.imgHeight
+  return `${apiroot()}/fractal-image/jpg?${fractParamsAsQueryParams(params)}`
 })
 const pngImageLink = computed(() => {
+  const params = { ...props.fractParams }
+  params.width = state.imgWidth
+  params.height = state.imgHeight
   return `${apiroot()}/fractal-image/png?${fractParamsAsQueryParams(props.fractParams)}`
 })
 
@@ -32,6 +46,14 @@ function copyParamsAsJson() {
     <div class="export-dialog">
       <fieldset>
         <legend>Export Image</legend>
+        <div class="label-field">
+          <label for="imgWidth">Image Width (px)</label>
+          <input type="number" v-model="state.imgWidth" id="imgWidth" />
+        </div>
+        <div class="label-field">
+          <label for="imgHeight">Image Height (px)</label>
+          <input type="number" v-model="state.imgHeight" id="imgHeight" />
+        </div>
         <div>
           Image URLs:
           <ul>
@@ -75,5 +97,16 @@ function copyParamsAsJson() {
   padding: 0.5rem;
   font-family: monospace;
   white-space: pre;
+}
+
+.label-field {
+  display: inline-flex;
+  flex-direction: column;
+
+  label {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-size: 0.75rem;
+  }
 }
 </style>

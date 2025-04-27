@@ -24,3 +24,20 @@ export function useElementResize(el: HTMLElement, delayMs: number = 100): Elemen
     sizes: computed(() => ({ width: width.value, height: height.value })),
   }
 }
+
+export function screenSize(): {
+  width: number
+  height: number
+  physicalWidth: number
+  physicalHeight: number
+  devicePixelRatio: number
+} {
+  const ratio = window.devicePixelRatio || 1
+  return {
+    width: window.screen?.width || 0,
+    height: window.screen?.height || 0,
+    physicalWidth: (window.screen?.width || 0) * ratio,
+    physicalHeight: (window.screen?.height || 0) * ratio,
+    devicePixelRatio: window.devicePixelRatio || 1,
+  }
+}

@@ -35,6 +35,7 @@ const mapRedrawProps = [
   'maxIterations',
   'colorPreset',
   'colorPaletteRepeat',
+  'colorPaletteLength',
   'juliaKr',
   'juliaKi',
 ]

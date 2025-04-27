@@ -64,6 +64,21 @@ function recalcIterations() {
     maxIterations: optimalIterationsForScale,
   })
 }
+
+function onFixedPaletteCBChange(e: Event) {
+  const checked = (e.target as HTMLInputElement).checked
+  if (checked) {
+    if (fractalParams.value.colorPaletteLength <= 0) {
+      changeFractalParams({ colorPaletteLength: 256 })
+    }
+  } else {
+    changeFractalParams({
+      colorPaletteLength: -1,
+      colorPaletteRepeat: fractalParams.value.colorPaletteRepeat || 1,
+    })
+  }
+  console.log(checked)
+}
 </script>
 
 <template>
@@ -108,8 +123,14 @@ function recalcIterations() {
           <button type="button" @click="recalcIterations()">🧮</button>
         </div>
       </div>
-      <div class="label-field">
-        <label for="paletteRepeat">Palette Repeat:</label>
+      <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
+        <label for="paletteRepeat">Palette Repeat:
+          <input
+            type="checkbox"
+            :checked="fractalParams.colorPaletteLength  > 0"
+            @change="onFixedPaletteCBChange"
+        />
+        </label>
         <input
           type="number"
           :value="fractalParams.colorPaletteRepeat"
@@ -118,6 +139,26 @@ function recalcIterations() {
             (e: Event) =>
               changeFractalParams({
                 colorPaletteRepeat: parseInt((e.target as HTMLInputElement).value),
+              })
+          "
+        />
+      </div>
+      <div v-if="fractalParams.colorPaletteLength > 0" class="label-field">
+        <label for="paletteLength"
+          >Fixed Palette Length:
+          <input
+            type="checkbox"
+            :checked="fractalParams.colorPaletteLength > 0"
+            @change="onFixedPaletteCBChange"
+        /></label>
+        <input
+          type="number"
+          :value="fractalParams.colorPaletteLength"
+          id="paletteLength"
+          @change.lazy="
+            (e: Event) =>
+              changeFractalParams({
+                colorPaletteLength: parseInt((e.target as HTMLInputElement).value),
               })
           "
         />
