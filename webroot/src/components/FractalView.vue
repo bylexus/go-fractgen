@@ -56,6 +56,7 @@ function recalcIterations() {
   // which seems to work well:
   // maxIter = 50 * (log10(scale))^1.25
   // where scale is pixelWidth/complexPlaneWidth e.g. 1280/5
+  console.log('width: ', fractalParams.value.width, 'diameterCX: ', fractalParams.value.diameterCX)
   const optimalIterationsForScale = Math.ceil(
     60 *
       Math.pow(Math.log10((fractalParams.value.width || 0) / fractalParams.value.diameterCX), 1.25),
@@ -123,7 +124,7 @@ function recalcIterations() {
         />
       </div>
       <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
-      <button type="button" @click="showExportDlg = true">export</button>
+      <button type="button" @click="showExportDlg = true">im-/export</button>
     </div>
     <ExportDialog v-model="showExportDlg" :fract-params="fractalParams" />
   </div>

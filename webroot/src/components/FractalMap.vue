@@ -33,7 +33,6 @@ const maxZoom = 46
 const mapRedrawProps = [
   'iterFunc',
   'maxIterations',
-  'diameterCX',
   'colorPreset',
   'colorPaletteRepeat',
   'juliaKr',
@@ -46,12 +45,18 @@ let zoomInProgress = false
 
 onMounted(() => {
   const mapSizes = useElementResize(map.value!)
-  watch(mapSizes.sizes, () => {
-    changeFractalParams({
-      width: mapSizes.width.value,
-      height: mapSizes.height.value,
-    })
-  })
+  watch(
+    mapSizes.sizes,
+    () => {
+      changeFractalParams({
+        width: mapSizes.width.value,
+        height: mapSizes.height.value,
+      })
+    },
+    {
+      immediate: true,
+    },
+  )
 
   // minx, miny, maxx, maxy
   const mandelbrotExtent = [-1.7, -1, 0.3, 1] // Complex plane bounds
@@ -182,6 +187,7 @@ watch(fractalParams, (newVal, oldVal) => {
   let refresh = false
   for (const prop of mapRedrawProps) {
     if (newVal[prop] !== oldVal[prop]) {
+      console.log('prop changed: ', prop)
       refresh = true
       break
     }

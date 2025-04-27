@@ -111,7 +111,7 @@ func CalcFractalImage(f Fractal) *FractImage {
 	return img
 }
 
-func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset) (Fractal, error) {
+func NewFractalFromPresets(width, height int, colorPreset ColorPreset, fractalPreset FractalPreset) (Fractal, error) {
 	fractFunc, err := fractalPreset.FractalFunction()
 	if err != nil {
 		return nil, err
@@ -119,8 +119,8 @@ func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset)
 	switch fractFunc {
 	case FRACTAL_TYPE_MANDELBROT:
 		return NewMandelbrotFractal(
-			fractalPreset.ImageWidth,
-			fractalPreset.ImageHeight,
+			width,
+			height,
 			fractalPreset.CenterCX,
 			fractalPreset.CenterCY,
 			fractalPreset.DiameterCX,
@@ -130,8 +130,8 @@ func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset)
 		), nil
 	case FRACTAL_TYPE_MANDELBROT3:
 		return NewMandelbrot3Fractal(
-			fractalPreset.ImageWidth,
-			fractalPreset.ImageHeight,
+			width,
+			height,
 			fractalPreset.CenterCX,
 			fractalPreset.CenterCY,
 			fractalPreset.DiameterCX,
@@ -141,8 +141,8 @@ func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset)
 		), nil
 	case FRACTAL_TYPE_MANDELBROT4:
 		return NewMandelbrot4Fractal(
-			fractalPreset.ImageWidth,
-			fractalPreset.ImageHeight,
+			width,
+			height,
 			fractalPreset.CenterCX,
 			fractalPreset.CenterCY,
 			fractalPreset.DiameterCX,
@@ -152,8 +152,8 @@ func NewFractalFromPresets(colorPreset ColorPreset, fractalPreset FractalPreset)
 		), nil
 	case FRACTAL_TYPE_JULIA:
 		return NewJuliaFractal(
-			fractalPreset.ImageWidth,
-			fractalPreset.ImageHeight,
+			width,
+			height,
 			fractalPreset.CenterCX,
 			fractalPreset.CenterCY,
 			fractalPreset.DiameterCX,

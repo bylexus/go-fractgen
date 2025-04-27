@@ -43,10 +43,10 @@ type ColorPreset struct {
 }
 
 type FractalPreset struct {
-	Name               string  `json:"name"`
-	IterFunc           string  `json:"iterFunc"`
-	ImageWidth         int     `json:"picWidth"`
-	ImageHeight        int     `json:"picHeight"`
+	Name     string `json:"name"`
+	IterFunc string `json:"iterFunc"`
+	// ImageWidth         int     `json:"width"`
+	// ImageHeight        int     `json:"height"`
 	DiameterCX         float64 `json:"diameterCX"`
 	CenterCX           float64 `json:"centerCX"`
 	CenterCY           float64 `json:"centerCY"`

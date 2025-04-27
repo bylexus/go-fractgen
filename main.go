@@ -37,9 +37,9 @@ func demo() {
 	// Fractal from preset:
 	for i, p := range presets.ColorPresets {
 		fractPreset := presets.FractalPresets[8]
-		fractPreset.ImageWidth = 1920
-		fractPreset.ImageHeight = 1280
-		fractal, err := lib.NewFractalFromPresets(p, fractPreset)
+		width := 1920
+		height := 1280
+		fractal, err := lib.NewFractalFromPresets(width, height, p, fractPreset)
 		if err != nil {
 			panic(err)
 		}

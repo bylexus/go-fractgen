@@ -17,8 +17,8 @@ const show = defineModel<boolean>()
   bottom: 0;
   left: 0;
   z-index: 2;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   transition:
     opacity 0.2s ease-in-out,
@@ -45,7 +45,8 @@ const show = defineModel<boolean>()
     }
   }
   .dialog-content {
-    margin-top: 2rem;
+    padding-top: 2rem;
+    height: 100%;
   }
 }
 </style>

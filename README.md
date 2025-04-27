@@ -34,3 +34,7 @@ of the fractal images as tiles.
 - [x] zoom in with drag a rectangle
 - [x] zoom in pinch zoom
 - [ ] History / Undo stack
+- [ ] fractal params in URL / as query params, instead of local storage
+- [x] export fractal params as JSON
+- [x] export fractal params as png / jpeg
+- [ ] import function: import a preset / a color scheme

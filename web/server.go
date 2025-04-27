@@ -23,7 +23,7 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/fractal-image.jpg", server.handleFractalImage)
+	mux.HandleFunc("/fractal-image/{format}", server.handleFractalImage)
 	mux.HandleFunc("/wmts", server.handleWmtsRequest)
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
 	mux.Handle("/", http.FileServer(http.Dir("webroot")))
@@ -38,7 +38,16 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 }
 
 func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "image/jpeg")
+	format := strings.ToLower(r.PathValue("format"))
+	mimeType := "image/jpeg"
+	switch format {
+	case "png":
+		mimeType = "image/png"
+	case "jpg":
+	case "jpeg":
+		mimeType = "image/gif"
+		format = "jpg"
+	}
 	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
@@ -97,8 +106,16 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	img := lib.CalcFractalImage(fractal)
+	w.Header().Set("Content-Type", mimeType)
 	w.WriteHeader(http.StatusOK)
-	img.EncodeJpeg(w)
+	switch format {
+	case "png":
+		img.EncodePng(w)
+		break
+	case "jpg":
+		img.EncodeJpeg(w)
+		break
+	}
 }
 
 func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
