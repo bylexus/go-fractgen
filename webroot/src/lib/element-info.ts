@@ -36,8 +36,8 @@ export function screenSize(): {
   return {
     width: window.screen?.width || 0,
     height: window.screen?.height || 0,
-    physicalWidth: (window.screen?.width || 0) * ratio,
-    physicalHeight: (window.screen?.height || 0) * ratio,
+    physicalWidth: Math.floor((window.screen?.width || 0) * ratio),
+    physicalHeight: Math.floor((window.screen?.height || 0) * ratio),
     devicePixelRatio: window.devicePixelRatio || 1,
   }
 }

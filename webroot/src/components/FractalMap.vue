@@ -251,6 +251,7 @@ function getActualFractParams(): FractalParams {
     diameterCX: actExtent[2] - actExtent[0],
     colorPreset: props.colorPreset,
     colorPaletteRepeat: fractalParams.value.colorPaletteRepeat,
+    colorPaletteLength: fractalParams.value.colorPaletteLength,
     juliaKr: fractalParams.value.juliaKr,
     juliaKi: fractalParams.value.juliaKi,
   }

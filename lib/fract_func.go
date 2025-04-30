@@ -70,10 +70,10 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	fract_width = commonFractParams.DiameterCX
 	fract_heigth = commonFractParams.DiameterCX / aspect
 
-	var min_cx = commonFractParams.CenterCX - (fract_width / 2)
-	var max_cx = min_cx + fract_width
-	var min_cy = commonFractParams.CenterCY - (fract_heigth / 2)
-	var max_cy = min_cy + fract_heigth
+	var min_cx float64 = commonFractParams.CenterCX - (fract_width / 2.0)
+	var max_cx float64 = min_cx + fract_width
+	var min_cy float64 = commonFractParams.CenterCY - (fract_heigth / 2.0)
+	var max_cy float64 = min_cy + fract_heigth
 
 	if commonFractParams.ColorPaletteRepeat <= 0 {
 		commonFractParams.ColorPaletteRepeat = 1

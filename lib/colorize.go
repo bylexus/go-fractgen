@@ -117,50 +117,46 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 		}
 
 		// Find the two anchor colors that the current iteration count is between
-		if iterValue == maxIterations {
-			selectedColor = palette[len(palette)-1]
-		} else {
-			ratio := iterValue / float64(maxIterations)
-			paletteEntry := ratio * float64(paletteLength) // Position within the full palette
+		ratio := iterValue / float64(maxIterations)
+		paletteEntry := ratio * float64(paletteLength) // Position within the full palette
 
-			// colorPaletteSectionWidth := float64(maxIterations) / float64(paletteLength)
+		// colorPaletteSectionWidth := float64(maxIterations) / float64(paletteLength)
 
-			var lower, upper PaletteEntry
-			// var chosenPaletteIndex int = 0
-			var stopsUntilNow = 0
-			var upperStop = 0
-			var actStopWidth = 0
-			lower = palette[0]
-			upper = palette[1%nrOfColors]
-			for i, entry := range colorStopLengths {
-				upperStop += entry
-				actStopWidth = entry
-				if paletteEntry > float64(upperStop) {
-					stopsUntilNow = upperStop
-					continue
-				} else {
-					lower = palette[i%nrOfColors]
-					upper = palette[(i+1)%nrOfColors]
-					break
-				}
+		var lower, upper PaletteEntry
+		// var chosenPaletteIndex int = 0
+		var stopsUntilNow = 0
+		var upperStop = 0
+		var actStopWidth = 0
+		lower = palette[0]
+		upper = palette[1%nrOfColors]
+		for i, entry := range colorStopLengths {
+			upperStop += entry
+			actStopWidth = entry
+			if paletteEntry > float64(upperStop) {
+				stopsUntilNow = upperStop
+				continue
+			} else {
+				lower = palette[i%nrOfColors]
+				upper = palette[(i+1)%nrOfColors]
+				break
 			}
-			// for i := 0; i < paletteLength-1; i++ {
-			// 	if float64(i)/float64(paletteLength) <= ratio {
-			// 		lower = palette[i%nrOfColors]
-			// 		upper = palette[(i+1)%nrOfColors]
-			// 		chosenPaletteIndex = i
-			// 	}
-			// }
-			relativeRatio := (paletteEntry - float64(stopsUntilNow)) / float64(actStopWidth)
-
-			// Linear-interpolate the correct color based on the ratio
-			selectedColor = PaletteEntry{color.RGBA{
-				R: uint8(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio),
-				G: uint8(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio),
-				B: uint8(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio),
-				A: 255,
-			}, 255}
 		}
+		// for i := 0; i < paletteLength-1; i++ {
+		// 	if float64(i)/float64(paletteLength) <= ratio {
+		// 		lower = palette[i%nrOfColors]
+		// 		upper = palette[(i+1)%nrOfColors]
+		// 		chosenPaletteIndex = i
+		// 	}
+		// }
+		relativeRatio := (paletteEntry - float64(stopsUntilNow)) / float64(actStopWidth)
+
+		// Linear-interpolate the correct color based on the ratio
+		selectedColor = PaletteEntry{color.RGBA{
+			R: uint8(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio),
+			G: uint8(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio),
+			B: uint8(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio),
+			A: 255,
+		}, 255}
 	}
 	// Set the pixel color
 	img.Set(x, y, selectedColor.RGBA)
