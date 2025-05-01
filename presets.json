@@ -158,6 +158,30 @@
         { "a": 255, "r": 153, "g": 87, "b": 0 },
         { "a": 255, "r": 106, "g": 52, "b": 3, "steps": 64 }
       ]
+    },
+    {
+      "name": "Spring",
+      "ident": "spring",
+      "colors": [
+        { "a": 255, "r": 68, "g": 4, "b": 0 },
+        { "a": 255, "r": 216, "g": 146, "b": 3 },
+        { "a": 255, "r": 27, "g": 170, "b": 71 },
+        { "a": 255, "r": 255, "g": 254, "b": 20 },
+        { "a": 255, "r": 95, "g": 11, "b": 168 },
+        { "a": 255, "r": 255, "g": 255, "b": 255 }
+      ]
+    },
+    {
+      "name": "Sedum",
+      "ident": "sedum",
+      "colors": [
+        { "a": 255, "r": 36, "g": 27, "b": 22 },
+        { "a": 255, "r": 156, "g": 65, "b": 83 },
+        { "a": 255, "r": 255, "g": 198, "b": 6 },
+        { "a": 255, "r": 16, "g": 49, "b": 42 },
+        { "a": 255, "r": 121, "g": 172, "b": 179 },
+        { "a": 255, "r": 228, "g": 207, "b": 174 }
+      ]
     }
   ],
   "fractalPresets": [
@@ -1032,6 +1056,48 @@
       "maxIterations": 1389,
       "colorPaletteLength": 240,
       "colorPaletteRepeat": 2
+    },
+    {
+      "name": "Mandelbrot Spiral See",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 1.0407529771327972e-7,
+      "centerCX": -1.4472417464667158,
+      "centerCY": -0.0006270361851647976,
+      "colorPreset": "pastel-blue",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 2000,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 2,
+      "fractFunc": "Julia"
+    },
+    {
+      "name": "Mandelbrot Abyss",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 2.980232238769531e-7,
+      "centerCX": 0.35965372616955155,
+      "centerCY": 0.6850711485839631,
+      "colorPreset": "sedum",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 4000,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 1,
+      "fractFunc": "Julia"
+    },
+    {
+      "name": "Mandelbrot Square Fortress",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 2.3283064365386963e-9,
+      "centerCX": -1.6205864384876667,
+      "centerCY": 0.006827625236380287,
+      "colorPreset": "sedum",
+      "juliaKi": 0,
+      "juliaKr": 0,
+      "maxIterations": 1346,
+      "colorPaletteLength": 80,
+      "colorPaletteRepeat": 14,
+      "fractFunc": "Julia"
     }
   ]
 }

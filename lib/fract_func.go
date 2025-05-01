@@ -97,7 +97,7 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 }
 
 func CalcFractalImage(f Fractal) *FractImage {
-	tp := ethreads.NewThreadPool(runtime.NumCPU(), nil)
+	tp := ethreads.NewThreadPool(runtime.NumCPU()*2, nil)
 	tp.Start()
 
 	img := NewFractImage(f.ImageWidth(), f.ImageHeight())

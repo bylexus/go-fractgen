@@ -224,13 +224,13 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 	if width <= 0 {
 		width = 1024
 	}
-	maxIter, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
-	if maxIter == 0 {
-		maxIter = width
-	}
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	if height <= 0 {
 		height = 100
+	}
+	maxIter, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
+	if maxIter == 0 {
+		maxIter = width
 	}
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("paletteRepeat"))
 	if colorPaletteRepeat == 0 {

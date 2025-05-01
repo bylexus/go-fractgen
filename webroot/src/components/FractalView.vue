@@ -4,15 +4,14 @@ import ColorPresetsSelect from './ColorPresetsSelect.vue'
 import { useSessionStorageVariable } from '@/lib/use-session-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
 import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/lib/use-presets'
-import ExportDialog from './ExportDialog.vue'
+import SettingsDialog from './SettingsDialog.vue'
 import FractalMap from './FractalMap.vue'
 
-// const colorPreset = ref('')
 const fractalPreset = ref('')
 const settingsOverlay = ref<HTMLDivElement>()
 const fractalMap = ref<InstanceType<typeof FractalMap>>()
 const hudVisible = ref(true)
-const showExportDlg = ref(false)
+const showSettingsDlg = ref(false)
 
 const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
   'fractalParams',
@@ -26,12 +25,7 @@ const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
   ),
 )
 // Initial values:
-// colorPreset.value = fractalParams.value.colorPreset || ''
 fractalPreset.value = fractalParams.value.name || ''
-
-// watch(colorPreset, () => {
-//   fractalParams.value.colorPreset = colorPreset.value || ''
-// })
 
 watch(fractalPreset, () => {
   const preset = fractalPresetByName(fractalPreset.value)
@@ -107,7 +101,6 @@ function onFixedPaletteCBChange(e: Event) {
       </div>
       <div class="label-field">
         <label for="iterations">Max. Iterations</label>
-        <!-- <input type="number" v-model.lazy="fractalParams.maxIterations" id="iterations" /> -->
         <div style="display: flex; gap: 0.25rem; align-items: end">
           <input
             type="number"
@@ -124,12 +117,13 @@ function onFixedPaletteCBChange(e: Event) {
         </div>
       </div>
       <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
-        <label for="paletteRepeat">Palette Repeat:
+        <label for="paletteRepeat"
+          >Palette Repeat:
           <input
             type="checkbox"
-            :checked="fractalParams.colorPaletteLength  > 0"
+            :checked="fractalParams.colorPaletteLength > 0"
             @change="onFixedPaletteCBChange"
-        />
+          />
         </label>
         <input
           type="number"
@@ -164,9 +158,13 @@ function onFixedPaletteCBChange(e: Event) {
         />
       </div>
       <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
-      <button type="button" @click="showExportDlg = true">im-/export</button>
+      <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
     </div>
-    <ExportDialog v-model="showExportDlg" :fract-params="fractalParams" />
+    <SettingsDialog
+      v-model="showSettingsDlg"
+      :fract-params="fractalParams"
+      @update:fract-params="changeFractalParams($event)"
+    />
   </div>
 </template>
 

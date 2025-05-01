@@ -16,7 +16,7 @@ export type ColorPreset = {
 export type FractalPreset = {
   [key: string]: any
   name?: string
-  iterFunc: string
+  iterFunc: 'Mandelbrot' | 'Julia' | 'Mandelbrot3' | 'Mandelbrot4'
   maxIterations: number
   centerCX: number
   centerCY: number
