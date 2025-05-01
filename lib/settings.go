@@ -43,17 +43,18 @@ type ColorPreset struct {
 }
 
 type FractalPreset struct {
-	Name               string  `json:"name"`
-	IterFunc           string  `json:"iterFunc"`
-	DiameterCX         float64 `json:"diameterCX"`
-	CenterCX           float64 `json:"centerCX"`
-	CenterCY           float64 `json:"centerCY"`
-	ColorPreset        string  `json:"colorPreset"`
-	JuliaKi            float64 `json:"juliaKi"`
-	JuliaKr            float64 `json:"juliaKr"`
-	MaxIterations      int     `json:"maxIterations"`
-	ColorPaletteLength int     `json:"colorPaletteLength"`
-	ColorPaletteRepeat int     `json:"colorPaletteRepeat"`
+	Name                string  `json:"name"`
+	IterFunc            string  `json:"iterFunc"`
+	DiameterCX          float64 `json:"diameterCX"`
+	CenterCX            float64 `json:"centerCX"`
+	CenterCY            float64 `json:"centerCY"`
+	ColorPreset         string  `json:"colorPreset"`
+	JuliaKi             float64 `json:"juliaKi"`
+	JuliaKr             float64 `json:"juliaKr"`
+	MaxIterations       int     `json:"maxIterations"`
+	ColorPaletteLength  int     `json:"colorPaletteLength"`
+	ColorPaletteRepeat  int     `json:"colorPaletteRepeat"`
+	ColorPaletteReverse bool    `json:"colorPaletteReverse"`
 }
 
 func (f FractalPreset) FractalFunction() (FractalType, error) {

@@ -42,10 +42,11 @@ type CommonFractParams struct {
 	ImageWidth  int
 	ImageHeight int
 
-	SmoothColors       bool
-	ColorPaletteLength int
-	ColorPalette       ColorPalette
-	ColorPaletteRepeat int
+	SmoothColors        bool
+	ColorPaletteLength  int
+	ColorPalette        ColorPalette
+	ColorPaletteRepeat  int
+	ColorPaletteReverse bool
 
 	// calculaed during initialization:
 	aspect float64

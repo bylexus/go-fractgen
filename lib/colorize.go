@@ -101,12 +101,20 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 			repeat = 1
 		}
 
+		// reverse value to take the color from the other side: same as reversing the palette:
+		if fractParams.ColorPaletteReverse {
+			iterValue = maxIterations - iterValue
+		}
+
 		// var paletteLength = len(palette) * repeat
 		var paletteLength = 0
 		var colorStopLengths = make([]int, 0)
 		for i := 0; i < repeat; i++ {
 			for _, entry := range palette {
-				if entry.Steps > 0 {
+				if entry.Steps < 0 {
+					paletteLength += 0
+					colorStopLengths = append(colorStopLengths, 0)
+				} else if entry.Steps > 0 {
 					paletteLength += entry.Steps
 					colorStopLengths = append(colorStopLengths, entry.Steps)
 				} else {
@@ -141,13 +149,6 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 				break
 			}
 		}
-		// for i := 0; i < paletteLength-1; i++ {
-		// 	if float64(i)/float64(paletteLength) <= ratio {
-		// 		lower = palette[i%nrOfColors]
-		// 		upper = palette[(i+1)%nrOfColors]
-		// 		chosenPaletteIndex = i
-		// 	}
-		// }
 		relativeRatio := (paletteEntry - float64(stopsUntilNow)) / float64(actStopWidth)
 
 		// Linear-interpolate the correct color based on the ratio

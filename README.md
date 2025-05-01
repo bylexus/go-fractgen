@@ -22,6 +22,9 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 #### CLI
 
 - [ ] create a cli app
+- [ ] create movie / animation from start to end point / zoom level
+- [x] palette length: bound to max iter (done), or fixed length
+- [x] palette inversion (reverse order)
 
 #### Web app
 
@@ -38,5 +41,5 @@ of the fractal images as tiles.
 - [x] export fractal params as JSON
 - [x] export fractal params as png / jpeg
 - [ ] import function: import a preset / a color scheme
-- [ ] palette length: bound to max iter (done), or fixed length
 - [ ] palette editor
+

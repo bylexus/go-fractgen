@@ -36,6 +36,7 @@ const mapRedrawProps = [
   'colorPreset',
   'colorPaletteRepeat',
   'colorPaletteLength',
+  'colorPaletteReverse',
   'juliaKr',
   'juliaKi',
 ]
@@ -85,6 +86,7 @@ onMounted(() => {
       const maxIterations = fractalParams.value.maxIterations
       const colorPaletteRepeat = fractalParams.value.colorPaletteRepeat
       const colorPaletteLength = fractalParams.value.colorPaletteLength
+      const colorPaletteReverse = fractalParams.value.colorPaletteReverse
 
       const res = calcResolutionForZoom(zoomLevel)
 
@@ -95,6 +97,7 @@ onMounted(() => {
         colorPreset: props.colorPreset,
         colorPaletteRepeat: colorPaletteRepeat,
         colorPaletteLength: colorPaletteLength,
+        colorPaletteReverse: colorPaletteReverse,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
         tileWidthFractal: res * tileWidth,
@@ -154,22 +157,6 @@ onMounted(() => {
   olMap.on('moveend', () => {
     zoomInProgress = false
     console.log('end zoom', view.getZoom())
-    // if (oldZoom !== view.getZoom()) {
-    //   refreshTiles = true
-    //   let zoomDiff = view.getZoom()! - oldZoom
-    //   if (zoomDiff > 0) {
-    //     fractalParams.value.maxIterations = Math.floor(
-    //       fractalParams.value.maxIterations * Math.pow(1.25, zoomDiff || 1),
-    //     )
-    //   } else {
-    //     zoomDiff = Math.abs(zoomDiff)
-    //     fractalParams.value.maxIterations = Math.ceil(
-    //       fractalParams.value.maxIterations / Math.pow(1.25, zoomDiff || 1),
-    //     )
-    //   }
-    //   // fractalParams.value.maxIterations = Math.floor(50 * Math.pow(1.3, (view.getZoom() || 1) - 1))
-    //   oldZoom = view.getZoom() || 0
-    // }
 
     // Update fractal parameters to reflect actual map settings:
     const actExtent = olMap.getView().calculateExtent()
@@ -252,6 +239,7 @@ function getActualFractParams(): FractalParams {
     colorPreset: props.colorPreset,
     colorPaletteRepeat: fractalParams.value.colorPaletteRepeat,
     colorPaletteLength: fractalParams.value.colorPaletteLength,
+    colorPaletteReverse: fractalParams.value.colorPaletteReverse,
     juliaKr: fractalParams.value.juliaKr,
     juliaKi: fractalParams.value.juliaKi,
   }

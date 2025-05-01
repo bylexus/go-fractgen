@@ -117,14 +117,12 @@ function onFixedPaletteCBChange(e: Event) {
         </div>
       </div>
       <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
-        <label for="paletteRepeat"
-          >Palette Repeat:
-          <input
-            type="checkbox"
-            :checked="fractalParams.colorPaletteLength > 0"
-            @change="onFixedPaletteCBChange"
-          />
-        </label>
+        <label for="paletteRepeat">Palette Repeat: </label>
+        <input
+          type="checkbox"
+          :checked="fractalParams.colorPaletteLength > 0"
+          @change="onFixedPaletteCBChange"
+        />
         <input
           type="number"
           :value="fractalParams.colorPaletteRepeat"
@@ -138,13 +136,12 @@ function onFixedPaletteCBChange(e: Event) {
         />
       </div>
       <div v-if="fractalParams.colorPaletteLength > 0" class="label-field">
-        <label for="paletteLength"
-          >Fixed Palette Length:
-          <input
-            type="checkbox"
-            :checked="fractalParams.colorPaletteLength > 0"
-            @change="onFixedPaletteCBChange"
-        /></label>
+        <label for="paletteLength">Fixed Palette Length:</label>
+        <input
+          type="checkbox"
+          :checked="fractalParams.colorPaletteLength > 0"
+          @change="onFixedPaletteCBChange"
+        />
         <input
           type="number"
           :value="fractalParams.colorPaletteLength"
@@ -157,7 +154,19 @@ function onFixedPaletteCBChange(e: Event) {
           "
         />
       </div>
-      <button type="button" @click="hudVisible = !hudVisible">hide HUD</button>
+      <div class="label-field">
+        <label for="paletteReverse">Reverse Palette:</label>
+        <input
+          type="checkbox"
+          :checked="fractalParams.colorPaletteReverse"
+          @change.lazy="
+            (e: Event) =>
+              changeFractalParams({
+                colorPaletteReverse: Boolean((e.target as HTMLInputElement).checked),
+              })
+          "
+        />
+      </div>
       <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
     </div>
     <SettingsDialog
