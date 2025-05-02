@@ -2,27 +2,17 @@ package main
 
 import (
 	"fmt"
-	"log"
 
+	"github.com/alecthomas/kong"
+	"github.com/bylexus/go-fract/cli"
 	"github.com/bylexus/go-fract/lib"
-	"github.com/bylexus/go-fract/web"
 )
 
 func main() {
-
-	// demo()
-	webserver()
-
-}
-
-func webserver() {
-	presetsFile := "presets.json"
-	presets := lib.ReadPresetJson(presetsFile)
-
-	var server *web.WebServer = web.NewWebServer(presets.ColorPresets, presets.FractalPresets)
-
-	fmt.Printf("Starting Webserver, listen on %s\n", server.Addr)
-	log.Fatal(server.ListenAndServe())
+	cli := cli.Cli{}
+	ctx := kong.Parse(&cli)
+	err := ctx.Run()
+	ctx.FatalIfErrorf(err)
 }
 
 func demo() {
@@ -38,7 +28,7 @@ func demo() {
 	for i, p := range presets.ColorPresets {
 		fractPreset := presets.FractalPresets[8]
 		width := 1920
-		height := 1280
+		height := 1200
 		fractal, err := lib.NewFractalFromPresets(width, height, p, fractPreset)
 		if err != nil {
 			panic(err)

@@ -11,13 +11,13 @@ import (
 // const MAX_ABS_SQUARE_AMOUNT float64 = 4
 const MAX_ABS_SQUARE_AMOUNT float64 = 256
 
-type FractalType int
+type FractalType string
 
 const (
-	FRACTAL_TYPE_MANDELBROT = iota
-	FRACTAL_TYPE_MANDELBROT3
-	FRACTAL_TYPE_MANDELBROT4
-	FRACTAL_TYPE_JULIA
+	FRACTAL_TYPE_MANDELBROT  = "mandelbrot"
+	FRACTAL_TYPE_MANDELBROT3 = "mandelbrot3"
+	FRACTAL_TYPE_MANDELBROT4 = "mandelbrot4"
+	FRACTAL_TYPE_JULIA       = "julia"
 )
 
 type Fractal interface {
@@ -141,4 +141,27 @@ func NewFractalFromPresets(width, height int, colorPreset ColorPreset, fractalPr
 	default:
 		return nil, errors.New("unknown fractal function")
 	}
+}
+
+func NewFractalFromParams(fractFunct FractalType, commonFractParams CommonFractParams, juliaKr, juliaKi float64) (Fractal, error) {
+	var fractal Fractal
+	switch fractFunct {
+	case "mandelbrot":
+		fractal = NewMandelbrotFractal(commonFractParams)
+		break
+	case "mandelbrot3":
+		fractal = NewMandelbrot3Fractal(commonFractParams)
+		break
+	case "mandelbrot4":
+		fractal = NewMandelbrot4Fractal(commonFractParams)
+		break
+	case "julia":
+		juliaKr := juliaKr
+		juliaKi := juliaKi
+		fractal = NewJuliaFractal(commonFractParams, juliaKr, juliaKi)
+		break
+	default:
+		return nil, errors.New("unknown fractal function")
+	}
+	return fractal, nil
 }

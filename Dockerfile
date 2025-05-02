@@ -56,5 +56,4 @@ RUN adduser --uid 5000 --disabled-password fractgen
 COPY --from=build /build /app
 USER fractgen
 ENTRYPOINT ["/app/go-fractgen"]
-
-
+CMD [ "serve", "--listen=:8000" ]

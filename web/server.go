@@ -10,6 +10,10 @@ import (
 	"github.com/bylexus/go-fract/lib"
 )
 
+type WebServerConfig struct {
+	Addr string
+}
+
 type WebServer struct {
 	http.Server
 
@@ -17,7 +21,7 @@ type WebServer struct {
 	fractalPresets lib.FractalPresets
 }
 
-func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPresets) *WebServer {
+func NewWebServer(conf WebServerConfig, colorPresets lib.ColorPresets, fractalPresets lib.FractalPresets) *WebServer {
 	server := &WebServer{
 		colorPresets:   colorPresets,
 		fractalPresets: fractalPresets,
@@ -30,7 +34,7 @@ func NewWebServer(colorPresets lib.ColorPresets, fractalPresets lib.FractalPrese
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
 	mux.Handle("/", http.FileServer(http.Dir("webroot")))
 
-	listenAddr := ":8000"
+	listenAddr := conf.Addr
 	var handler http.Handler = NewLogHandler(NewCorsHandler(mux))
 	server.Server = http.Server{
 		Addr: listenAddr, Handler: handler,
@@ -224,6 +228,7 @@ func (s *WebServer) handlePresetsJson(w http.ResponseWriter, r *http.Request) {
 
 func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
 	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
 	if width <= 0 {

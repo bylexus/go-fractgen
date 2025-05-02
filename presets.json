@@ -1108,6 +1108,20 @@
       "colorPaletteLength": 80,
       "colorPaletteRepeat": 14,
       "fractFunc": "Julia"
+    },
+    {
+      "name": "Mandelbrot The Owl",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 0.000005271285772323608,
+      "centerCX": -0.1203545413620306,
+      "centerCY": -0.6495236404298339,
+      "colorPreset": "ultra-fractal",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 2000,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 3,
+      "colorPaletteReverse": false
     }
   ]
 }

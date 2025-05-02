@@ -18,13 +18,18 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 #### General
 
 - [x] implement missing fractal functions (julia, mandelbrot ^ n, ...)
+- [ ] Embed default preset.json in binary (using go embed)
+- [x] palette inversion (reverse order)
+- [x] palette length: bound to max iter (done), or fixed length
 
 #### CLI
 
 - [ ] create a cli app
+	- [x] create a serve command to start a web server
+	- [x] create an image command to generate a single image
+	- [ ] create a movie command to generate a series of images / movie
+
 - [ ] create movie / animation from start to end point / zoom level
-- [x] palette length: bound to max iter (done), or fixed length
-- [x] palette inversion (reverse order)
 
 #### Web app
 

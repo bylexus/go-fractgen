@@ -58,18 +58,19 @@ type FractalPreset struct {
 }
 
 func (f FractalPreset) FractalFunction() (FractalType, error) {
+	iterFunc := strings.ToLower(f.IterFunc)
 
-	switch f.IterFunc {
-	case "Mandelbrot":
+	switch iterFunc {
+	case "mandelbrot":
 		return FRACTAL_TYPE_MANDELBROT, nil
-	case "Mandelbrot Z^3":
+	case "mandelbrot3":
 		return FRACTAL_TYPE_MANDELBROT3, nil
-	case "Mandelbrot Z^4":
+	case "mandelbrot4":
 		return FRACTAL_TYPE_MANDELBROT4, nil
-	case "Julia":
+	case "julia":
 		return FRACTAL_TYPE_JULIA, nil
 	default:
-		return -1, errors.New("unknown fractal function")
+		return "", errors.New("unknown fractal function")
 	}
 }
 

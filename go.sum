@@ -1,2 +1,4 @@
+github.com/alecthomas/kong v1.10.0 h1:8K4rGDpT7Iu+jEXCIJUeKqvpwZHbsFRoebLbnzlmrpw=
+github.com/alecthomas/kong v1.10.0/go.mod h1:p2vqieVMeTAnaC83txKtXe8FLke2X07aruPWXyMPQrU=
 github.com/bylexus/go-stdlib v0.0.0-20241202152938-16dc4197cfba h1:+RnL29Th2dg3R5ElQBfvR3/HOUAoZteW/t989k+ZZ/s=
 github.com/bylexus/go-stdlib v0.0.0-20241202152938-16dc4197cfba/go.mod h1:238Ydq0HtE66jslh8gg4VLlRxBhv8SYqXHBlQM2+tdY=
