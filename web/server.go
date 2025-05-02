@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"fmt"
 	"image"
 	"net/http"
 	"strconv"
@@ -165,8 +166,12 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	colorPaletteReverse, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteReverse"))
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
-	if err != nil {
+	if err == nil {
 		colorPreset = s.colorPresets[0]
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Unknown color preset")
+		return
 	}
 
 	var fractal lib.Fractal

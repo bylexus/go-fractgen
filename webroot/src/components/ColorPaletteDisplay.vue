@@ -27,11 +27,18 @@ const imgUrl = computed(() => {
     <a :href="imgUrl" target="_blank" rel="noopener noreferrer">
       <img :src="imgUrl" width="400" height="36" />
     </a>
-    <div class="flex justify-between">
+    <div class="flex justify-between labels">
       <span>0</span>
-      <span>{{ paletteLength <= 0 ? maxIterations * paletteRepeat : paletteLength }}</span>
+      <span>{{ paletteLength <= 0 ? maxIterations : paletteLength }}</span>
     </div>
   </div>
 </template>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+img {
+  max-width: 100%;
+}
+.labels {
+  font-size: 0.8rem;
+}
+</style>

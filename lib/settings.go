@@ -74,29 +74,36 @@ func (f FractalPreset) FractalFunction() (FractalType, error) {
 	}
 }
 
-func ReadPresetJson(path string) Presets {
+func ReadPresetJson(filePath string, embeddedPresets []byte) (Presets, error) {
 	var presets Presets = Presets{
 		ColorPresets:   make([]ColorPreset, 0),
 		FractalPresets: make([]FractalPreset, 0),
 	}
 
-	jsonFile, err := os.Open(path)
-	if err != nil {
-		return presets
-	}
-	defer jsonFile.Close()
+	var jsonData []byte
 
-	jsonData, err := io.ReadAll(jsonFile)
+	if filePath != "" {
+		jsonFile, err := os.Open(filePath)
+		if err != nil {
+			log.Println(err)
+			return presets, err
+		}
+		defer jsonFile.Close()
+
+		jsonData, err = io.ReadAll(jsonFile)
+		if err != nil {
+			log.Println(err)
+			return presets, err
+		}
+	} else {
+		jsonData = embeddedPresets
+	}
+
+	err := json.Unmarshal(jsonData, &presets)
 	if err != nil {
 		log.Println(err)
-		return presets
+		return presets, err
 	}
 
-	err = json.Unmarshal(jsonData, &presets)
-	if err != nil {
-		log.Println(err)
-		return presets
-	}
-
-	return presets
+	return presets, nil
 }

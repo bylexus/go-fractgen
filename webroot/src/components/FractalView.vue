@@ -197,8 +197,8 @@ function onFixedPaletteCBChange(e: Event) {
   background-color: rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   transition:
-    opacity 0.2s ease-in-out,
-    bottom 0.2s ease-in-out;
+    opacity 0.3s ease-in-out,
+    bottom 0.3s ease-in-out;
   &.hidden {
     opacity: 0;
     bottom: -100%;

@@ -25,7 +25,7 @@ const show = defineModel<boolean>()
     bottom 0.2s ease-in-out;
   &.hidden {
     opacity: 0;
-    bottom: -150%;
+    bottom: -100%;
   }
 
   .close-btn {

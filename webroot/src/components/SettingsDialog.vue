@@ -100,7 +100,7 @@ function onResetBtn() {
           </div>
         </div>
 
-        <div class="flex gap-1">
+        <div class="flex flex-wrap gap-1">
           <div class="label-field">
             <label for="centerCX">Center CX(r)</label>
             <input

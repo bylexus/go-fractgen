@@ -7,10 +7,49 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 
 ## Features
 
-(TODO)
+- generate Mandelbrot and Julia fractals
+- create fractals as png / jpeg
+- start a web server for interactive usage in a Web application
+- use a presets file to configure the fractal parameters and color palettes
+- float64 precision
 
-- Using OpenLayers in frontend to navigate on a virtual Fractal WMTS tile grid
-- renders image tiles in the golang backend
+## Build
+
+```bash
+go build -o fractgen
+```
+
+## Usage
+
+### Help
+
+```bash
+# for global help and commands:
+fractgen --help
+
+# for a specific command:
+fractgen [command] --help
+```
+
+### Start a web server
+
+```bash
+fractgen serve
+
+# with a different port / IP binding:
+fractgen serve --listen 127.0.0.1:8001
+```
+
+### Generate a single image
+
+```bash
+# to list all available options:
+fractgen image --help 
+
+# generate a Mandelbrot fractal image to "my-image.jpg" with a custom color palette and 1000 iterations:
+fractgen image --max-iter=1000 --color-preset=red-alert my-image.jpg
+```
+
 
 
 ### TODOs
@@ -18,7 +57,7 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 #### General
 
 - [x] implement missing fractal functions (julia, mandelbrot ^ n, ...)
-- [ ] Embed default preset.json in binary (using go embed)
+- [x] Embed default preset.json in binary (using go embed)
 - [x] palette inversion (reverse order)
 - [x] palette length: bound to max iter (done), or fixed length
 

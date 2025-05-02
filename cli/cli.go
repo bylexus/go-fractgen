@@ -5,18 +5,23 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"strings"
 
 	"github.com/bylexus/go-fract/lib"
 	"github.com/bylexus/go-fract/web"
 )
 
 type ServeCmd struct {
-	Listen string `help:"Listen address / port to serve on." default:":8000"`
+	Listen      string `help:"Listen address / port to serve on." default:":8000"`
+	PresetsFile string `help:"Path to presets file." type:"path"`
 }
 
-func (c *ServeCmd) Run() error {
-	presetsFile := "presets.json"
-	presets := lib.ReadPresetJson(presetsFile)
+func (c *ServeCmd) Run(appContext *lib.AppContext) error {
+	presets, err := lib.ReadPresetJson(c.PresetsFile, appContext.EmbeddedPresets)
+	if err != nil {
+		return err
+	}
 	server := web.NewWebServer(web.WebServerConfig{Addr: c.Listen}, presets.ColorPresets, presets.FractalPresets)
 
 	fmt.Printf("Starting Webserver, listen on %s\n", server.Addr)
@@ -26,7 +31,7 @@ func (c *ServeCmd) Run() error {
 }
 
 type ImageCmd struct {
-	Format         string          `help:"Format of the image to generate." enum:"png,jpeg" default:"jpeg"`
+	Format         string          `help:"Format of the image to generate."`
 	Width          int             `help:"Width of the image to generate, in pixels." default:"1920"`
 	Height         int             `help:"Height of the image to generate, in pixels." default:"1200"`
 	FractalPreset  string          `help:"Name of the fractal preset to use, e.g. '--fractal-preset=\"Mandelbrot Total\"'. Use in combination with --presets-file." default:"" `
@@ -41,14 +46,17 @@ type ImageCmd struct {
 	JuliaKr        float64         `help:"Julia Kr(r)" default:"-0.2"`
 	JuliaKi        float64         `help:"Julia Ki(i)" default:"0.8"`
 	MaxIter        int             `help:"Maximum number of iterations." default:"100"`
-	PresetsFile    string          `help:"Path to presets file." default:"presets.json" type:"path"`
+	PresetsFile    string          `help:"Path to presets file." type:"path"`
 
-	OutputPath string `arg:"" help:"Path to save the image to." type:"path"`
+	OutputPath string `arg:"" help:"Path to save the image to." type:"path" default:"image.jpg"`
 }
 
-func (c *ImageCmd) Run() error {
-	presetsFile := "presets.json"
-	presets := lib.ReadPresetJson(presetsFile)
+func (c *ImageCmd) Run(appContext *lib.AppContext) error {
+	presets, err := lib.ReadPresetJson(c.PresetsFile, appContext.EmbeddedPresets)
+	if err != nil {
+		return err
+	}
+
 	colorPreset, err := presets.ColorPresets.GetByIdent(c.ColorPreset)
 	if err != nil {
 		return err
@@ -86,6 +94,19 @@ func (c *ImageCmd) Run() error {
 		fractal, err = lib.NewFractalFromParams(c.Function, commonFractParams, c.JuliaKr, c.JuliaKi)
 		if err != nil {
 			return err
+		}
+	}
+
+	if c.Format == "" {
+		ext := strings.ToLower(path.Ext(c.OutputPath))
+		switch ext {
+		case ".png":
+			c.Format = "png"
+		case ".jpg":
+		case ".jpeg":
+			c.Format = "jpeg"
+		default:
+			return errors.New("unknown image format")
 		}
 	}
 
