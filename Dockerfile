@@ -44,9 +44,6 @@ RUN bash -c 'source /root/.nvm/nvm.sh && \
 	npm run build && \
 	cp -r dist/* /build/webroot/'
 
-# Copy additional files
-RUN cp /src/presets.json /build/
-
 ############
 FROM alpine:latest AS prod
 
