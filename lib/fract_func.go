@@ -2,6 +2,7 @@ package lib
 
 import (
 	"errors"
+	"math/big"
 	"runtime"
 
 	"github.com/bylexus/go-stdlib/ethreads"
@@ -65,16 +66,25 @@ func (f CommonFractParams) PixelToFractal(x, y int) (cx, cy float64) {
 }
 
 func initializeFractParams(commonFractParams CommonFractParams) CommonFractParams {
-	var aspect, fract_width, fract_heigth float64
+	// var aspect, fract_width, fract_heigth float64
+	var aspect, fract_width, fract_heigth, centerCX, centerCY *big.Float
 
-	aspect = float64(commonFractParams.ImageWidth) / float64(commonFractParams.ImageHeight)
-	fract_width = commonFractParams.DiameterCX
-	fract_heigth = commonFractParams.DiameterCX / aspect
+	aspect = big.NewFloat(0).Quo(big.NewFloat(float64(commonFractParams.ImageWidth)), big.NewFloat(float64(commonFractParams.ImageHeight)))
+	// aspect = float64(commonFractParams.ImageWidth) / float64(commonFractParams.ImageHeight)
+	fract_width = big.NewFloat(float64(commonFractParams.DiameterCX))
+	fract_heigth = big.NewFloat(0.0).Quo(fract_width, aspect)
+	centerCX = big.NewFloat(commonFractParams.CenterCX)
+	centerCY = big.NewFloat(commonFractParams.CenterCY)
+	two := big.NewFloat(2.0)
 
-	var min_cx float64 = commonFractParams.CenterCX - (fract_width / 2.0)
-	var max_cx float64 = min_cx + fract_width
-	var min_cy float64 = commonFractParams.CenterCY - (fract_heigth / 2.0)
-	var max_cy float64 = min_cy + fract_heigth
+	// var min_cx float64 = commonFractParams.CenterCX - (fract_width / 2.0)
+	var min_cx = big.NewFloat(0.0).Sub(centerCX, (big.NewFloat(0.0).Quo(fract_width, two)))
+	// var max_cx float64 = min_cx + fract_width
+	var max_cx = big.NewFloat(0.0).Add(min_cx, fract_width)
+	// var min_cy float64 = commonFractParams.CenterCY - (fract_heigth / 2.0)
+	var min_cy = big.NewFloat(0.0).Sub(centerCY, (big.NewFloat(0.0).Quo(fract_heigth, two)))
+	// var max_cy float64 = min_cy + fract_heigth
+	var max_cy = big.NewFloat(0.0).Add(min_cy, fract_heigth)
 
 	if commonFractParams.ColorPaletteRepeat <= 0 {
 		commonFractParams.ColorPaletteRepeat = 1
@@ -86,15 +96,14 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	commonFractParams.SmoothColors = true
 
 	// Calculated during initialization:
-	commonFractParams.aspect = aspect
-	commonFractParams.minCX = min_cx
-	commonFractParams.maxCX = max_cx
-	commonFractParams.minCY = min_cy
-	commonFractParams.maxCY = max_cy
+	commonFractParams.aspect, _ = aspect.Float64()
+	commonFractParams.minCX, _ = min_cx.Float64()
+	commonFractParams.maxCX, _ = max_cx.Float64()
+	commonFractParams.minCY, _ = min_cy.Float64()
+	commonFractParams.maxCY, _ = max_cy.Float64()
 	commonFractParams.MaxAbsSquareAmount = MAX_ABS_SQUARE_AMOUNT
 
 	return commonFractParams
-
 }
 
 func CalcFractalImage(f Fractal) *FractImage {

@@ -11,7 +11,7 @@
 			"request": "launch",
 			"mode": "auto",
 			"program": "main.go",
-			"args": ["serve"]
+			"args": ["flight", "output"]
 		}
 	]
 }
