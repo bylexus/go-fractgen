@@ -79,7 +79,7 @@ function smallPrevLink(fractalParams: FractalParams) {
           <div>
             {{ preset.name }}
           </div>
-          <img class="preview-img" :src="smallPrevLink(preset)" alt="Preview Image" />
+          <img class="preview-img" :src="smallPrevLink(preset)" loading="lazy" alt="Preview Image" />
         </div>
       </div>
     </div>
@@ -168,6 +168,7 @@ function smallPrevLink(fractalParams: FractalParams) {
         }
         .preview-img {
           border: 1px solid black;
+          border-radius: 3px;
         }
       }
     }

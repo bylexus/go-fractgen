@@ -612,17 +612,18 @@
       "juliaKr": 0
     },
     {
-      "maxIterations": 3000,
-      "diameterCX": 4.5,
+      "name": "Mandelbrot Z^4 Swirls",
+      "iterFunc": "Mandelbrot4",
+      "diameterCX": 3.92901711165905e-10,
+      "centerCX": 0.7657759291756085,
+      "centerCY": 0.36476691678818285,
       "colorPreset": "ultra-fractal",
       "juliaKi": 0,
+      "juliaKr": 0,
+      "maxIterations": 4000,
       "colorPaletteLength": -1,
-      "iterFunc": "Mandelbrot4",
-      "name": "Mandelbrot Z^4 Swirls",
-      "colorPaletteRepeat": 4,
-      "centerCY": -1.1228205247898588,
-      "centerCX": 0.011897463875357053,
-      "juliaKr": 0
+      "colorPaletteRepeat": 1,
+      "colorPaletteReverse": false
     },
     {
       "maxIterations": 3950,
