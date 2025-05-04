@@ -1,46 +1,61 @@
 <script setup lang="ts">
 import { apiroot, queryStr } from '@/lib/url_helper'
-import { useFractalPresets, type FractalParams, type FractalPreset } from '@/lib/use-presets'
+import {
+  colorPresetByIdent,
+  useColorPresets,
+  type ColorPreset,
+  type FractalParams,
+} from '@/lib/use-presets'
 import { computed, reactive, ref, watch } from 'vue'
 import EnhancedSelect from './EnhancedSelect.vue'
-const fractalPresets = useFractalPresets()
-const fractalPreset = defineModel<string>()
+const colorPresets = useColorPresets()
+const colorPreset = defineModel<string>()
 
 const state = reactive({
   filter: '',
 })
 
-watch(fractalPresets.presets, () => {
-  if (!fractalPreset.value) {
-    fractalPreset.value = fractalPresets.presets.value[0].name
+const actPresetObj = computed(() => {
+  return colorPresetByIdent(colorPreset.value || '')
+})
+
+watch(colorPresets.presets, () => {
+  if (!colorPreset.value) {
+    colorPreset.value = colorPresets.presets.value[0].name
   }
 })
 
 const items = computed(() => {
-  return fractalPresets.presets.value.filter((p) =>
+  return colorPresets.presets.value.filter((p) =>
     p.name?.toLowerCase().includes(state.filter.toLowerCase()),
   )
 })
 
-function smallPrevLink(fractalParams: FractalParams) {
-  const params = { ...fractalParams }
-  params.width = 36
-  params.height = 36
-  return `${apiroot()}/fractal-image/jpg?${queryStr(params)}`
+function smallPrevLink(preset: ColorPreset) {
+  const params = {
+    width: 400,
+    height: 8,
+    maxIterations: 256,
+    paletteRepeat: 1,
+    paletteLength: -1,
+    dir: 'horizontal',
+    colorPreset: preset.ident,
+  }
+  return `${apiroot()}/paletteViewer?${queryStr(params)}`
 }
 </script>
 
 <template>
   <EnhancedSelect
     :items="items"
-    v-model:value="fractalPreset"
+    v-model:value="colorPreset"
     v-model:filter="state.filter"
-    value-property="name"
+    value-property="ident"
     display-property="name"
-    filter-placeholder="e.g. 'Mandelbrot'"
+    filter-placeholder="e.g. 'Fire!'"
   >
     <template #display>
-      <span class="value">{{ fractalPreset }}</span>
+      <span class="value">{{ actPresetObj?.name }}</span>
     </template>
     <template #item="{ item, selected }">
       <div class="selector-item" :class="{ selected: selected }">
@@ -54,30 +69,9 @@ function smallPrevLink(fractalParams: FractalParams) {
 </template>
 
 <style lang="css" scoped>
-.search-field {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  input {
-    flex-grow: 1;
-    padding: 0.3rem 0.2rem;
-  }
-  button {
-    border: none;
-    background-color: transparent;
-    padding: none;
-    cursor: pointer;
-    color: white;
-    font-size: 1.25rem;
-  }
-}
-
 .selector-item {
   flex-grow: 1;
   padding: 0.3rem 0.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   &.selected {
     background-color: rgba(255, 255, 255, 0.7);
   }

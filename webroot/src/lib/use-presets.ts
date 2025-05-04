@@ -70,3 +70,12 @@ export function fractalPresetByName(name: string): FractalPreset | null {
   }
   return null
 }
+
+export function colorPresetByIdent(ident: string): ColorPreset | null {
+  for (const preset of colorPresets.value) {
+    if (preset.ident === ident) {
+      return preset
+    }
+  }
+  return null
+}

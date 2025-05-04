@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { type Ref, ref, watch } from 'vue'
-import ColorPresetsSelect from './ColorPresetsSelect.vue'
+import { computed, type Ref, ref, watch } from 'vue'
+import ColorPresetSelect from './ColorPresetSelect.vue'
 import { useSessionStorageVariable } from '@/lib/use-session-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
 import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/lib/use-presets'
@@ -15,6 +15,8 @@ const hudVisible = ref(true)
 const showSettingsDlg = ref(false)
 const showAboutDlg = ref(false)
 const mapClickMode: Ref<'click' | 'center'> = ref('click')
+const fractalPresets = useFractalPresets()
+const fractalPresetFilter = ref('')
 
 const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
   'fractalParams',
@@ -24,11 +26,17 @@ const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
       height: 0,
     },
     // we use the first preset as default:
-    { ...useFractalPresets().presets.value[0] },
+    { ...fractalPresets.presets.value[0] },
   ),
 )
 // Initial values:
 fractalPreset.value = fractalParams.value.name || ''
+
+const filteredPresets = computed(() => {
+  return fractalPresets.presets.value.filter((p) =>
+    p.name?.toLowerCase().includes(fractalPresetFilter.value.toLowerCase()),
+  )
+})
 
 watch(fractalPreset, () => {
   const preset = fractalPresetByName(fractalPreset.value)
@@ -104,12 +112,10 @@ function centerOnClick() {
       </div>
       <div class="label-field">
         <label>Color Palette:</label>
-        <ColorPresetsSelect
+        <ColorPresetSelect
           :model-value="fractalParams.colorPreset"
-          @change.lazy="
-            (e: Event) => changeFractalParams({ colorPreset: (e.target as HTMLInputElement).value })
-          "
-        ></ColorPresetsSelect>
+          @update:model-value="changeFractalParams({ colorPreset: $event })"
+        ></ColorPresetSelect>
       </div>
       <div class="label-field">
         <label for="iterations">Max. Iterations</label>
