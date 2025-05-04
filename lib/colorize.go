@@ -153,9 +153,9 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 
 		// Linear-interpolate the correct color based on the ratio
 		selectedColor = PaletteEntry{color.RGBA{
-			R: uint8(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio),
-			G: uint8(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio),
-			B: uint8(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio),
+			R: uint8(math.Round(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio)),
+			G: uint8(math.Round(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio)),
+			B: uint8(math.Round(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio)),
 			A: 255,
 		}, 255}
 	}

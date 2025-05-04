@@ -5,6 +5,13 @@ A fractal generator written in Go, as cli, library and web app.
 This is a work in progress. The main goal is to have the full functionality (and more) as my previous
 project [JFractGen](https://github.com/bylexus/JFractGen).
 
+**Some Examples:**
+
+![Fractal Example 1](./example1.jpg)
+![Fractal Example 2](./example2.jpg)
+![Fractal Example 3](./example3.jpg)
+![Fractal Example 4](./example4.jpg)
+
 ## Features
 
 - generate Mandelbrot and Julia fractals
@@ -50,6 +57,65 @@ fractgen image --help
 fractgen image --max-iter=1000 --color-preset=red-alert my-image.jpg
 ```
 
+### Using presets
+
+`fractgen` comes with a set of built-in color and fractal presets. To list the available presets, run:
+
+```bash
+fractgen presets
+```
+
+The presets are available in the Web UI, and you can use them with the image generation commands, e.g.:
+
+```bash
+fractgen image --fractal-preset="Mandelbrot Total" "mandelbrot_total.jpg"
+```
+
+#### Define your own presets
+
+You can define your own presets in a JSON. The preset JSON's structure is as follows:
+
+```json
+{
+  "colorPresets": [
+    {
+      "name": "Patchwork",
+      "ident": "patchwork",
+      "colors": [
+        { "a": 255, "r": 0, "b": 30, "g": 0 },
+        { "a": 255, "r": 253, "b": 6, "g": 204 },
+        { "a": 255, "r": 186, "b": 15, "g": 84 }
+      ]
+    },
+	// .....
+  ],
+  "fractalPresets": [
+    {
+      "maxIterations": 40,
+      "diameterCX": 4,
+      "colorPreset": "patchwork",
+      "juliaKi": 0.6,
+      "colorPaletteLength": -1,
+      "iterFunc": "Mandelbrot",
+      "name": "Mandelbrot Total",
+      "colorPaletteRepeat": 1,
+      "centerCY": 0,
+      "centerCX": -0.7,
+      "juliaKr": -0.6
+    },
+	// .....
+  ]
+}
+```
+
+The JSON file can be used with the `--presets-file` command line option, e.g.:
+
+```bash
+fractgen image --presets-file=presets.json --fractal-preset="Mandelbrot Total" "mandelbrot_total.jpg"
+```
+
+
+
 
 
 ### TODOs
@@ -87,3 +153,18 @@ of the fractal images as tiles.
 - [ ] import function: import a preset / a color scheme
 - [ ] palette editor
 
+
+## Dev Notes
+
+### Generate images from all presets at once:
+
+```bash
+IFS=$'\n' jq -r '.fractalPresets.[].name' presets.json | while read preset; do; \ 
+	echo "Working on '${preset}'"; \
+	./fractgen image \
+		--fractal-preset="${preset}" \
+		--width=3840 \
+		--height=2400 \
+		"output/${preset}.jpg"; \
+done
+```

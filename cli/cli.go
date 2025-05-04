@@ -66,6 +66,20 @@ func (c *ImageCmd) Run(appContext *lib.AppContext) error {
 
 	var fractal lib.Fractal
 
+	if c.Format == "" {
+		ext := strings.ToLower(path.Ext(c.OutputPath))
+		switch ext {
+		case ".png":
+			c.Format = "png"
+		case ".jpg":
+			fallthrough
+		case ".jpeg":
+			c.Format = "jpeg"
+		default:
+			return errors.New("unknown image format")
+		}
+	}
+
 	if c.FractalPreset != "" {
 		fractalPreset, err := presets.FractalPresets.GetByName(c.FractalPreset)
 		if err != nil {
@@ -79,7 +93,7 @@ func (c *ImageCmd) Run(appContext *lib.AppContext) error {
 		if err != nil {
 			return err
 		}
-		fmt.Println("Note: Using a fractal preset, ignoring other fractal parameters.")
+		fmt.Printf("Using fractal preset: '%s', ignoring other fractal parameters.\n", c.FractalPreset)
 	} else {
 		var commonFractParams = lib.CommonFractParams{
 			ImageWidth:          c.Width,
@@ -96,19 +110,6 @@ func (c *ImageCmd) Run(appContext *lib.AppContext) error {
 		fractal, err = lib.NewFractalFromParams(c.Function, commonFractParams, c.JuliaKr, c.JuliaKi)
 		if err != nil {
 			return err
-		}
-	}
-
-	if c.Format == "" {
-		ext := strings.ToLower(path.Ext(c.OutputPath))
-		switch ext {
-		case ".png":
-			c.Format = "png"
-		case ".jpg":
-		case ".jpeg":
-			c.Format = "jpeg"
-		default:
-			return errors.New("unknown image format")
 		}
 	}
 
@@ -192,21 +193,15 @@ func (c *FlightCmd) Run(appContext *lib.AppContext) error {
 	}
 	startCenterCX := big.NewFloat(c.StartCenterCX)
 	endCenterCX := big.NewFloat(c.EndCenterCX)
-	deltaX := big.NewFloat(0.0).Sub(endCenterCX, startCenterCX)
-	// incX := big.NewFloat(0.0).Quo(deltaX, big.NewFloat(float64(nrOfImages)))
+	deltaX := new(big.Float).Sub(endCenterCX, startCenterCX)
 
 	startCenterCY := big.NewFloat(c.StartCenterCY)
 	endCenterCY := big.NewFloat(c.EndCenterCY)
-	deltaY := big.NewFloat(0.0).Sub(endCenterCY, startCenterCY)
-	// incY := big.NewFloat(0.0).Quo(deltaY, big.NewFloat(float64(nrOfImages)))
+	deltaY := new(big.Float).Sub(endCenterCY, startCenterCY)
 
 	startDiameterCX := big.NewFloat(c.StartDiameterCX)
 	endDiameterCX := big.NewFloat(c.EndDiameterCX)
-	deltaDiameter := big.NewFloat(0.0).Sub(endDiameterCX, startDiameterCX)
-	// incDiameter := big.NewFloat(0.0).Quo(deltaDiameter, big.NewFloat(float64(nrOfImages)))
-	// incDiameter.Mul(incDiameter, big.NewFloat(2.0))
-
-	// fmt.Printf("Start Center CX: %v, End Center CX: %v, Inc Center CX: %v\n", startCenterCX, endCenterCX, incX)
+	deltaDiameter := new(big.Float).Sub(endDiameterCX, startDiameterCX)
 
 	/*
 		We cannot simply increase the diameter by the same amount every step: as we dive deeper into
@@ -242,12 +237,7 @@ func (c *FlightCmd) Run(appContext *lib.AppContext) error {
 			p = (Kn/K(0))^(1/80) - 1
 			p = (0.01/4)^(1/80) - 1
 			p = 1.0000000000000002
-
-
-
 	*/
-
-	// dir := startDiameterCX.Cmp(endDiameterCX)
 
 	// diameter percentage to increase per image:
 	// p = (nth root of (endDiameter / startDiameter)) + 1
@@ -257,45 +247,28 @@ func (c *FlightCmd) Run(appContext *lib.AppContext) error {
 	inc := big.NewFloat(1.0)
 	inc.Add(inc, big.NewFloat(percIncrease))
 
-	actDiameterCX := big.NewFloat(0.0).Copy(startDiameterCX)
+	actDiameterCX := new(big.Float).Copy(startDiameterCX)
 	// fmt.Printf("Start Diameter CX: %v, End Diameter CX: %v, Inc Diameter CX: %v\n", startDiameterCX, endDiameterCX, inc)
 
 	// for actDiameterCX.Cmp(endDiameterCX) == dir {
 	for i := 0; i <= nrOfImages; i++ {
-		total := big.NewFloat(0.0).Copy(deltaDiameter)
-		diff := big.NewFloat(0.0).Sub(actDiameterCX, startDiameterCX)
+		total := new(big.Float).Copy(deltaDiameter)
+		diff := new(big.Float).Sub(actDiameterCX, startDiameterCX)
 		percDone := diff.Quo(diff, total).Abs(diff)
 
-		// commonFractParams.CenterCX = c.StartCenterCX + (c.EndCenterCX-c.StartCenterCX)*float64(i+1)/float64(nrOfImages)
-		// commonFractParams.CenterCY = c.StartCenterCY + (c.EndCenterCY-c.StartCenterCY)*float64(i+1)/float64(nrOfImages)
-		// commonFractParams.DiameterCX = c.StartDiameterCX + (c.EndDiameterCX-c.StartDiameterCX)*float64(i+1)/float64(nrOfImages)
+		// newCX = deltaX * percentage + startCenterCX
+		newCX := new(big.Float).Copy(deltaX)
+		newCX.Mul(newCX, percDone)
+		newCX.Add(newCX, startCenterCX)
 
-		// prev := big.NewFloat(0.0).Copy(actDiameterCX)
-		if i == 0 {
-			// newcx = startCenterCX + (deltaX)*percentage
+		// newCY = deltaY * percentage + startCenterCY
+		newCY := new(big.Float).Copy(deltaY)
+		newCY.Mul(newCY, percDone)
+		newCY.Add(newCY, startCenterCY)
 
-			commonFractParams.CenterCX, _ = startCenterCX.Float64()
-			commonFractParams.CenterCY, _ = startCenterCY.Float64()
-			commonFractParams.DiameterCX, _ = actDiameterCX.Float64()
-
-		} else {
-			newCX := big.NewFloat(0.0).Copy(deltaX)
-			newCX.Mul(newCX, percDone)
-			newCX.Add(newCX, startCenterCX)
-
-			newCY := big.NewFloat(0.0).Copy(deltaY)
-			newCY.Mul(newCY, percDone)
-			newCY.Add(newCY, startCenterCY)
-			// commonFractParams.CenterCX, _ = startCenterCX.Add(startCenterCX, incX).Float64()
-			// commonFractParams.CenterCY, _ = startCenterCY.Add(startCenterCY, incY).Float64()
-			// commonFractParams.DiameterCX, _ = actDiameterCX.Add(actDiameterCX, incDiameter).Float64()
-			commonFractParams.CenterCX, _ = newCX.Float64()
-			commonFractParams.CenterCY, _ = newCY.Float64()
-			commonFractParams.DiameterCX, _ = actDiameterCX.Mul(actDiameterCX, inc).Float64()
-
-		}
-		// diff := big.NewFloat(0.0).Sub(actDiameterCX, prev)
-		// fmt.Printf("Start diameter cx: %v, End diameter cx: %v, Diff: %v\n", prev, actDiameterCX, diff)
+		commonFractParams.CenterCX, _ = newCX.Float64()
+		commonFractParams.CenterCY, _ = newCY.Float64()
+		commonFractParams.DiameterCX, _ = actDiameterCX.Mul(actDiameterCX, inc).Float64()
 
 		fractal, err = lib.NewFractalFromParams(c.Function, commonFractParams, c.JuliaKr, c.JuliaKi)
 		if err != nil {

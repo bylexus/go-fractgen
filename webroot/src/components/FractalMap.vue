@@ -11,19 +11,26 @@ import DragPan from 'ol/interaction/DragPan'
 import DragZoom from 'ol/interaction/DragZoom'
 import PinchZoom from 'ol/interaction/PinchZoom'
 import { defaults as defaultControls } from 'ol/control/defaults'
-import type { ImageTile, Tile } from 'ol'
+import type { ImageTile, MapBrowserEvent, Tile } from 'ol'
 import { onMounted, ref, watch, watchEffect, type ModelRef, type Ref } from 'vue'
 import { apiroot, queryStr } from '@/lib/url_helper'
 import type { FractalParams } from '@/lib/use-presets'
 import { useElementResize, type ElementInfo } from '@/lib/element-info'
 
 const fractalParams: ModelRef<FractalParams> = defineModel('fractalParams', { required: true })
-const props = defineProps<{
-  colorPreset: string
-  showHud: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    colorPreset: string
+    showHud?: boolean
+    clickMode?: 'click' | 'center'
+  }>(),
+  {
+    clickMode: 'click',
+    showHud: true,
+  },
+)
 
-const emit = defineEmits(['mapSingleClick'])
+const emit = defineEmits(['mapSingleClick', 'mapCentered'])
 
 const map = ref<HTMLDivElement>()
 const mapControls = ref<HTMLDivElement>()
@@ -147,7 +154,18 @@ onMounted(() => {
     }),
   })
 
-  olMap.on('singleclick', () => emit('mapSingleClick'))
+  olMap.on('singleclick', (e: MapBrowserEvent) => {
+    if (props.clickMode === 'click') {
+      emit('mapSingleClick')
+    }
+    if (props.clickMode === 'center') {
+      changeFractalParams({
+        centerCX: e.coordinate[0],
+        centerCY: e.coordinate[1],
+      })
+      emit('mapCentered', e.coordinate, e.pixel)
+    }
+  })
 
   let oldZoom = 0
   olMap.on('movestart', () => {

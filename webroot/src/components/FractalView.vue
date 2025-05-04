@@ -12,6 +12,7 @@ const settingsOverlay = ref<HTMLDivElement>()
 const fractalMap = ref<InstanceType<typeof FractalMap>>()
 const hudVisible = ref(true)
 const showSettingsDlg = ref(false)
+const mapClickMode: Ref<'click' | 'center'> = ref('click')
 
 const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
   'fractalParams',
@@ -71,7 +72,14 @@ function onFixedPaletteCBChange(e: Event) {
       colorPaletteRepeat: fractalParams.value.colorPaletteRepeat || 1,
     })
   }
-  console.log(checked)
+}
+
+function centerOnClick() {
+  if (mapClickMode.value === 'click') {
+    mapClickMode.value = 'center'
+  } else {
+    mapClickMode.value = 'click'
+  }
 }
 </script>
 
@@ -82,7 +90,9 @@ function onFixedPaletteCBChange(e: Event) {
       v-model:fractalParams="fractalParams"
       :color-preset="fractalParams.colorPreset"
       :show-hud="hudVisible"
+      :click-mode="mapClickMode"
       @map-single-click="hudVisible = !hudVisible"
+      @map-centered="mapClickMode = 'click'"
     ></FractalMap>
 
     <div ref="settingsOverlay" :class="{ 'settings-overlay': true, hidden: !hudVisible }">
@@ -168,6 +178,14 @@ function onFixedPaletteCBChange(e: Event) {
         />
       </div>
       <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
+      <button
+        type="button"
+        :style="{ backgroundColor: mapClickMode === 'click' ? '' : '#aaa' }"
+        @click="centerOnClick"
+        title="Center on click"
+      >
+        🎯️
+      </button>
     </div>
     <SettingsDialog
       v-model="showSettingsDlg"
