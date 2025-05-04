@@ -82,6 +82,7 @@ function smallPrevLink(preset: ColorPreset) {
   .preview-img {
     border: 1px solid black;
     border-radius: 3px;
+    max-width: 100%;
   }
 }
 </style>

@@ -12,7 +12,6 @@ export function useElementResize(el: HTMLElement, delayMs: number = 100): Elemen
   const observer = new ResizeObserver(() => {
     window.clearTimeout(timeoutRef)
     timeoutRef = window.setTimeout(() => {
-      console.log('resize', el.clientWidth, el.clientHeight)
       width.value = el.clientWidth
       height.value = el.clientHeight
     }, delayMs)

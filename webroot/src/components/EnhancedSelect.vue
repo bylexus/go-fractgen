@@ -3,6 +3,8 @@ import { computed, reactive, ref, watch } from 'vue'
 
 const model = defineModel<any>('value')
 const filter = defineModel<any>('filter')
+const container = ref<HTMLDivElement>()
+const selectorOverlay = ref<HTMLDivElement>()
 
 const props = defineProps<{
   items: any[]
@@ -19,9 +21,32 @@ const state = reactive({
 watch(
   () => state.selectorOpen,
   (newVal, oldVal) => {
+    // on open:
     if (newVal && !oldVal) {
       filter.value = ''
       filterInput.value?.focus()
+
+      const containerBounds = container.value?.getBoundingClientRect()
+      if (containerBounds) {
+        if (containerBounds.left + 400 > window.innerWidth) {
+          selectorOverlay.value!.style.left = 'unset'
+          selectorOverlay.value!.style.right = '0'
+        } else {
+          selectorOverlay.value!.style.left = `${containerBounds.left}px`
+          selectorOverlay.value!.style.right = 'unset'
+        }
+        if (containerBounds.bottom - 400 < 0) {
+          selectorOverlay.value!.style.top = '0'
+          selectorOverlay.value!.style.bottom = 'unset'
+        } else {
+          selectorOverlay.value!.style.bottom = `${window.innerHeight - containerBounds.bottom}px`
+          selectorOverlay.value!.style.top = 'unset'
+        }
+      }
+      console.log(container.value?.getBoundingClientRect())
+    } else {
+      selectorOverlay.value!.style.left = `-200vw`
+      selectorOverlay.value!.style.right = 'unset'
     }
   },
 )
@@ -42,11 +67,11 @@ function onSelect(item: any) {
 </script>
 
 <template>
-  <div class="container" @click="state.selectorOpen = true">
+  <div ref="container" class="container" @click="state.selectorOpen = true">
     <slot name="display" :item="valueItem">
       <span class="value">{{ valueDisplay }}</span>
     </slot>
-    <div :class="{ 'selector-overlay': true, open: state.selectorOpen }">
+    <div ref="selectorOverlay" :class="{ 'selector-overlay': true, open: state.selectorOpen }">
       <div class="search-field">
         <input
           type="text"
@@ -73,7 +98,6 @@ function onSelect(item: any) {
 
 <style lang="css" scoped>
 .container {
-  position: relative;
   display: inline-block;
   border: 1px solid black;
   border-radius: 3px;
@@ -86,13 +110,13 @@ function onSelect(item: any) {
 
   .selector-overlay {
     color: white;
-    position: absolute;
+    position: fixed;
     width: 400px;
     max-width: 100vw;
     height: 400px;
     max-height: 400px;
     opacity: 0;
-    left: -100vw;
+    left: -200vw;
     bottom: 0;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.6);
@@ -100,7 +124,7 @@ function onSelect(item: any) {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border: 1px solid #aaa;
     border-radius: 3px;
-    overflow: none;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
@@ -108,11 +132,12 @@ function onSelect(item: any) {
     gap: 0.2rem;
     padding: 0.5rem;
 
-    transition: opacity 0.2s ease-in-out, left 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 
     &.open {
       opacity: 1;
       left: 0;
+      right: unset;
     }
 
     .search-field {

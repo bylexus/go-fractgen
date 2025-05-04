@@ -106,95 +106,98 @@ function centerOnClick() {
     ></FractalMap>
 
     <div ref="settingsOverlay" :class="{ 'settings-overlay': true, hidden: !hudVisible }">
-      <div class="label-field">
-        <label>Preset:</label>
-        <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
-      </div>
-      <div class="label-field">
-        <label>Color Palette:</label>
-        <ColorPresetSelect
-          :model-value="fractalParams.colorPreset"
-          @update:model-value="changeFractalParams({ colorPreset: $event })"
-        ></ColorPresetSelect>
-      </div>
-      <div class="label-field">
-        <label for="iterations">Max. Iterations</label>
-        <div style="display: flex; gap: 0.25rem; align-items: end">
+      <div class="glass-container"></div>
+      <div class="flex flex-wrap align-end gap-1 padding-1">
+        <div class="label-field">
+          <label>Preset:</label>
+          <FractalPresetsSelect v-model="fractalPreset"></FractalPresetsSelect>
+        </div>
+        <div class="label-field">
+          <label>Color Palette:</label>
+          <ColorPresetSelect
+            :model-value="fractalParams.colorPreset"
+            @update:model-value="changeFractalParams({ colorPreset: $event })"
+          ></ColorPresetSelect>
+        </div>
+        <div class="label-field">
+          <label for="iterations">Max. Iterations</label>
+          <div style="display: flex; gap: 0.25rem; align-items: end">
+            <input
+              type="number"
+              :value="fractalParams.maxIterations"
+              @change.lazy="
+                (e: Event) =>
+                  changeFractalParams({
+                    maxIterations: parseInt((e.target as HTMLInputElement).value),
+                  })
+              "
+              id="iterations"
+            />
+            <button type="button" @click="recalcIterations()">🧮</button>
+          </div>
+        </div>
+        <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
+          <label for="paletteRepeat">Palette Repeat: </label>
+          <input
+            type="checkbox"
+            :checked="fractalParams.colorPaletteLength > 0"
+            @change="onFixedPaletteCBChange"
+          />
           <input
             type="number"
-            :value="fractalParams.maxIterations"
+            :value="fractalParams.colorPaletteRepeat"
+            id="paletteRepeat"
             @change.lazy="
               (e: Event) =>
                 changeFractalParams({
-                  maxIterations: parseInt((e.target as HTMLInputElement).value),
+                  colorPaletteRepeat: parseInt((e.target as HTMLInputElement).value),
                 })
             "
-            id="iterations"
           />
-          <button type="button" @click="recalcIterations()">🧮</button>
         </div>
+        <div v-if="fractalParams.colorPaletteLength > 0" class="label-field">
+          <label for="paletteLength">Fixed Palette Length:</label>
+          <input
+            type="checkbox"
+            :checked="fractalParams.colorPaletteLength > 0"
+            @change="onFixedPaletteCBChange"
+          />
+          <input
+            type="number"
+            :value="fractalParams.colorPaletteLength"
+            id="paletteLength"
+            @change.lazy="
+              (e: Event) =>
+                changeFractalParams({
+                  colorPaletteLength: parseInt((e.target as HTMLInputElement).value),
+                })
+            "
+          />
+        </div>
+        <div class="label-field">
+          <label for="paletteReverse">Reverse Palette:</label>
+          <input
+            type="checkbox"
+            :checked="fractalParams.colorPaletteReverse"
+            @change.lazy="
+              (e: Event) =>
+                changeFractalParams({
+                  colorPaletteReverse: Boolean((e.target as HTMLInputElement).checked),
+                })
+            "
+          />
+        </div>
+        <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
+        <button
+          type="button"
+          :style="{ backgroundColor: mapClickMode === 'click' ? '' : '#aaa' }"
+          @click="centerOnClick"
+          title="Center on click"
+        >
+          🎯️
+        </button>
+        <button type="button" @click="showAboutDlg = true" title="About">ℹ️</button>
       </div>
-      <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
-        <label for="paletteRepeat">Palette Repeat: </label>
-        <input
-          type="checkbox"
-          :checked="fractalParams.colorPaletteLength > 0"
-          @change="onFixedPaletteCBChange"
-        />
-        <input
-          type="number"
-          :value="fractalParams.colorPaletteRepeat"
-          id="paletteRepeat"
-          @change.lazy="
-            (e: Event) =>
-              changeFractalParams({
-                colorPaletteRepeat: parseInt((e.target as HTMLInputElement).value),
-              })
-          "
-        />
-      </div>
-      <div v-if="fractalParams.colorPaletteLength > 0" class="label-field">
-        <label for="paletteLength">Fixed Palette Length:</label>
-        <input
-          type="checkbox"
-          :checked="fractalParams.colorPaletteLength > 0"
-          @change="onFixedPaletteCBChange"
-        />
-        <input
-          type="number"
-          :value="fractalParams.colorPaletteLength"
-          id="paletteLength"
-          @change.lazy="
-            (e: Event) =>
-              changeFractalParams({
-                colorPaletteLength: parseInt((e.target as HTMLInputElement).value),
-              })
-          "
-        />
-      </div>
-      <div class="label-field">
-        <label for="paletteReverse">Reverse Palette:</label>
-        <input
-          type="checkbox"
-          :checked="fractalParams.colorPaletteReverse"
-          @change.lazy="
-            (e: Event) =>
-              changeFractalParams({
-                colorPaletteReverse: Boolean((e.target as HTMLInputElement).checked),
-              })
-          "
-        />
-      </div>
-      <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
-      <button
-        type="button"
-        :style="{ backgroundColor: mapClickMode === 'click' ? '' : '#aaa' }"
-        @click="centerOnClick"
-        title="Center on click"
-      >
-        🎯️
-      </button>
-      <button type="button" @click="showAboutDlg = true" title="About">ℹ️</button>
     </div>
     <SettingsDialog
       v-model="showSettingsDlg"
@@ -212,26 +215,28 @@ function centerOnClick() {
 }
 
 .settings-overlay {
+  /** Do not place transition, filter here, as it prevents childs from position:fixed! */
   position: absolute;
-  padding: 0.2rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 0.2rem;
   z-index: 1;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   transition:
     opacity 0.3s ease-in-out,
     transform 0.3s ease-in-out;
-  transform: translateY(0);
   &.hidden {
     opacity: 0;
     transform: translateY(100%);
+  }
+
+  .glass-container {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
   }
 }
 
