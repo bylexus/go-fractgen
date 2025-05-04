@@ -47,7 +47,6 @@ function smallPrevLink(fractalParams: FractalParams) {
   params.height = 36
   return `${apiroot()}/fractal-image/jpg?${queryStr(params)}`
 }
-
 </script>
 
 <template>
@@ -110,10 +109,12 @@ function smallPrevLink(fractalParams: FractalParams) {
     opacity: 0;
     left: 0;
     bottom: 0;
-    z-index: 5;
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #aaa;
+    border-radius: 3px;
     overflow: none;
 
     display: flex;
