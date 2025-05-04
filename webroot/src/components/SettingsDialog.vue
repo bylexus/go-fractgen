@@ -166,11 +166,10 @@ function onResetBtn() {
           Image URLs:
           <ul>
             <li>
-              <a :href="jpegImageLink" target="_blank" rel="noopener noreferrer">jpeg-Link </a
-              ><br />
+              <a :href="jpegImageLink" target="_blank" rel="noopener noreferrer">jpeg-Link </a>
             </li>
             <li>
-              <a :href="pngImageLink" target="_blank" rel="noopener noreferrer">png-Link </a><br />
+              <a :href="pngImageLink" target="_blank" rel="noopener noreferrer">png-Link </a>
             </li>
           </ul>
         </div>

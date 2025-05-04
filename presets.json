@@ -810,14 +810,14 @@
       "maxIterations": 80,
       "diameterCX": 4,
       "colorPreset": "patchwork",
-      "juliaKi": 0.8,
+      "juliaKi": 0.7,
       "colorPaletteLength": -1,
       "iterFunc": "Julia",
       "name": "Julia Total",
       "colorPaletteRepeat": 1,
       "centerCY": 0,
       "centerCX": 0,
-      "juliaKr": -0.2
+      "juliaKr": -0.4
     },
     {
       "maxIterations": 750,

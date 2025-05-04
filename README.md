@@ -57,6 +57,34 @@ fractgen image --help
 fractgen image --max-iter=1000 --color-preset=red-alert my-image.jpg
 ```
 
+
+### Create a flight (video/multi images) through a fractal
+
+With the `flight` command, you can create a flight through a fractal from a start point to an end point.
+
+```bash
+go run main.go flight --duration 60 --fps 30 \
+		--width=720 \
+		--height=405 \
+        --start-center-cx=1 \
+        --start-center-cy=0 \
+        --start-diameter-cx=3 \
+        --end-center-cx=-0.736882432177663 \
+        --end-center-cy=0.17482000150317034 \
+        --end-diameter-cx=2.0116567611694336e-7 \
+        --color-preset=patchwork \
+        --palette-repeat=1 \
+        --palette-length=-1 \
+        --max-iter=1000 \
+		output
+```
+
+This generates a series of images in the `output` folder. If you want to generate a video from the images, you can use `ffmpeg`:
+
+```bash
+ffmpeg -framerate 30 -pattern_type glob -i '*.jpeg' -c:v libx264 -pix_fmt yuv420p out.mp4
+```
+
 ### Using presets
 
 `fractgen` comes with a set of built-in color and fractal presets. To list the available presets, run:
@@ -167,4 +195,23 @@ IFS=$'\n' jq -r '.fractalPresets.[].name' presets.json | while read preset; do; 
 		--height=2400 \
 		"output/${preset}.jpg"; \
 done
+```
+
+### Some Flight examples
+
+```bash
+go run main.go flight --duration 60 --fps 60 \
+		--width=1920 \
+		--height=1080 \
+        --start-center-cx=-0.7 \
+        --start-center-cy=0 \
+        --start-diameter-cx=3 \
+        --end-center-cx=-0.736882432177663 \
+        --end-center-cy=0.17482000150317034 \
+        --end-diameter-cx=2.0116567611694336e-7 \
+        --color-preset=patchwork \
+        --palette-repeat=1 \
+        --palette-length=-1 \
+        --max-iter=1000 \
+		output
 ```

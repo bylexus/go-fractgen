@@ -110,6 +110,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 
 	img := lib.CalcFractalImage(fractal)
 	w.Header().Set("Content-Type", mimeType)
+	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
 	switch format {
 	case "png":
@@ -122,7 +123,6 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "image/jpeg")
 	zoomLevel, _ := strconv.Atoi(r.URL.Query().Get("TileMatrix"))
 	if zoomLevel < 0 || zoomLevel > 50 {
 		zoomLevel = 0
@@ -208,6 +208,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	img := lib.CalcFractalImage(fractal)
+	w.Header().Set("Content-Type", "image/jpeg")
 	w.Header().Set("Cache-Control", "public, max-age=15552000;")
 	w.WriteHeader(http.StatusOK)
 	img.EncodeJpeg(w)

@@ -13,7 +13,7 @@ const show = defineModel<boolean>()
 
 <style lang="scss" scoped>
 .dialog {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   z-index: 2;

@@ -5,6 +5,7 @@ import { useSessionStorageVariable } from '@/lib/use-session-storage'
 import FractalPresetsSelect from './FractalPresetsSelect.vue'
 import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/lib/use-presets'
 import SettingsDialog from './SettingsDialog.vue'
+import AboutDialog from './AboutDialog.vue'
 import FractalMap from './FractalMap.vue'
 
 const fractalPreset = ref('')
@@ -12,6 +13,7 @@ const settingsOverlay = ref<HTMLDivElement>()
 const fractalMap = ref<InstanceType<typeof FractalMap>>()
 const hudVisible = ref(true)
 const showSettingsDlg = ref(false)
+const showAboutDlg = ref(false)
 const mapClickMode: Ref<'click' | 'center'> = ref('click')
 
 const fractalParams: Ref<FractalParams> = useSessionStorageVariable(
@@ -186,12 +188,14 @@ function centerOnClick() {
       >
         🎯️
       </button>
+      <button type="button" @click="showAboutDlg = true" title="About">ℹ️</button>
     </div>
     <SettingsDialog
       v-model="showSettingsDlg"
       :fract-params="fractalParams"
       @update:fract-params="changeFractalParams($event)"
     />
+    <AboutDialog v-model="showAboutDlg"></AboutDialog>
   </div>
 </template>
 
@@ -217,10 +221,11 @@ function centerOnClick() {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   transition:
     opacity 0.3s ease-in-out,
-    bottom 0.3s ease-in-out;
+    transform 0.3s ease-in-out;
+  transform: translateY(0);
   &.hidden {
     opacity: 0;
-    bottom: -100%;
+    transform: translateY(100%);
   }
 }
 

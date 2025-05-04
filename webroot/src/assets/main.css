@@ -37,3 +37,7 @@ body {
 .gap-1 {
   gap: 0.25rem;
 }
+
+.small {
+  font-size: 0.8rem;
+}

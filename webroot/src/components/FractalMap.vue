@@ -299,12 +299,13 @@ function calcResolutionForZoom(zoomLevel: number) {
     top: 0;
     right: 0;
     margin: 0.5rem;
+    transform: translateY(0);
     transition:
       opacity 0.2s ease-in-out,
-      top 0.2s ease-in-out;
+      transform 0.2s ease-in-out;
     &.hidden {
       opacity: 0;
-      top: -100%;
+      transform: translateY(-100%);
     }
 
     :deep(.ol-zoom) {
