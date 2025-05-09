@@ -7,6 +7,7 @@ import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/li
 import SettingsDialog from './SettingsDialog.vue'
 import AboutDialog from './AboutDialog.vue'
 import FractalMap from './FractalMap.vue'
+import {emitEvent, GlobalEvent} from '@/lib/event-bus'
 
 const fractalPreset = ref('')
 const settingsOverlay = ref<HTMLDivElement>()
@@ -47,6 +48,14 @@ watch(fractalPreset, () => {
 
 watch(fractalParams, (newVal) => {
   console.log('changed params: ', newVal)
+})
+
+watch(hudVisible, () => {
+  if (hudVisible.value) {
+    emitEvent(GlobalEvent.showHud)
+  } else {
+    emitEvent(GlobalEvent.hideHud)
+  }
 })
 
 function changeFractalParams(params: Partial<FractalParams>) {

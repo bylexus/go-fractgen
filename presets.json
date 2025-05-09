@@ -1139,6 +1139,34 @@
       "colorPaletteLength": -1,
       "colorPaletteRepeat": 3,
       "colorPaletteReverse": false
+    },
+    {
+      "name": "Mandelbrot Julia Again",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 9.822542779147625e-11,
+      "centerCX": -1.0384702957730012,
+      "centerCY": -0.3505475394365654,
+      "colorPreset": "sedum",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 1389,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 3,
+      "colorPaletteReverse": false
+    },
+    {
+      "name": "Mandelbrot Center of the Sun",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 1.0058283805847168e-7,
+      "centerCX": -0.7010452204556012,
+      "centerCY": -0.4708551093589849,
+      "colorPreset": "rgb",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 2000,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 15,
+      "colorPaletteReverse": true
     }
   ]
 }

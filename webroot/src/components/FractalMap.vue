@@ -132,6 +132,16 @@ onMounted(() => {
     }),
   })
 
+  const controls = defaultControls({
+    rotate: false,
+    zoom: true,
+    zoomOptions: {
+      target: mapControls.value,
+      duration: 250,
+    },
+    attribution: true,
+  })
+
   olMap = new OlMap({
     target: map.value!,
     layers: [fractalOlLayer],
@@ -143,15 +153,7 @@ onMounted(() => {
       new DragZoom({ duration: 250 }),
       new PinchZoom({ duration: 250 }),
     ],
-    controls: defaultControls({
-      rotate: false,
-      zoom: true,
-      zoomOptions: {
-        target: mapControls.value,
-        duration: 250,
-      },
-      attribution: true,
-    }),
+    controls: controls,
   })
 
   olMap.on('singleclick', (e: MapBrowserEvent) => {
@@ -293,11 +295,14 @@ function calcResolutionForZoom(zoomLevel: number) {
   }
 
   .map-controls {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: end;
     position: absolute;
     z-index: 1;
     top: 0;
     right: 0;
+
     margin: 0.5rem;
     transform: translateY(0);
     transition:

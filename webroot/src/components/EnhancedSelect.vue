@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { GlobalEvent, onEvent } from '@/lib/event-bus'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 const model = defineModel<any>('value')
 const filter = defineModel<any>('filter')
@@ -45,7 +46,7 @@ watch(
       }
       console.log(container.value?.getBoundingClientRect())
     } else {
-      selectorOverlay.value!.style.left = `-200vw`
+      // selectorOverlay.value!.style.left = `-200vw`
       selectorOverlay.value!.style.right = 'unset'
     }
   },
@@ -59,8 +60,13 @@ const valueDisplay = computed(() => {
   return valueItem.value ? valueItem.value[props.displayProperty] : ''
 })
 
+onMounted(() => {
+  onEvent(GlobalEvent.hideHud, () => {
+    state.selectorOpen = false
+  })
+})
+
 function onSelect(item: any) {
-  console.log('item selected: ', item)
   model.value = item[props.valueProperty]
   state.selectorOpen = false
 }
@@ -76,6 +82,7 @@ function onSelect(item: any) {
         <input
           type="text"
           :placeholder="filterPlaceholder || undefined"
+          inputmode="none"
           v-model="filter"
           ref="filterInput"
         />
@@ -116,7 +123,7 @@ function onSelect(item: any) {
     height: 400px;
     max-height: 400px;
     opacity: 0;
-    left: -200vw;
+    left: 0;
     bottom: 0;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.6);
@@ -131,13 +138,13 @@ function onSelect(item: any) {
     align-items: start;
     gap: 0.2rem;
     padding: 0.5rem;
+    transform: translateY(150%);
 
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
 
     &.open {
       opacity: 1;
-      left: 0;
-      right: unset;
+      transform: translateY(0);
     }
 
     .search-field {
