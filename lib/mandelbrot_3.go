@@ -1,6 +1,8 @@
 package lib
 
 import (
+	"math/big"
+
 	"github.com/bylexus/go-stdlib/ethreads"
 )
 
@@ -16,7 +18,7 @@ func NewMandelbrot3Fractal(fractalParams CommonFractParams) Mandelbrot3Fractal {
 func (f Mandelbrot3Fractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
 	return func(id ethreads.ThreadId) {
 		cx, cy := f.PixelToFractal(pixX, pixY)
-		fractRes := Mandelbrot3(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
+		fractRes := Mandelbrot3(cx, cy, BIG_MAX_ABS_SQUARE_AMOUNT, f.MaxIterations)
 		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 	}
 }
@@ -47,21 +49,45 @@ or the max. number of iterations is reached.
 @author Alexander Schenkel, www.alexi.ch
 (c) 2012-2025 Alexander Schenkel
 */
-func Mandelbrot3(cx, cy, max_betrag_quadrat float64, maxIter int) FractFunctionResult {
-	var betragQuadrat float64 = 0.0
+func Mandelbrot3(cx, cy, max_betrag_quadrat *big.Float, maxIter int) FractFunctionResult {
+	var betragQuadrat *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
 	var iter int = 0
-	var x, xt float64 = 0.0, 0.0
-	var y, yt float64 = 0.0, 0.0
+	var x *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
+	var y *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
 
-	for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
+	// for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
+	for betragQuadrat.Cmp(max_betrag_quadrat) <= 0 && iter < maxIter {
+		// x*x
+		xx := new(big.Float).Copy(x)
+		xx.Mul(xx, x)
+
+		// 3*x*x
+		xx3 := new(big.Float).Copy(xx)
+		xx3.Mul(xx3, xx)
+		xx3.Mul(xx3, BIG_3)
+
+		// y*y
+		yy := new(big.Float).Copy(y)
+		yy.Mul(yy, y)
+
+		// 3*y*y
+		yy3 := new(big.Float).Copy(yy)
+		yy3.Mul(yy3, yy)
+		yy3.Mul(yy3, BIG_3)
+
 		// Z^3 + c:
-		xt = x*(x*x-3*y*y) + cx
-		yt = y*(3*x*x-y*y) + cy
+		// xt = x*(x*x-3*y*y) + cx
+		xt := new(big.Float).Copy(xx)
+		xt.Sub(xt, yy3).Mul(xt, x).Add(xt, cx)
+
+		// yt = y*(3*x*x-y*y) + cy
+		yt := new(big.Float).Copy(xx3)
+		yt.Sub(yt, yy).Mul(yt, y).Add(yt, cy)
 
 		x = xt
 		y = yt
 		iter += 1
-		betragQuadrat = x*x + y*y
+		betragQuadrat.Mul(xx, yy)
 	}
 	result := FractFunctionResult{
 		Iterations:   iter,

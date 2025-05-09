@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"math/big"
 	"net/http"
 	"strconv"
 	"strings"
@@ -50,15 +51,15 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
 	iterFunc, _ := lib.FractalTypeFromString(r.URL.Query().Get("iterFunc"))
-	centerCX, _ := strconv.ParseFloat(r.URL.Query().Get("centerCX"), 64)
-	centerCY, _ := strconv.ParseFloat(r.URL.Query().Get("centerCY"), 64)
-	diameterCX, _ := strconv.ParseFloat(r.URL.Query().Get("diameterCX"), 64)
+	centerCX, _, _ := big.ParseFloat(r.URL.Query().Get("centerCX"), 10, lib.SYS_PRECISION, big.ToNearestEven)
+	centerCY, _, _ := big.ParseFloat(r.URL.Query().Get("centerCY"), 10, lib.SYS_PRECISION, big.ToNearestEven)
+	diameterCX, _, _ := big.ParseFloat(r.URL.Query().Get("diameterCX"), 10, lib.SYS_PRECISION, big.ToNearestEven)
 	colorPresetParam := r.URL.Query().Get("colorPreset")
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteRepeat"))
 	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteLength"))
 	colorPaletteReverse, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteReverse"))
-	juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
-	juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
+	juliaKr, _, _ := big.ParseFloat(r.URL.Query().Get("juliaKr"), 10, lib.SYS_PRECISION, big.ToNearestEven)
+	juliaKi, _, _ := big.ParseFloat(r.URL.Query().Get("juliaKi"), 10, lib.SYS_PRECISION, big.ToNearestEven)
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -100,20 +101,31 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	tileX, _ := strconv.Atoi(r.URL.Query().Get("TileCol"))
 	tileY, _ := strconv.Atoi(r.URL.Query().Get("TileRow"))
 
-	originX := -1.7
-	originY := -1.0
+	originX := big.NewFloat(-1.7).SetPrec(lib.SYS_PRECISION)
+	originY := big.NewFloat(-1.0).SetPrec(lib.SYS_PRECISION)
 
 	tileWidthPixels, _ := strconv.Atoi(r.URL.Query().Get("tileWidthPixels"))
 	if tileWidthPixels == 0 {
 		tileWidthPixels = 256
 	}
-	tileWidthFractal, _ := strconv.ParseFloat(r.URL.Query().Get("tileWidthFractal"), 64)
-	if tileWidthFractal == 0 {
-		tileWidthFractal = 1
-	}
+	resolution, _, _ := big.ParseFloat(r.URL.Query().Get("resolution"), 10, lib.SYS_PRECISION, big.ToNearestEven)
 
-	centerCX := originX + float64(tileX)*tileWidthFractal + (tileWidthFractal / 2)
-	centerCY := originY + float64(-1*tileY)*tileWidthFractal - (tileWidthFractal / 2)
+	tileWidthFractal := new(big.Float).SetPrec(lib.SYS_PRECISION)
+	tileWidthFractal.Mul(resolution, big.NewFloat(float64(tileWidthPixels)))
+	halfTileWidthFractal := new(big.Float).SetPrec(lib.SYS_PRECISION)
+	halfTileWidthFractal.Quo(tileWidthFractal, big.NewFloat(2.0))
+
+	// centerCX := originX + float64(tileX)*tileWidthFractal + (tileWidthFractal / 2)
+	tileXStart := new(big.Float).SetPrec(lib.SYS_PRECISION).Copy(tileWidthFractal)
+	tileXStart.Mul(tileXStart, big.NewFloat(float64(tileX)))
+	tileXStart.Add(tileXStart, originX)
+	centerCX := tileXStart.Add(tileXStart, halfTileWidthFractal)
+
+	// centerCY := originY + float64(-1*tileY)*tileWidthFractal - (tileWidthFractal / 2)
+	tileYStart := new(big.Float).SetPrec(lib.SYS_PRECISION).Copy(tileWidthFractal)
+	tileYStart.Mul(tileYStart, big.NewFloat(float64(-1*tileY)))
+	tileYStart.Add(tileYStart, originY)
+	centerCY := tileYStart.Sub(tileYStart, halfTileWidthFractal)
 
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
 	if maxIterations == 0 {
@@ -140,8 +152,8 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Unknown color preset")
 		return
 	}
-	juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
-	juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
+	juliaKr, _, _ := big.ParseFloat(r.URL.Query().Get("juliaKr"), 10, lib.SYS_PRECISION, big.ToNearestEven)
+	juliaKi, _, _ := big.ParseFloat(r.URL.Query().Get("juliaKi"), 10, lib.SYS_PRECISION, big.ToNearestEven)
 
 	var fractal lib.Fractal
 	var commonFractParams = lib.CommonFractParams{

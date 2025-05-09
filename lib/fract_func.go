@@ -11,7 +11,7 @@ import (
 
 // max amount = 256 gives smoother colors around the fractal:
 // const MAX_ABS_SQUARE_AMOUNT float64 = 4
-const MAX_ABS_SQUARE_AMOUNT float64 = 256
+// const MAX_ABS_SQUARE_AMOUNT float64 = 256
 
 type FractalType string
 
@@ -45,16 +45,16 @@ type Fractal interface {
 
 type FractFunctionResult struct {
 	Iterations   int
-	BailoutValue float64
+	BailoutValue *big.Float
 }
 
 type CommonFractParams struct {
-	MaxAbsSquareAmount float64
-	MaxIterations      int
+	// MaxAbsSquareAmount *big.Float
+	MaxIterations int
 
-	CenterCX   float64
-	CenterCY   float64
-	DiameterCX float64
+	CenterCX   *big.Float
+	CenterCY   *big.Float
+	DiameterCX *big.Float
 
 	ImageWidth  int
 	ImageHeight int
@@ -66,41 +66,54 @@ type CommonFractParams struct {
 	ColorPaletteReverse bool
 
 	// calculaed during initialization:
-	aspect float64
-	minCX  float64
-	maxCX  float64
-	minCY  float64
-	maxCY  float64
+	aspect *big.Float
+	minCX  *big.Float
+	maxCX  *big.Float
+	minCY  *big.Float
+	maxCY  *big.Float
 }
 
-func (f CommonFractParams) PixelToFractal(x, y int) (cx, cy float64) {
+func (f CommonFractParams) PixelToFractal(x, y int) (cx, cy *big.Float) {
 	// y axis is inverted in image and fractal space:
 	y = f.ImageHeight - y
-	cx = f.minCX + (f.maxCX-f.minCX)*(float64(x)/float64(f.ImageWidth))
-	cy = f.minCY + (f.maxCY-f.minCY)*(float64(y)/float64(f.ImageHeight))
+	percentageX := big.NewFloat(float64(x) / float64(f.ImageWidth)).SetPrec(SYS_PRECISION)
+	percentageY := big.NewFloat(float64(y) / float64(f.ImageHeight)).SetPrec(SYS_PRECISION)
+	diameterCX := new(big.Float).Copy(f.DiameterCX)
+
+	diameterCY := new(big.Float).Copy(f.maxCY)
+	diameterCY.Sub(diameterCY, f.minCY)
+
+	// cx = f.minCX + (f.DiameterCX)*(float64(x)/float64(f.ImageWidth))
+	cx = new(big.Float).Copy(f.minCX)
+	cx.Add(cx, percentageX.Mul(diameterCX, percentageX))
+
+	// cy = f.minCY + (f.maxCY-f.minCY)*(float64(y)/float64(f.ImageHeight))
+	cy = new(big.Float).Copy(f.minCY)
+	cy.Add(cy, percentageY.Mul(diameterCY, percentageY))
 	return cx, cy
 }
 
 func initializeFractParams(commonFractParams CommonFractParams) CommonFractParams {
 	// var aspect, fract_width, fract_heigth float64
 	var aspect, fract_width, fract_heigth, centerCX, centerCY *big.Float
+	var bigWidth = big.NewFloat(float64(commonFractParams.ImageWidth)).SetPrec(SYS_PRECISION)
+	var bigHeight = big.NewFloat(float64(commonFractParams.ImageHeight)).SetPrec(SYS_PRECISION)
 
-	aspect = big.NewFloat(0).Quo(big.NewFloat(float64(commonFractParams.ImageWidth)), big.NewFloat(float64(commonFractParams.ImageHeight)))
+	aspect = new(big.Float).SetPrec(SYS_PRECISION).Quo(bigWidth, bigHeight)
 	// aspect = float64(commonFractParams.ImageWidth) / float64(commonFractParams.ImageHeight)
-	fract_width = big.NewFloat(float64(commonFractParams.DiameterCX))
-	fract_heigth = big.NewFloat(0.0).Quo(fract_width, aspect)
-	centerCX = big.NewFloat(commonFractParams.CenterCX)
-	centerCY = big.NewFloat(commonFractParams.CenterCY)
-	two := big.NewFloat(2.0)
+	fract_width = new(big.Float).Copy(commonFractParams.DiameterCX)
+	fract_heigth = new(big.Float).SetPrec(SYS_PRECISION).Quo(fract_width, aspect)
+	centerCX = new(big.Float).Copy(commonFractParams.CenterCX)
+	centerCY = new(big.Float).Copy(commonFractParams.CenterCY)
 
 	// var min_cx float64 = commonFractParams.CenterCX - (fract_width / 2.0)
-	var min_cx = big.NewFloat(0.0).Sub(centerCX, (big.NewFloat(0.0).Quo(fract_width, two)))
+	var min_cx = new(big.Float).SetPrec(SYS_PRECISION).Sub(centerCX, (new(big.Float).SetPrec(SYS_PRECISION).Quo(fract_width, BIG_2)))
 	// var max_cx float64 = min_cx + fract_width
-	var max_cx = big.NewFloat(0.0).Add(min_cx, fract_width)
+	var max_cx = new(big.Float).SetPrec(SYS_PRECISION).Add(min_cx, fract_width)
 	// var min_cy float64 = commonFractParams.CenterCY - (fract_heigth / 2.0)
-	var min_cy = big.NewFloat(0.0).Sub(centerCY, (big.NewFloat(0.0).Quo(fract_heigth, two)))
+	var min_cy = new(big.Float).SetPrec(SYS_PRECISION).Sub(centerCY, (new(big.Float).SetPrec(SYS_PRECISION).Quo(fract_heigth, BIG_2)))
 	// var max_cy float64 = min_cy + fract_heigth
-	var max_cy = big.NewFloat(0.0).Add(min_cy, fract_heigth)
+	var max_cy = new(big.Float).SetPrec(SYS_PRECISION).Add(min_cy, fract_heigth)
 
 	if commonFractParams.ColorPaletteRepeat <= 0 {
 		commonFractParams.ColorPaletteRepeat = 1
@@ -112,12 +125,12 @@ func initializeFractParams(commonFractParams CommonFractParams) CommonFractParam
 	commonFractParams.SmoothColors = true
 
 	// Calculated during initialization:
-	commonFractParams.aspect, _ = aspect.Float64()
-	commonFractParams.minCX, _ = min_cx.Float64()
-	commonFractParams.maxCX, _ = max_cx.Float64()
-	commonFractParams.minCY, _ = min_cy.Float64()
-	commonFractParams.maxCY, _ = max_cy.Float64()
-	commonFractParams.MaxAbsSquareAmount = MAX_ABS_SQUARE_AMOUNT
+	commonFractParams.aspect = aspect
+	commonFractParams.minCX = min_cx
+	commonFractParams.maxCX = max_cx
+	commonFractParams.minCY = min_cy
+	commonFractParams.maxCY = max_cy
+	// commonFractParams.MaxAbsSquareAmount = big.NewFloat(MAX_ABS_SQUARE_AMOUNT).SetPrec(SYS_PRECISION)
 
 	return commonFractParams
 }
@@ -169,7 +182,7 @@ func NewFractalFromPresets(width, height int, colorPreset ColorPreset, fractalPr
 	}
 }
 
-func NewFractalFromParams(fractFunct FractalType, commonFractParams CommonFractParams, juliaKr, juliaKi float64) (Fractal, error) {
+func NewFractalFromParams(fractFunct FractalType, commonFractParams CommonFractParams, juliaKr, juliaKi *big.Float) (Fractal, error) {
 	var fractal Fractal
 	switch fractFunct {
 	case "mandelbrot":

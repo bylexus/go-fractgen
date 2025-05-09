@@ -107,7 +107,8 @@ onMounted(() => {
         colorPaletteReverse: colorPaletteReverse,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
-        tileWidthFractal: res * tileWidth,
+        // tileWidthFractal: res * tileWidth,
+        resolution: res,
         juliaKr: fractalParams.value.juliaKr,
         juliaKi: fractalParams.value.juliaKi,
       })

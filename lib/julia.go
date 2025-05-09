@@ -1,16 +1,18 @@
 package lib
 
 import (
+	"math/big"
+
 	"github.com/bylexus/go-stdlib/ethreads"
 )
 
 type JuliaFractal struct {
 	CommonFractParams
-	JuliaKr float64
-	JuliaKi float64
+	JuliaKr *big.Float
+	JuliaKi *big.Float
 }
 
-func NewJuliaFractal(fractalParams CommonFractParams, juliaKr, juliaKi float64) JuliaFractal {
+func NewJuliaFractal(fractalParams CommonFractParams, juliaKr, juliaKi *big.Float) JuliaFractal {
 	var params = initializeFractParams(fractalParams)
 
 	return JuliaFractal{params, juliaKr, juliaKi}
@@ -27,7 +29,7 @@ func (f JuliaFractal) ImageHeight() int {
 func (f JuliaFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
 	return func(id ethreads.ThreadId) {
 		cx, cy := f.PixelToFractal(pixX, pixY)
-		fractRes := Julia(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations, f.JuliaKr, f.JuliaKi)
+		fractRes := Julia(cx, cy, BIG_MAX_ABS_SQUARE_AMOUNT, f.MaxIterations, f.JuliaKr, f.JuliaKi)
 		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
 	}
 }
@@ -53,20 +55,44 @@ func (f JuliaFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethre
   - @author Alexander Schenkel, www.alexi.ch
   - (c) 2012 Alexander Schenkel
 */
-func Julia(cx, cy, max_betrag_quadrat float64, maxIter int, julia_r, julia_i float64) FractFunctionResult {
-	var betragQuadrat float64 = 0.0
+func Julia(cx, cy, max_betrag_quadrat *big.Float, maxIter int, julia_r, julia_i *big.Float) FractFunctionResult {
+	var betragQuadrat *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
 	var iter int = 0
-	var x, xt float64 = cx, 0.0
-	var y, yt float64 = cy, 0.0
+	var x *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
+	var y *big.Float = new(big.Float).SetPrec(SYS_PRECISION)
 
-	for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
-		xt = x*x - y*y + julia_r
-		yt = 2*x*y + julia_i
+	// start value of x/y:
+	x.Copy(cx)
+	y.Copy(cy)
+
+	// for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
+	for betragQuadrat.Cmp(max_betrag_quadrat) <= 0 && iter < maxIter {
+		// x*x
+		xx := new(big.Float).Copy(x)
+		xx.Mul(xx, x)
+
+		// y*y
+		yy := new(big.Float).Copy(y)
+		yy.Mul(yy, y)
+
+		// 2*x*y
+		xy2 := new(big.Float).Copy(x)
+		xy2.Mul(xy2, y)
+		xy2.Mul(xy2, BIG_2)
+
+		// xt = x*x - y*y + julia_r
+		xt := new(big.Float).Copy(xx)
+		xt.Sub(xt, yy)
+		xt.Add(xt, julia_r)
+
+		// yt = 2*x*y + julia_i
+		yt := new(big.Float).Copy(xy2)
+		yt.Add(yt, julia_i)
 
 		x = xt
 		y = yt
 		iter += 1
-		betragQuadrat = x*x + y*y
+		betragQuadrat.Mul(xx, yy)
 	}
 	result := FractFunctionResult{
 		Iterations:   iter,
