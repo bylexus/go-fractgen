@@ -4,6 +4,7 @@ import (
 	"errors"
 	"math/big"
 	"runtime"
+	"strings"
 
 	"github.com/bylexus/go-stdlib/ethreads"
 )
@@ -20,6 +21,21 @@ const (
 	FRACTAL_TYPE_MANDELBROT4 = "mandelbrot4"
 	FRACTAL_TYPE_JULIA       = "julia"
 )
+
+func FractalTypeFromString(s string) (FractalType, error) {
+	switch strings.ToLower(s) {
+	case "mandelbrot":
+		return FRACTAL_TYPE_MANDELBROT, nil
+	case "mandelbrot3":
+		return FRACTAL_TYPE_MANDELBROT3, nil
+	case "mandelbrot4":
+		return FRACTAL_TYPE_MANDELBROT4, nil
+	case "julia":
+		return FRACTAL_TYPE_JULIA, nil
+	default:
+		return "", errors.New("unknown fractal function")
+	}
+}
 
 type Fractal interface {
 	CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn

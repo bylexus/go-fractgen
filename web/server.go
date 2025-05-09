@@ -46,19 +46,10 @@ func NewWebServer(conf WebServerConfig, colorPresets lib.ColorPresets, fractalPr
 
 func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	format := strings.ToLower(r.PathValue("format"))
-	mimeType := "image/jpeg"
-	switch format {
-	case "png":
-		mimeType = "image/png"
-	case "jpg":
-	case "jpeg":
-		mimeType = "image/gif"
-		format = "jpg"
-	}
 	width, _ := strconv.Atoi(r.URL.Query().Get("width"))
 	height, _ := strconv.Atoi(r.URL.Query().Get("height"))
 	maxIterations, _ := strconv.Atoi(r.URL.Query().Get("maxIterations"))
-	iterFunc := strings.ToLower(r.URL.Query().Get("iterFunc"))
+	iterFunc, _ := lib.FractalTypeFromString(r.URL.Query().Get("iterFunc"))
 	centerCX, _ := strconv.ParseFloat(r.URL.Query().Get("centerCX"), 64)
 	centerCY, _ := strconv.ParseFloat(r.URL.Query().Get("centerCY"), 64)
 	diameterCX, _ := strconv.ParseFloat(r.URL.Query().Get("diameterCX"), 64)
@@ -66,6 +57,8 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteRepeat"))
 	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteLength"))
 	colorPaletteReverse, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteReverse"))
+	juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
+	juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -88,38 +81,12 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 		ColorPaletteReverse: colorPaletteReverse,
 	}
 
-	switch iterFunc {
-	case "mandelbrot":
-		fractal = lib.NewMandelbrotFractal(commonFractParams)
-		break
-	case "mandelbrot3":
-		fractal = lib.NewMandelbrot3Fractal(commonFractParams)
-		break
-	case "mandelbrot4":
-		fractal = lib.NewMandelbrot4Fractal(commonFractParams)
-		break
-	case "julia":
-		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
-		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
-		fractal = lib.NewJuliaFractal(commonFractParams, juliaKr, juliaKi)
-		break
-	default:
+	fractal, err = lib.NewFractalFromParams(iterFunc, commonFractParams, juliaKr, juliaKi)
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	img := lib.CalcFractalImage(fractal)
-	w.Header().Set("Content-Type", mimeType)
-	w.Header().Set("Cache-Control", "public, max-age=15552000;")
-	w.WriteHeader(http.StatusOK)
-	switch format {
-	case "png":
-		img.EncodePng(w)
-		break
-	case "jpg":
-		img.EncodeJpeg(w)
-		break
-	}
+	streamFractalImage(w, fractal, format)
 }
 
 func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
@@ -128,7 +95,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		zoomLevel = 0
 	}
 
-	iterFunc := strings.ToLower(r.URL.Query().Get("iterFunc"))
+	iterFunc, err := lib.FractalTypeFromString(r.URL.Query().Get("iterFunc"))
 
 	tileX, _ := strconv.Atoi(r.URL.Query().Get("TileCol"))
 	tileY, _ := strconv.Atoi(r.URL.Query().Get("TileRow"))
@@ -173,6 +140,8 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Unknown color preset")
 		return
 	}
+	juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
+	juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
 
 	var fractal lib.Fractal
 	var commonFractParams = lib.CommonFractParams{
@@ -187,31 +156,12 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 		ColorPaletteLength:  colorPaletteLength,
 		ColorPaletteReverse: colorPaletteReverse,
 	}
-	switch iterFunc {
-	case "mandelbrot":
-		fractal = lib.NewMandelbrotFractal(commonFractParams)
-		break
-	case "mandelbrot3":
-		fractal = lib.NewMandelbrot3Fractal(commonFractParams)
-		break
-	case "mandelbrot4":
-		fractal = lib.NewMandelbrot4Fractal(commonFractParams)
-		break
-	case "julia":
-		juliaKr, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKr"), 64)
-		juliaKi, _ := strconv.ParseFloat(r.URL.Query().Get("juliaKi"), 64)
-		fractal = lib.NewJuliaFractal(commonFractParams, juliaKr, juliaKi)
-		break
-	default:
+	fractal, err = lib.NewFractalFromParams(iterFunc, commonFractParams, juliaKr, juliaKi)
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	img := lib.CalcFractalImage(fractal)
-	w.Header().Set("Content-Type", "image/jpeg")
-	w.Header().Set("Cache-Control", "public, max-age=15552000;")
-	w.WriteHeader(http.StatusOK)
-	img.EncodeJpeg(w)
+	streamFractalImage(w, fractal, "jpg")
 }
 
 func (s *WebServer) handlePresetsJson(w http.ResponseWriter, r *http.Request) {
@@ -296,4 +246,22 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 	}
 	img.EncodeJpeg(w)
 
+}
+
+func streamFractalImage(w http.ResponseWriter, fractal lib.Fractal, format string) {
+	img := lib.CalcFractalImage(fractal)
+	w.Header().Set("Cache-Control", "public, max-age=15552000;")
+	w.WriteHeader(http.StatusOK)
+	switch format {
+	case "png":
+		w.Header().Set("Content-Type", "image/png")
+		img.EncodePng(w)
+		break
+	case "jpeg":
+		fallthrough
+	case "jpg":
+		w.Header().Set("Content-Type", "image/jpeg")
+		img.EncodeJpeg(w)
+		break
+	}
 }
