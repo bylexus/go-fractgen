@@ -149,15 +149,19 @@ func SetPaletteColor(img *FractImage, x, y int, iterValue float64, fractParams C
 				break
 			}
 		}
-		relativeRatio := (paletteEntry - float64(stopsUntilNow)) / float64(actStopWidth)
 
-		// Linear-interpolate the correct color based on the ratio
-		selectedColor = PaletteEntry{color.RGBA{
-			R: uint8(math.Round(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio)),
-			G: uint8(math.Round(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio)),
-			B: uint8(math.Round(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio)),
-			A: 255,
-		}, 255}
+		if fractParams.ColorPaletteHardStops {
+			selectedColor = lower
+		} else {
+			// Linear-interpolate the correct color based on the ratio
+			relativeRatio := (paletteEntry - float64(stopsUntilNow)) / float64(actStopWidth)
+			selectedColor = PaletteEntry{color.RGBA{
+				R: uint8(math.Round(float64(lower.R) + (float64(upper.R)-float64(lower.R))*relativeRatio)),
+				G: uint8(math.Round(float64(lower.G) + (float64(upper.G)-float64(lower.G))*relativeRatio)),
+				B: uint8(math.Round(float64(lower.B) + (float64(upper.B)-float64(lower.B))*relativeRatio)),
+				A: 255,
+			}, 255}
+		}
 	}
 	// Set the pixel color
 	img.Set(x, y, selectedColor.RGBA)

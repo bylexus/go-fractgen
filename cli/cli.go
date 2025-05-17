@@ -33,22 +33,23 @@ func (c *ServeCmd) Run(appContext *lib.AppContext) error {
 }
 
 type ImageCmd struct {
-	Format         string          `help:"Format of the image to generate."`
-	Width          int             `help:"Width of the image to generate, in pixels." default:"1920"`
-	Height         int             `help:"Height of the image to generate, in pixels." default:"1200"`
-	FractalPreset  string          `help:"Name of the fractal preset to use, e.g. '--fractal-preset=\"Mandelbrot Total\"'. Use in combination with --presets-file." default:"" `
-	ColorPreset    string          `help:"Name of the color preset to use." default:"patchwork"`
-	Function       lib.FractalType `help:"Fractal function to use." enum:"mandelbrot,julia,mandelbrot3,mandelbrot4" default:"mandelbrot"`
-	PaletteRepeat  int             `help:"Number of times to repeat the palette." default:"1"`
-	PaletteLength  int             `help:"Length of the palette." default:"-1"`
-	PaletteReverse bool            `help:"Reverse the palette." default:"false"`
-	CenterCX       float64         `help:"Center CX(r)" default:"-0.7"`
-	CenterCY       float64         `help:"Center CY(i)" default:"0"`
-	DiameterCX     float64         `help:"Diameter CX(r)" default:"4"`
-	JuliaKr        float64         `help:"Julia Kr(r)" default:"-0.2"`
-	JuliaKi        float64         `help:"Julia Ki(i)" default:"0.8"`
-	MaxIter        int             `help:"Maximum number of iterations." default:"100"`
-	PresetsFile    string          `help:"Path to presets file." type:"path"`
+	Format           string          `help:"Format of the image to generate."`
+	Width            int             `help:"Width of the image to generate, in pixels." default:"1920"`
+	Height           int             `help:"Height of the image to generate, in pixels." default:"1200"`
+	FractalPreset    string          `help:"Name of the fractal preset to use, e.g. '--fractal-preset=\"Mandelbrot Total\"'. Use in combination with --presets-file." default:"" `
+	ColorPreset      string          `help:"Name of the color preset to use." default:"patchwork"`
+	Function         lib.FractalType `help:"Fractal function to use." enum:"mandelbrot,julia,mandelbrot3,mandelbrot4" default:"mandelbrot"`
+	PaletteRepeat    int             `help:"Number of times to repeat the palette." default:"1"`
+	PaletteLength    int             `help:"Length of the palette." default:"-1"`
+	PaletteReverse   bool            `help:"Reverse the palette." default:"false"`
+	PaletteHardStops bool            `help:"No smooth transitions between colors in the palette, just hard stops." default:"false"`
+	CenterCX         float64         `help:"Center CX(r)" default:"-0.7"`
+	CenterCY         float64         `help:"Center CY(i)" default:"0"`
+	DiameterCX       float64         `help:"Diameter CX(r)" default:"4"`
+	JuliaKr          float64         `help:"Julia Kr(r)" default:"-0.2"`
+	JuliaKi          float64         `help:"Julia Ki(i)" default:"0.8"`
+	MaxIter          int             `help:"Maximum number of iterations." default:"100"`
+	PresetsFile      string          `help:"Path to presets file." type:"path"`
 
 	OutputPath string `arg:"" help:"Path to save the image to." type:"path" default:"image.jpg"`
 }
@@ -96,16 +97,17 @@ func (c *ImageCmd) Run(appContext *lib.AppContext) error {
 		fmt.Printf("Using fractal preset: '%s', ignoring other fractal parameters.\n", c.FractalPreset)
 	} else {
 		var commonFractParams = lib.CommonFractParams{
-			ImageWidth:          c.Width,
-			ImageHeight:         c.Height,
-			CenterCX:            c.CenterCX,
-			CenterCY:            c.CenterCY,
-			DiameterCX:          c.DiameterCX,
-			MaxIterations:       c.MaxIter,
-			ColorPalette:        colorPreset.Palette,
-			ColorPaletteRepeat:  c.PaletteRepeat,
-			ColorPaletteLength:  c.PaletteLength,
-			ColorPaletteReverse: c.PaletteReverse,
+			ImageWidth:            c.Width,
+			ImageHeight:           c.Height,
+			CenterCX:              c.CenterCX,
+			CenterCY:              c.CenterCY,
+			DiameterCX:            c.DiameterCX,
+			MaxIterations:         c.MaxIter,
+			ColorPalette:          colorPreset.Palette,
+			ColorPaletteRepeat:    c.PaletteRepeat,
+			ColorPaletteLength:    c.PaletteLength,
+			ColorPaletteReverse:   c.PaletteReverse,
+			ColorPaletteHardStops: c.PaletteHardStops,
 		}
 		fractal, err = lib.NewFractalFromParams(c.Function, commonFractParams, c.JuliaKr, c.JuliaKi)
 		if err != nil {

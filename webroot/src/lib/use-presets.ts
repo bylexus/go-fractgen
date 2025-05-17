@@ -25,6 +25,7 @@ export type FractalPreset = {
   colorPaletteRepeat: number
   colorPaletteLength: number
   colorPaletteReverse: boolean
+  colorPaletteHardStops: boolean
   juliaKr: number
   juliaKi: number
 }

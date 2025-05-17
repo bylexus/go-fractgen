@@ -7,7 +7,7 @@ import { fractalPresetByName, useFractalPresets, type FractalParams } from '@/li
 import SettingsDialog from './SettingsDialog.vue'
 import AboutDialog from './AboutDialog.vue'
 import FractalMap from './FractalMap.vue'
-import {emitEvent, GlobalEvent} from '@/lib/event-bus'
+import { emitEvent, GlobalEvent } from '@/lib/event-bus'
 
 const fractalPreset = ref('')
 const settingsOverlay = ref<HTMLDivElement>()
@@ -124,8 +124,16 @@ function centerOnClick() {
         <div class="label-field">
           <label>Color Palette:</label>
           <ColorPresetSelect
-            :model-value="fractalParams.colorPreset"
-            @update:model-value="changeFractalParams({ colorPreset: $event })"
+            :color-preset="fractalParams.colorPreset"
+            :palette-repeat="fractalParams.colorPaletteRepeat"
+            :palette-length="fractalParams.colorPaletteLength"
+            :palette-reverse="fractalParams.colorPaletteReverse"
+            :palette-hard-stops="fractalParams.colorPaletteHardStops"
+            @update:color-preset="changeFractalParams({ colorPreset: $event })"
+            @update:palette-length="changeFractalParams({ colorPaletteLength: $event })"
+            @update:palette-repeat="changeFractalParams({ colorPaletteRepeat: $event })"
+            @update:palette-reverse="changeFractalParams({ colorPaletteReverse: $event })"
+            @update:palette-hard-stops="changeFractalParams({ colorPaletteHardStops: $event })"
           ></ColorPresetSelect>
         </div>
         <div class="label-field">
@@ -133,6 +141,7 @@ function centerOnClick() {
           <div style="display: flex; gap: 0.25rem; align-items: end">
             <input
               type="number"
+              id="iterations"
               :value="fractalParams.maxIterations"
               @change.lazy="
                 (e: Event) =>
@@ -140,61 +149,9 @@ function centerOnClick() {
                     maxIterations: parseInt((e.target as HTMLInputElement).value),
                   })
               "
-              id="iterations"
             />
             <button type="button" @click="recalcIterations()">🧮</button>
           </div>
-        </div>
-        <div v-if="fractalParams.colorPaletteLength <= 0" class="label-field">
-          <label for="paletteRepeat">Palette Repeat: </label>
-          <input
-            type="checkbox"
-            :checked="fractalParams.colorPaletteLength > 0"
-            @change="onFixedPaletteCBChange"
-          />
-          <input
-            type="number"
-            :value="fractalParams.colorPaletteRepeat"
-            id="paletteRepeat"
-            @change.lazy="
-              (e: Event) =>
-                changeFractalParams({
-                  colorPaletteRepeat: parseInt((e.target as HTMLInputElement).value),
-                })
-            "
-          />
-        </div>
-        <div v-if="fractalParams.colorPaletteLength > 0" class="label-field">
-          <label for="paletteLength">Fixed Palette Length:</label>
-          <input
-            type="checkbox"
-            :checked="fractalParams.colorPaletteLength > 0"
-            @change="onFixedPaletteCBChange"
-          />
-          <input
-            type="number"
-            :value="fractalParams.colorPaletteLength"
-            id="paletteLength"
-            @change.lazy="
-              (e: Event) =>
-                changeFractalParams({
-                  colorPaletteLength: parseInt((e.target as HTMLInputElement).value),
-                })
-            "
-          />
-        </div>
-        <div class="label-field">
-          <label for="paletteReverse">Reverse Palette:</label>
-          <input
-            type="checkbox"
-            :checked="fractalParams.colorPaletteReverse"
-            @change.lazy="
-              (e: Event) =>
-                changeFractalParams({
-                  colorPaletteReverse: Boolean((e.target as HTMLInputElement).checked),
-                })
-            "
-          />
         </div>
         <button type="button" @click="showSettingsDlg = true" title="Settings">⚙️</button>
         <button

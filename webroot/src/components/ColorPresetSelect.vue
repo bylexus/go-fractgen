@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { apiroot, queryStr } from '@/lib/url_helper'
-import {
-  colorPresetByIdent,
-  useColorPresets,
-  type ColorPreset,
-  type FractalParams,
-} from '@/lib/use-presets'
+import { colorPresetByIdent, useColorPresets, type ColorPreset } from '@/lib/use-presets'
 import { computed, reactive, ref, watch } from 'vue'
 import EnhancedSelect from './EnhancedSelect.vue'
 const colorPresets = useColorPresets()
-const colorPreset = defineModel<string>()
+const colorPreset = defineModel<string>('colorPreset')
+const paletteRepeat = defineModel<number>('paletteRepeat', { required: true })
+const paletteLength = defineModel<number>('paletteLength', { required: true })
+const paletteReverse = defineModel<boolean>('paletteReverse', { required: true })
+const paletteHardStops = defineModel<boolean>('paletteHardStops', { required: true })
 
 const state = reactive({
   filter: '',
@@ -43,6 +42,15 @@ function smallPrevLink(preset: ColorPreset) {
   }
   return `${apiroot()}/paletteViewer?${queryStr(params)}`
 }
+function onPaletteModeChanged(e: Event) {
+  if (e.target instanceof HTMLInputElement) {
+    if (e.target.value === 'fixed') {
+      paletteLength.value = 256
+    } else {
+      paletteLength.value = -1
+    }
+  }
+}
 </script>
 
 <template>
@@ -59,10 +67,95 @@ function smallPrevLink(preset: ColorPreset) {
     </template>
     <template #item="{ item, selected }">
       <div class="selector-item" :class="{ selected: selected }">
-        <div>
+        <div class="item-name">
           {{ item.name }}
         </div>
         <img class="preview-img" :src="smallPrevLink(item)" loading="lazy" alt="Preview Image" />
+      </div>
+    </template>
+    <template #settings>
+      <div class="settings">
+        <div class="flex gap-1">
+          <div class="mode-radio">
+            <div>Palette mode:</div>
+            <label class="d-block">
+              <input
+                type="radio"
+                name="paletteMode"
+                value="fixed"
+                :checked="paletteLength! >= 1"
+                @change="onPaletteModeChanged"
+              />
+              fixed
+            </label>
+            <label class="d-block">
+              <input
+                type="radio"
+                name="paletteMode"
+                value="dynamic"
+                :checked="paletteLength! < 1"
+                @change="onPaletteModeChanged"
+              />
+              iteration-based
+            </label>
+          </div>
+          <div class="mode-setting flex-basis-0">
+            <div v-if="paletteLength < 1" class="label-field">
+              <label
+                >Palette Repeat:
+                <input
+                  type="number"
+                  :value="paletteRepeat"
+                  @change.lazy="
+                    (e: Event) => (paletteRepeat = parseInt((e.target as HTMLInputElement).value))
+                  "
+                />
+              </label>
+            </div>
+
+            <div v-if="paletteLength > 0" class="label-field">
+              <label
+                >Fixed Palette Length:
+                <input
+                  type="number"
+                  :value="paletteLength"
+                  @change.lazy="
+                    (e: Event) => (paletteLength = parseInt((e.target as HTMLInputElement).value))
+                  "
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-col">
+          <div class="label-field">
+            <label>
+              <input
+                id="paletteReverse"
+                type="checkbox"
+                :checked="paletteReverse"
+                @change.lazy="
+                  (e: Event) => (paletteReverse = Boolean((e.target as HTMLInputElement).checked))
+                "
+              />
+              Reverse Palette
+            </label>
+          </div>
+          <div class="label-field">
+            <label>
+              <input
+                id="paletteHardStops"
+                type="checkbox"
+                :checked="paletteHardStops"
+                @change.lazy="
+                  (e: Event) => (paletteHardStops = Boolean((e.target as HTMLInputElement).checked))
+                "
+              />
+              Hard Color Stops
+            </label>
+          </div>
+        </div>
       </div>
     </template>
   </EnhancedSelect>
@@ -70,7 +163,6 @@ function smallPrevLink(preset: ColorPreset) {
 
 <style lang="css" scoped>
 .selector-item {
-  flex-grow: 1;
   padding: 0.3rem 0.2rem;
   &.selected {
     background-color: rgba(255, 255, 255, 0.7);
@@ -79,10 +171,16 @@ function smallPrevLink(preset: ColorPreset) {
     background-color: rgba(255, 255, 255, 0.3);
     cursor: pointer;
   }
+  .item-name {
+    font-size: 0.825rem;
+  }
   .preview-img {
     border: 1px solid black;
     border-radius: 3px;
     max-width: 100%;
   }
+}
+.settings {
+  font-size: 0.75rem;
 }
 </style>

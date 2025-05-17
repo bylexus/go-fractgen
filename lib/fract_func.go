@@ -43,11 +43,12 @@ type CommonFractParams struct {
 	ImageWidth  int
 	ImageHeight int
 
-	SmoothColors        bool
-	ColorPaletteLength  int
-	ColorPalette        ColorPalette
-	ColorPaletteRepeat  int
-	ColorPaletteReverse bool
+	SmoothColors          bool
+	ColorPaletteLength    int
+	ColorPalette          ColorPalette
+	ColorPaletteRepeat    int
+	ColorPaletteReverse   bool
+	ColorPaletteHardStops bool
 
 	// calculaed during initialization:
 	aspect float64
@@ -128,16 +129,17 @@ func NewFractalFromPresets(width, height int, colorPreset ColorPreset, fractalPr
 		return nil, err
 	}
 	commonParams := CommonFractParams{
-		ImageWidth:          width,
-		ImageHeight:         height,
-		CenterCX:            fractalPreset.CenterCX,
-		CenterCY:            fractalPreset.CenterCY,
-		DiameterCX:          fractalPreset.DiameterCX,
-		MaxIterations:       fractalPreset.MaxIterations,
-		ColorPalette:        colorPreset.Palette,
-		ColorPaletteRepeat:  fractalPreset.ColorPaletteRepeat,
-		ColorPaletteLength:  fractalPreset.ColorPaletteLength,
-		ColorPaletteReverse: fractalPreset.ColorPaletteReverse,
+		ImageWidth:            width,
+		ImageHeight:           height,
+		CenterCX:              fractalPreset.CenterCX,
+		CenterCY:              fractalPreset.CenterCY,
+		DiameterCX:            fractalPreset.DiameterCX,
+		MaxIterations:         fractalPreset.MaxIterations,
+		ColorPalette:          colorPreset.Palette,
+		ColorPaletteRepeat:    fractalPreset.ColorPaletteRepeat,
+		ColorPaletteLength:    fractalPreset.ColorPaletteLength,
+		ColorPaletteReverse:   fractalPreset.ColorPaletteReverse,
+		ColorPaletteHardStops: fractalPreset.ColorPaletteHardStops,
 	}
 	switch fractFunc {
 	case FRACTAL_TYPE_MANDELBROT:

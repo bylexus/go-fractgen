@@ -44,6 +44,7 @@ const mapRedrawProps = [
   'colorPaletteRepeat',
   'colorPaletteLength',
   'colorPaletteReverse',
+  'colorPaletteHardStops',
   'juliaKr',
   'juliaKi',
 ]
@@ -94,6 +95,7 @@ onMounted(() => {
       const colorPaletteRepeat = fractalParams.value.colorPaletteRepeat
       const colorPaletteLength = fractalParams.value.colorPaletteLength
       const colorPaletteReverse = fractalParams.value.colorPaletteReverse
+      const colorPaletteHardStops = fractalParams.value.colorPaletteHardStops
 
       const res = calcResolutionForZoom(zoomLevel)
 
@@ -105,6 +107,7 @@ onMounted(() => {
         colorPaletteRepeat: colorPaletteRepeat,
         colorPaletteLength: colorPaletteLength,
         colorPaletteReverse: colorPaletteReverse,
+        colorPaletteHardStops: colorPaletteHardStops,
         iterFunc: fractalParams.value.iterFunc,
         tileWidthPixels: tileWidth,
         tileWidthFractal: res * tileWidth,
@@ -260,6 +263,7 @@ function getActualFractParams(): FractalParams {
     colorPaletteRepeat: fractalParams.value.colorPaletteRepeat,
     colorPaletteLength: fractalParams.value.colorPaletteLength,
     colorPaletteReverse: fractalParams.value.colorPaletteReverse,
+    colorPaletteHardStops: fractalParams.value.colorPaletteHardStops,
     juliaKr: fractalParams.value.juliaKr,
     juliaKi: fractalParams.value.juliaKi,
   }

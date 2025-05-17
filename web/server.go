@@ -66,6 +66,7 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 	colorPaletteRepeat, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteRepeat"))
 	colorPaletteLength, _ := strconv.Atoi(r.URL.Query().Get("colorPaletteLength"))
 	colorPaletteReverse, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteReverse"))
+	colorPaletteHardStops, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteHardStops"))
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -76,16 +77,17 @@ func (s *WebServer) handleFractalImage(w http.ResponseWriter, r *http.Request) {
 
 	var fractal lib.Fractal
 	var commonFractParams = lib.CommonFractParams{
-		ImageWidth:          width,
-		ImageHeight:         height,
-		CenterCX:            centerCX,
-		CenterCY:            centerCY,
-		DiameterCX:          diameterCX,
-		MaxIterations:       maxIterations,
-		ColorPalette:        colorPreset.Palette,
-		ColorPaletteRepeat:  colorPaletteRepeat,
-		ColorPaletteLength:  colorPaletteLength,
-		ColorPaletteReverse: colorPaletteReverse,
+		ImageWidth:            width,
+		ImageHeight:           height,
+		CenterCX:              centerCX,
+		CenterCY:              centerCY,
+		DiameterCX:            diameterCX,
+		MaxIterations:         maxIterations,
+		ColorPalette:          colorPreset.Palette,
+		ColorPaletteRepeat:    colorPaletteRepeat,
+		ColorPaletteLength:    colorPaletteLength,
+		ColorPaletteReverse:   colorPaletteReverse,
+		ColorPaletteHardStops: colorPaletteHardStops,
 	}
 
 	switch iterFunc {
@@ -166,6 +168,7 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	colorPaletteReverse, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteReverse"))
+	colorPaletteHardStops, _ := strconv.ParseBool(r.URL.Query().Get("colorPaletteHardStops"))
 
 	colorPreset, err := s.colorPresets.GetByIdent(colorPresetParam)
 	if err != nil {
@@ -176,16 +179,17 @@ func (s *WebServer) handleWmtsRequest(w http.ResponseWriter, r *http.Request) {
 
 	var fractal lib.Fractal
 	var commonFractParams = lib.CommonFractParams{
-		ImageWidth:          tileWidthPixels,
-		ImageHeight:         tileWidthPixels,
-		CenterCX:            centerCX,
-		CenterCY:            centerCY,
-		DiameterCX:          tileWidthFractal,
-		MaxIterations:       maxIterations,
-		ColorPalette:        colorPreset.Palette,
-		ColorPaletteRepeat:  colorPaletteRepeat,
-		ColorPaletteLength:  colorPaletteLength,
-		ColorPaletteReverse: colorPaletteReverse,
+		ImageWidth:            tileWidthPixels,
+		ImageHeight:           tileWidthPixels,
+		CenterCX:              centerCX,
+		CenterCY:              centerCY,
+		DiameterCX:            tileWidthFractal,
+		MaxIterations:         maxIterations,
+		ColorPalette:          colorPreset.Palette,
+		ColorPaletteRepeat:    colorPaletteRepeat,
+		ColorPaletteLength:    colorPaletteLength,
+		ColorPaletteReverse:   colorPaletteReverse,
+		ColorPaletteHardStops: colorPaletteHardStops,
 	}
 	switch iterFunc {
 	case "mandelbrot":

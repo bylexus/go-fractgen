@@ -19,12 +19,18 @@ body {
   overflow: hidden;
   background-color: black;
 }
+.d-block {
+  display: block;
+}
 
 .flex {
   display: flex;
 }
 .flex-wrap {
   flex-wrap: wrap;
+}
+.flex-basis-0 {
+  flex-basis: 0;
 }
 
 .flex-col {

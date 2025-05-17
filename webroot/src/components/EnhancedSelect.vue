@@ -88,6 +88,9 @@ function onSelect(item: any) {
         />
         <button type="button" @click.stop="state.selectorOpen = false">🅧</button>
       </div>
+      <div class="settings">
+        <slot name="settings"></slot>
+      </div>
       <div class="items-list">
         <div
           v-for="item in items"
