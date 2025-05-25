@@ -1,6 +1,8 @@
 package lib
 
 import (
+	"math"
+
 	"github.com/bylexus/go-stdlib/ethreads"
 )
 
@@ -53,6 +55,8 @@ func Mandelbrot(cx, cy, max_betrag_quadrat float64, maxIter int) FractFunctionRe
 	var iter int = 0
 	var x, xt float64 = 0.0, 0.0
 	var y, yt float64 = 0.0, 0.0
+	var minDist = math.MaxFloat64
+	var dist float64 = 0.0
 
 	for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
 		xt = x*x - y*y + cx
@@ -62,10 +66,28 @@ func Mandelbrot(cx, cy, max_betrag_quadrat float64, maxIter int) FractFunctionRe
 		y = yt
 		iter += 1
 		betragQuadrat = x*x + y*y
+		// point distance to point:
+		// dist = math.Sqrt((x-2)*(x-2) + y*y)
+
+		// dist = math.Abs((y - 2*x - 1) / math.Sqrt(2*2+1))
+		// line equation ax + b:
+		// point distance to line:
+		//  dist = abs((a*x - y + b) / math.Sqrt(a*a + 1))
+		// where x, y is the point and a, b are the coefficients of the line equation ax + y = 0
+
+		dist = math.Abs((0.5*x - y + -3) / math.Sqrt(0.5*0.5+1))
+
+		// dist = x
+		if dist < minDist {
+			minDist = dist
+		}
 	}
 	result := FractFunctionResult{
 		Iterations:   iter,
 		BailoutValue: betragQuadrat,
+		// for orbit trap:
+		// BailoutValue: minDist,
+		// BailoutValue: math.Sqrt(minDist),
 	}
 	return result
 }

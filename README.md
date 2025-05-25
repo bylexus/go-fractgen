@@ -154,6 +154,9 @@ fractgen image --presets-file=presets.json --fractal-preset="Mandelbrot Total" "
 - [x] Embed default preset.json in binary (using go embed)
 - [x] palette inversion (reverse order)
 - [x] palette length: bound to max iter (done), or fixed length
+- [ ] embed fract params in image metadata
+- [ ] more coloring options:
+  - [ ] orbit traps
 
 #### CLI
 

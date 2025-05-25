@@ -25,6 +25,10 @@ func setImagePixel(img *FractImage, x, y int, fractParams CommonFractParams, fra
 		if fractParams.SmoothColors == true {
 			// Smooth coloring, see http://de.wikipedia.org/wiki/Mandelbrot-Menge#Iteration_eines_Bildpunktes:
 			iterValue = float64(fractRes.Iterations) - math.Log(math.Log(fractRes.BailoutValue)/LOG_MAX_BETRAG)/LOG_2
+			// for orbit trap:
+			// iterValue = fractRes.BailoutValue
+			// fractParams.ColorPaletteLength = -1
+			// fractParams.MaxIterations = 4
 		} else {
 			// Rough coloring: Escape time algorithm:
 			iterValue = float64(fractRes.Iterations)
