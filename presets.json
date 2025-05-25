@@ -1325,7 +1325,7 @@
       "colorPaletteHardStops": false
     },
     {
-      "name": "TEMP 14",
+      "name": "Mandelbrot The Prisoner",
       "iterFunc": "Mandelbrot",
       "diameterCX": 4.6566128730773926e-9,
       "centerCX": 0.2676186264114218,
@@ -1338,20 +1338,22 @@
       "colorPaletteRepeat": 3
     },
     {
-      "name": "TEMP 15",
+      "name": "Mandelbrot Fidget Spinner 3",
       "iterFunc": "Mandelbrot",
-      "diameterCX": 1.1641532182693481e-9,
-      "centerCX": 0.26761862629364225,
-      "centerCY": -0.003867476517825707,
+      "diameterCX": 1.57160684466362e-9,
+      "centerCX": 0.2676186262106864,
+      "centerCY": -0.0038674764809805136,
       "colorPreset": "nature",
       "juliaKi": 0.6,
       "juliaKr": -0.6,
       "maxIterations": 1221,
       "colorPaletteLength": -1,
-      "colorPaletteRepeat": 3
+      "colorPaletteRepeat": 3,
+      "colorPaletteReverse": false,
+      "colorPaletteHardStops": false
     },
     {
-      "name": "TEMP 16",
+      "name": "Mandelbrot Square Garden",
       "iterFunc": "Mandelbrot",
       "diameterCX": 3.0122464522719383e-9,
       "centerCX": -0.15760078670385663,
@@ -1365,7 +1367,7 @@
       "colorPaletteReverse": true
     },
     {
-      "name": "TEMP 17",
+      "name": "Mandelbrot New Life",
       "iterFunc": "Mandelbrot",
       "diameterCX": 1.1368683772161603e-12,
       "centerCX": -1.574972459040674,
@@ -1379,7 +1381,7 @@
       "colorPaletteReverse": false
     },
     {
-      "name": "TEMP 18",
+      "name": "Mandelbrot Life Line",
       "iterFunc": "Mandelbrot",
       "diameterCX": 9.313225746154785e-9,
       "centerCX": -1.578050893771531,
@@ -1393,7 +1395,7 @@
       "colorPaletteReverse": false
     },
     {
-      "name": "TEMP 19",
+      "name": "Mandelbrot Ninja Star",
       "iterFunc": "Mandelbrot",
       "diameterCX": 2.2737367544323206e-12,
       "centerCX": 0.35702612544133966,
@@ -1407,7 +1409,7 @@
       "colorPaletteReverse": false
     },
     {
-      "name": "TEMP 20",
+      "name": "Mandelbrot The Scream",
       "iterFunc": "Mandelbrot",
       "diameterCX": 5.8832938520936295e-12,
       "centerCX": 0.35947763973161023,
@@ -1421,7 +1423,7 @@
       "colorPaletteReverse": false
     },
     {
-      "name": "TEMP 21",
+      "name": "Mandelbrot Chaos",
       "iterFunc": "Mandelbrot",
       "diameterCX": 3.0122464522719383e-9,
       "centerCX": -1.1224169744863242,
