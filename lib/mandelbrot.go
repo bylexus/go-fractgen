@@ -15,12 +15,16 @@ func NewMandelbrotFractal(fractalParams CommonFractParams) MandelbrotFractal {
 	return MandelbrotFractal{params}
 }
 
-func (f MandelbrotFractal) CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn {
+func (f MandelbrotFractal) CreatePixelCalcJobFn(startPixX, startPixY, width, height int, img *FractImage) ethreads.JobFn {
 	return func(id ethreads.ThreadId) {
-		cx, cy := f.PixelToFractal(pixX, pixY)
-		var fractRes FractFunctionResult
-		fractRes = Mandelbrot(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
-		setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
+		for pixY := startPixY; pixY < startPixY+height; pixY++ {
+			for pixX := startPixX; pixX < startPixX+width; pixX++ {
+				cx, cy := f.PixelToFractal(pixX, pixY)
+				var fractRes FractFunctionResult
+				fractRes = Mandelbrot(cx, cy, f.MaxAbsSquareAmount, f.MaxIterations)
+				setImagePixel(img, pixX, pixY, f.CommonFractParams, fractRes)
+			}
+		}
 	}
 }
 

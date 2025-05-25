@@ -22,7 +22,7 @@ const (
 )
 
 type Fractal interface {
-	CreatePixelCalcFunc(pixX, pixY int, img *FractImage) ethreads.JobFn
+	CreatePixelCalcJobFn(startPixX, startPixY, width, height int, img *FractImage) ethreads.JobFn
 	ImageWidth() int
 	ImageHeight() int
 }
@@ -113,9 +113,14 @@ func CalcFractalImage(f Fractal) *FractImage {
 
 	img := NewFractImage(f.ImageWidth(), f.ImageHeight())
 
-	for y := 0; y < f.ImageHeight(); y++ {
-		for x := 0; x < f.ImageWidth(); x++ {
-			tp.AddJobFn(f.CreatePixelCalcFunc(x, y, img))
+	// We calculate blocks of pixels in separate goroutines: For each block,
+	// we start a new goroutine in the thread pool.
+	// A single pixel per goroutine is too inperformant / generates too many goroutines.
+	// A block size of 64x64 pixels is a good compromise between inperformant and too many goroutines.
+	var blockWidth, blockHeight = 64, 64
+	for y := 0; y < f.ImageHeight(); y += blockHeight {
+		for x := 0; x < f.ImageWidth(); x += blockWidth {
+			tp.AddJobFn(f.CreatePixelCalcJobFn(x, y, blockWidth, blockHeight, img))
 		}
 	}
 	tp.Shutdown()
