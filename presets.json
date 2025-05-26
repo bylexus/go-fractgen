@@ -184,13 +184,32 @@
       ]
     },
     {
-      "name": "Black or White",
-      "ident": "black-or-white",
+      "name": "Thurgau Horizonte",
+      "ident": "thurgau-horizonte",
       "colors": [
-        { "a": 255, "r": 0, "b": 0, "g": 0 },
-        { "a": 255, "r": 0, "b": 0, "g": 0, "steps": -1 },
+        { "a": 255, "r": 255, "b": 1, "g": 236 },
+        { "a": 255, "r": 173, "b": 38, "g": 196 },
+        { "a": 255, "r": 114, "b": 53, "g": 165 },
+        { "a": 255, "r": 5, "b": 232, "g": 163 },
+        { "a": 255, "r": 75, "b": 235, "g": 177 },
+        { "a": 255, "r": 75, "b": 235, "g": 177 }
+      ]
+    },
+    {
+      "name": "Swiss Flag",
+      "ident": "swiss-flag",
+      "colors": [
+        { "a": 255, "r": 255, "b": 0, "g": 0, "steps": 256 },
+        { "a": 255, "r": 255, "b": 255, "g": 255, "steps": 64 }
+      ]
+    },
+    {
+      "name": "Union Jack",
+      "ident": "union-jack",
+      "colors": [
+        { "a": 255, "r": 0, "b": 125, "g": 36 },
         { "a": 255, "r": 255, "b": 255, "g": 255 },
-        { "a": 255, "r": 255, "b": 255, "g": 255, "steps": -1 }
+        { "a": 255, "r": 207, "b": 43, "g": 20, "steps": 32 }
       ]
     }
   ],
@@ -1434,6 +1453,64 @@
       "maxIterations": 2000,
       "colorPaletteLength": -1,
       "colorPaletteRepeat": 3,
+      "colorPaletteReverse": true,
+      "colorPaletteHardStops": false
+    },
+    {
+      "name": "Mandelbrot Old Relief",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 1.4388933777809143e-7,
+      "centerCX": 0.45734658174216136,
+      "centerCY": 0.34786505557359065,
+      "colorPreset": "sedum",
+      "maxIterations": 1500,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 6,
+      "colorPaletteReverse": false,
+      "colorPaletteHardStops": false
+    },
+    {
+      "name": "Mandelbrot Trittst im Morgenrot",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 7.8580342233181e-10,
+      "centerCX": -1.5780509064278017,
+      "centerCY": -1.5860711181925335e-12,
+      "colorPreset": "swiss-flag",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 1824,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 6,
+      "colorPaletteReverse": true,
+      "colorPaletteHardStops": false
+    },
+    {
+      "name": "Mandelbrot Christmas Star",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 1.5347723092418164e-12,
+      "centerCX": -1.5780510444390694,
+      "centerCY": -1.3040783730655647e-15,
+      "colorPreset": "ultra-fractal",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 1824,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 6,
+      "colorPaletteReverse": true,
+      "colorPaletteHardStops": false
+    },
+    {
+      "name": "Mandelbrot Union Jack",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 1.57160684466362e-9,
+      "centerCX": -0.16743225902503947,
+      "centerCY": 1.0412608344674763,
+      "colorPreset": "union-jack",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 2500,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 5,
       "colorPaletteReverse": true,
       "colorPaletteHardStops": false
     }
