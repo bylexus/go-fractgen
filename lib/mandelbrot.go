@@ -57,19 +57,30 @@ or the max. number of iterations is reached.
 func Mandelbrot(cx, cy, max_betrag_quadrat float64, maxIter int) FractFunctionResult {
 	var betragQuadrat float64 = 0.0
 	var iter int = 0
-	var x, xt float64 = 0.0, 0.0
-	var y, yt float64 = 0.0, 0.0
+	// var x, xt float64 = 0.0, 0.0
+	// var y, yt float64 = 0.0, 0.0
+	var z complex128 = 0
+	var zt complex128 = 0
+	var c = complex(cx, cy)
+
 	var minDist = math.MaxFloat64
 	var dist float64 = 0.0
 
 	for betragQuadrat <= max_betrag_quadrat && iter < maxIter {
-		xt = x*x - y*y + cx
-		yt = 2*x*y + cy
+		// Using complex numbers:
+		zt = z*z + c
+		z = zt
 
-		x = xt
-		y = yt
+		// using de-complexed formula (x/y):
+		// xt = x*x - y*y + cx
+		// yt = 2*x*y + cy
+		// x = xt
+		// y = yt
+
 		iter += 1
-		betragQuadrat = x*x + y*y
+		betragQuadrat = real(zt)*real(zt) + imag(zt)*imag(zt)
+		// betragQuadrat = x*x + y*y
+
 		// point distance to point:
 		// dist = math.Sqrt((x-2)*(x-2) + y*y)
 
@@ -79,7 +90,8 @@ func Mandelbrot(cx, cy, max_betrag_quadrat float64, maxIter int) FractFunctionRe
 		//  dist = abs((a*x - y + b) / math.Sqrt(a*a + 1))
 		// where x, y is the point and a, b are the coefficients of the line equation ax + y = 0
 
-		dist = math.Abs((0.5*x - y + -3) / math.Sqrt(0.5*0.5+1))
+		// dist = math.Abs((0.5*x - y + -3) / math.Sqrt(0.5*0.5+1))
+		dist = math.Abs((0.5*real(z) - imag(z) + -3) / math.Sqrt(0.5*0.5+1))
 
 		// dist = x
 		if dist < minDist {

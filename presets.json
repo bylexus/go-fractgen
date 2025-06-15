@@ -1513,6 +1513,21 @@
       "colorPaletteRepeat": 5,
       "colorPaletteReverse": true,
       "colorPaletteHardStops": false
+    },
+    {
+      "name": "Mandelbrot Indian Ornament",
+      "iterFunc": "Mandelbrot",
+      "diameterCX": 3.92901711165905e-10,
+      "centerCX": 0.3495298328343645,
+      "centerCY": -0.06649989015695469,
+      "colorPreset": "union-jack",
+      "juliaKi": 0.6,
+      "juliaKr": -0.6,
+      "maxIterations": 5000,
+      "colorPaletteLength": -1,
+      "colorPaletteRepeat": 4,
+      "colorPaletteReverse": true,
+      "colorPaletteHardStops": false
     }
   ]
 }
