@@ -33,6 +33,7 @@ func NewWebServer(conf WebServerConfig, colorPresets lib.ColorPresets, fractalPr
 	mux.HandleFunc("/paletteViewer", server.handlePaletteViewer)
 	mux.HandleFunc("/wmts", server.handleWmtsRequest)
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
+	mux.HandleFunc("/ping", server.handlePing)
 	mux.Handle("/", http.FileServer(http.Dir("webroot")))
 
 	listenAddr := conf.Addr
@@ -283,5 +284,10 @@ func (s *WebServer) handlePaletteViewer(w http.ResponseWriter, r *http.Request) 
 		}
 	}
 	img.EncodeJpeg(w)
+}
 
+func (s *WebServer) handlePing(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status": "ok"}`))
 }

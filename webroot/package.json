@@ -9,10 +9,13 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "build-electron": "NODE_ENV=production vite build --mode=electron --base=/dist",
+    "electron": "electron .",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
+  "main": "electron-main.js",
   "dependencies": {
     "ol": "^10.5.0",
     "sass": "^1.86.3",
@@ -25,6 +28,7 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/tsconfig": "^0.7.0",
+    "electron": "^36.4.0",
     "eslint": "^9.21.0",
     "eslint-plugin-vue": "~10.0.0",
     "jiti": "^2.4.2",
