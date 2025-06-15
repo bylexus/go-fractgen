@@ -23,6 +23,9 @@ project [JFractGen](https://github.com/bylexus/JFractGen).
 ## Build
 
 ```bash
+# Build the frontend:
+npm run build
+# build the backend:
 go build -o fractgen
 ```
 
@@ -157,6 +160,8 @@ fractgen image --presets-file=presets.json --fractal-preset="Mandelbrot Total" "
 - [ ] embed fract params in image metadata
 - [ ] more coloring options:
   - [ ] orbit traps
+- [x] Create fully self-contained binary, so that no external dependencies are required. The full web app should be
+      embedded.
 
 #### CLI
 
@@ -198,6 +203,15 @@ IFS=$'\n' jq -r '.fractalPresets.[].name' presets.json | while read preset; do; 
 		--height=2400 \
 		"output/${preset}.jpg"; \
 done
+```
+
+### Watch frontend and serve it
+
+The go webserver embeds the frontend files from `webroot/dist` on build time. During development, you can watch the frontend files and use a non-emedded version of the frontend:
+
+```bash
+shell1 $> npm run watch 
+shell2 $>go run main.go serve --webroot=webroot/dist
 ```
 
 ### Some Flight examples

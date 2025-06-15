@@ -1,5 +1,5 @@
 export function apiroot(): string {
-  return import.meta.env.VITE_API_ROOT
+  return import.meta.env.VITE_API_ROOT || '';
 }
 export function queryStr(obj: { [key: string]: any }) {
   const parts = []

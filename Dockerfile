@@ -33,16 +33,16 @@ WORKDIR /src
 RUN mkdir -p /build/webroot
 COPY . .
 
-# build go binary
-RUN /root/go/bin/go1.24.0 build -o /build/go-fractgen main.go
-
-# build web app
+# build web app, before the go binary: the web app is needed for the go binary (embedded)
 RUN bash -c 'source /root/.nvm/nvm.sh && \
 	cd webroot && \
 	nvm use && \
 	npm install && \
-	npm run build && \
-	cp -r dist/* /build/webroot/'
+	npm run build'
+
+# build go binary
+RUN /root/go/bin/go1.24.0 build -o /build/go-fractgen main.go
+
 
 ############
 FROM alpine:latest AS prod

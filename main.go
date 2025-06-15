@@ -17,7 +17,9 @@
 package main
 
 import (
+	"embed"
 	_ "embed"
+	"io/fs"
 
 	"github.com/alecthomas/kong"
 	"github.com/bylexus/go-fract/cli"
@@ -27,10 +29,18 @@ import (
 //go:embed presets.json
 var presets []byte
 
+//go:embed webroot/dist
+var webrootDist embed.FS
+
 func main() {
 
+	webrootFS, err := fs.Sub(webrootDist, "webroot/dist")
+
+	if err != nil {
+		panic(err)
+	}
 	cli := cli.Cli{}
 	ctx := kong.Parse(&cli)
-	err := ctx.Run(&lib.AppContext{EmbeddedPresets: presets})
+	err = ctx.Run(&lib.AppContext{EmbeddedPresets: presets, WebrootFS: webrootFS})
 	ctx.FatalIfErrorf(err)
 }

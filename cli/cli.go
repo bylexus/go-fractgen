@@ -15,8 +15,9 @@ import (
 )
 
 type ServeCmd struct {
-	Listen      string `help:"Listen address / port to serve on." default:":8000"`
-	PresetsFile string `help:"Path to presets file." type:"path"`
+	Listen      string  `help:"Listen address / port to serve on." default:":8000"`
+	PresetsFile string  `help:"Path to presets file." type:"path"`
+	Webroot     *string `help:"Path to static webroot directory. If not set, the embedded files will be used." type:"path"`
 }
 
 func (c *ServeCmd) Run(appContext *lib.AppContext) error {
@@ -24,7 +25,10 @@ func (c *ServeCmd) Run(appContext *lib.AppContext) error {
 	if err != nil {
 		return err
 	}
-	server := web.NewWebServer(web.WebServerConfig{Addr: c.Listen}, presets.ColorPresets, presets.FractalPresets)
+	if c.Webroot != nil {
+		appContext.WebrootFS = os.DirFS(*c.Webroot)
+	}
+	server := web.NewWebServer(web.WebServerConfig{Addr: c.Listen, WebrootFS: appContext.WebrootFS}, presets.ColorPresets, presets.FractalPresets)
 
 	fmt.Printf("Starting Webserver, listen on %s\n", server.Addr)
 	log.Fatal(server.ListenAndServe())

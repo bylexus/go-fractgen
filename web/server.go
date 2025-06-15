@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"io/fs"
 	"net/http"
 	"strconv"
 	"strings"
@@ -12,7 +13,8 @@ import (
 )
 
 type WebServerConfig struct {
-	Addr string
+	Addr      string
+	WebrootFS fs.FS
 }
 
 type WebServer struct {
@@ -33,7 +35,7 @@ func NewWebServer(conf WebServerConfig, colorPresets lib.ColorPresets, fractalPr
 	mux.HandleFunc("/paletteViewer", server.handlePaletteViewer)
 	mux.HandleFunc("/wmts", server.handleWmtsRequest)
 	mux.HandleFunc("/presets.json", server.handlePresetsJson)
-	mux.Handle("/", http.FileServer(http.Dir("webroot")))
+	mux.Handle("/", http.FileServerFS(conf.WebrootFS))
 
 	listenAddr := conf.Addr
 	var handler http.Handler = NewLogHandler(NewCorsHandler(mux))
